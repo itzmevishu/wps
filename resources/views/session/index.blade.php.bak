@@ -1,0 +1,131 @@
+@extends('layouts.default')
+@section('content')
+
+    <div class="row well"  style="margin-top:25px;">
+        <div class="col-md-12" style="padding-left:0px;">
+
+            <p>
+                @php
+                    $user = Auth::user();
+                @endphp
+                @if($user)
+                    <strong style="font-size:large">Welcome {{$user->first_name}}!</strong>
+                @else
+                    <strong style="font-size:large">Welcome!</strong>
+                @endif
+            </p>
+
+            <p>Welcome to the Altec Sentry eLearning store!</p>
+            @if(Auth::check())
+                <p>Do you have a new vehicle to register for free training? <a href="/account/register-vehicle" class="linkText">Register your vehicle now!</a></p>
+                @if(! empty(Session::get('freeFAM')))
+                    <div class="alert alert-info" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {!! Session::get('freeFAM') !!}
+                    </div>
+                @endif
+            @endif
+
+            @if(! empty(Session::get('errormsg')))
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{Session::get('errormsg')}}
+                </div>
+            @endif
+        </div>
+    </div>
+
+    <div class="row" style="background-color: #fff;padding-top: 5px;padding-bottom: 25px;padding-left: 25px;padding-right: 25px;">
+
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Available Sessions</h4>
+                @if($searchTerm != '')<p style="font-style: italic;font-weight: bold">Searching for: {{$searchTerm}}</p>@endif
+            </div>
+            <div class="col-md-6">
+                <span class="pull-right">
+                    {!! Form::open(['url' => 'course_sessions', 'id' =>"search"]) !!}
+                    {{ Form::select('session_sort', ['name_asc' => 'Name (A-Z)', 'name_desc'=> 'Name (Z-A)', 'location_asc' => 'Location (A-Z)', 'location_desc' => 'Location (Z-A)', 'start_date_asc' => 'Date Asc', 'start_date_desc' => 'Date Desc'], null, array('id' => 'search')) }}
+                    {!! Form::close() !!}
+                </span>
+                <span class="pull-right">
+                    Sort By:&nbsp;
+                </span>
+
+            </div>
+        </div>
+
+
+        <div class="row">
+
+            @if(count($sessions) == 0)
+                <div class="col-sm-3 spacer" style="padding-top:10px;">
+                    No sessions found...
+                </div>
+
+            @else
+                @foreach($sessions as $session)
+
+                    <?php
+                    $imageName = str_replace('/', '', $session->course->image);
+                    //$imageName2 = $imageName.'.png';
+
+                    $image_file =  'images/courses/'.$imageName.'.png';
+                    if (!File::exists($image_file))
+                    {
+                        $image_file ='http://via.placeholder.com/200x200';
+                    } else {
+                        $image_file =  '/images/courses/'.$imageName.'.png';
+                    }
+
+                        //images/courses/977520-A.png
+                        //images/courses/982145-A.png
+                    ?>
+                    <div class="col-sm-3 spacer" style="border-bottom: 1px solid #ccc;padding-top:10px;">
+                        <div style="position: relative">
+                            <a href="/confirm-course?courseid={{$session['course_id']}}" style="text-decoration:none;">
+                                <div><img src="{{$image_file}}" style="width:258px;height:258px;"></div>
+                                <div style="min-height:60px;"><h4>{{$session['name']}}</h4></div>
+                                <div style="min-height:60px;"><h5>{{$session['module_name']}}, {{$session['course_name']}}</h5></div>
+                            </a>
+                            <div style="min-height:50px;left: 15px;right: 15px;">
+                                <a href="/confirm-course?courseid={{$session['course_id']}}" class="btn btn-primary pull-left">View Details</a>
+
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            @endif
+
+        </div>
+    </div>
+
+
+
+
+
+@stop
+@section('scripts')
+
+    <script>
+        $('.collapse').on('shown.bs.collapse', function(){
+            $(this).parent().find(".glyphicon-chevron-right").removeClass("glyphicon-chevron-right").addClass("glyphicon-chevron-down");
+        }).on('hidden.bs.collapse', function(){
+            $(this).parent().find(".glyphicon-chevron-down").removeClass("glyphicon-chevron-down").addClass("glyphicon-chevron-right");
+        });
+
+        $(function () {
+            var __sort = "name_asc";
+            var __search = "all";
+
+            $("#search").change(function () {
+
+                var __sort = $("#search option:selected").val();
+                window.location.replace("{{ env('APP_URL') }}/iltsessions/"+ __search +"/" + __sort);
+            });
+        });
+
+    </script>
+
+@stop
+
