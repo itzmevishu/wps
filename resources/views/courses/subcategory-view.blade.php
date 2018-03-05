@@ -20,7 +20,7 @@
         <div class="row">
         @if(count($courses)>0)
             @foreach($courses as $course)
-            <?php $imageName = str_replace('/', '', $course['image']); ?>
+            <?php $imageName = $course['image']; ?>
                 
                 <div class="col-sm-3 spacer" style="border-bottom: 1px solid #ccc;padding-top:10px;">
                     <div style="position: relative">
@@ -28,7 +28,7 @@
                         @if($course['price'] == 0)
                             <div><div class="ribbon-wrapper-green"><div class="ribbon-green">FREE</div></div><img src="/images/courses/{{$imageName}}.png" style="width:100%"></div>
                         @else
-                            <div><img src="/images/courses/{{$imageName}}.png" style="width:100%"></div>
+                            <div><img src="{{$imageName}}" style="width:100%"></div>
                         @endif
 
                         <div style="min-height:60px;"><h4>{{$course['name']}}</h4></div>
