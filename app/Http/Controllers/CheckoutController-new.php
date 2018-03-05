@@ -26,7 +26,7 @@ use Cart;
 use Session;
 use DB;
 
-class CheckoutController extends Controller {
+class CheckoutttController extends Controller {
 
     public function stepOne( Request $request){
 

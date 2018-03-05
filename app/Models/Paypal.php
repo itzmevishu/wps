@@ -36,8 +36,8 @@ class Paypal
         $data = '{
               "intent":"sale",
               "redirect_urls":{
-                "return_url":"http://ecomm.local.com",
-                "cancel_url":"http://ecomm.local.com"
+                "return_url":"http://139.59.86.32",
+                "cancel_url":"http://139.59.86.32"
               },
               "payer":{
                 "payment_method":"paypal"
