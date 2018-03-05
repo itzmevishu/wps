@@ -27,7 +27,9 @@
         <div class="col-md-12">
             <ul class="nav nav-pills nav-stacked col-md-2" style="margin-top: 15px;">
                 <li class="active"><a href="#tab_a" data-toggle="pill">Login</a></li>
+                <!--
                 <li><a href="#tab_b" data-toggle="pill">Register</a></li>
+                -->
                 <li><a href="#tab_c" data-toggle="pill">Forgot Password</a></li>
             </ul>
             <div class="tab-content col-md-10">
