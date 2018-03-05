@@ -261,7 +261,7 @@ class AccountController extends Controller {
 
             }else{
 
-                return Redirect::to('/new-account?courseid='.$input['courseid'])->with('errormsg','We were not able to create your account.');
+                return Redirect::to('/new-account')->with('errormsg','We were not able to create your account.');
 
             }
         }
