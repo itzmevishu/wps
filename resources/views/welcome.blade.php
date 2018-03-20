@@ -1,4 +1,3 @@
-
 @extends('layouts.default')
 @section('content')
 
@@ -51,6 +50,9 @@
 
         @else
             @foreach($courses as $course)
+                @php
+                    $image_file =  $course['image'];
+                @endphp
 
                 <div class="col-sm-3 spacer" style="border-bottom: 1px solid #ccc;padding-top:10px;">
                     <div style="position: relative">
