@@ -40,8 +40,8 @@ class CartController extends Controller {
 
                 $sessionInfo = litmosAPI::apiGetASession($input['course_id'],$module,$input['session_id_'.$module]);
 
-                preg_match( '/\/Date\((\d+)([+-]\d{4})\)/', $sessionInfo->StartDate, $startDate );
-                preg_match( '/\/Date\((\d+)([+-]\d{4})\)/',  $sessionInfo->EndDate, $endDate );
+                preg_match( '/\/Date\((\d+)/', $sessionInfo->StartDate, $startDate );
+                preg_match( '/\/Date\((\d+)/',  $sessionInfo->EndDate, $endDate );
 
                 array_push($modSessionArray,array(
                     'moduleid'=>$module,

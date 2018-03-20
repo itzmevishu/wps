@@ -96,7 +96,7 @@
                     <a href="/store-catalog">Catalog</a>
                 </li>
                     <li>
-                        <a href="/iltsessions">ILT Sessions</a>
+                        <a href="/iltsessions">Live Sessions </a>
                     </li>
                 <li>
                     <a href="/show-cart">Cart ( <span id="cartCount"> {{$cartCount}} </span> ) <i class="glyphicon glyphicon-shopping-cart"></i></a>

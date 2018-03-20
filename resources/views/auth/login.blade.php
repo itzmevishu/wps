@@ -35,6 +35,7 @@
             <div class="tab-content col-md-10">
                 <div class="tab-pane active" id="tab_a">
                     <div class="row spacer" >
+
                         <div class="col-md-12 well">
                             <div class="col-md-6">
                                 <div class="row spacer" style=" padding:5px;">

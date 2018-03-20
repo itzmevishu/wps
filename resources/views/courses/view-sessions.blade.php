@@ -46,14 +46,18 @@
                     continue;
                 }
 
-                preg_match( '/\/Date\((\d+)([+-]\d{4})\)/', $comp->StartDate, $startDate );
-                preg_match( '/\/Date\((\d+)([+-]\d{4})\)/',  $comp->EndDate, $endDate );
+                preg_match( '/\/Date\((\d+)/', $comp->StartDate, $startDate );
+                preg_match( '/\/Date\((\d+)/',  $comp->EndDate, $endDate );
                 $z_eur_price =($coursePrice * $currencyRate);
                 $z_eur_price =number_format($z_eur_price, 2, '.', '');
 
-
-
-                $details = '<p style="line-height: 25px;padding-top:5px;"><strong>'.$comp->Name.'</strong><br><strong>Dates:</strong> '.date( 'M d, Y', $startDate[1]/1000 ).' - '.date( 'M d, Y', $endDate[1]/1000).'<br><strong>Time:</strong> '.$comp->Days[0]->StartTime.' to '.' '. $comp->Days[0]->EndTime.' '.$comp->TimeZone.'<br><strong>Location:</strong> '.$comp->Location.'<br><strong>Instructor:</strong> '.$comp->InstructorName.'</p>';
+                $details = '<p style="line-height: 25px;padding-top:5px;"><strong>'.$comp->Name.'</strong><br>';
+                if(is_array($startDate) && count($startDate)){
+                    $details .= '<strong>Dates:</strong> '.date( 'M d, Y', $startDate[1]/1000 ).' - '.date( 'M d, Y', $endDate[1]/1000).'<br>';
+                }
+                $details .= '<strong>Time:</strong> '.$comp->Days[0]->StartTime.' to '.' '. $comp->Days[0]->EndTime.' '.$comp->TimeZone.'<br>';
+                $details .= '<strong>Location:</strong> '.$comp->Location.'<br>';
+                $details .= '<strong>Instructor:</strong> '.$comp->InstructorName.'</p>';
 
                 if($comp->Accepted >= $comp->Slots){
                     $displayRegister = 'disabled';
@@ -66,7 +70,7 @@
                 $irmaTest= Cart::search(array('id'=>$courseInfo->Id));
                 ?>
 
-                @if(date( 'Y-m-d', $startDate[1]/1000 ) >=date( 'Y-m-d'))
+                @if(is_array($startDate) && count($startDate) && date( 'Y-m-d', $startDate[1]/1000 ) >=date( 'Y-m-d'))
 
                     <div class="row sessionRow_{{$module_info->Id}} altBG" id="{{$comp->Id}}" style="padding:10px;margin:2px;">
                         <label class="sessionLabels">
