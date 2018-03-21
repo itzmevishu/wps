@@ -200,9 +200,22 @@
 <footer >
     <div class="container">
         <div class="footer-item">
-            <a href="faqs" >Frequently Asked Questions</a>
+            <a href="faqs" ><strong>Frequently Asked Questions</strong></a>
+            @php($faqs = getFaqs())
+                <ul>
+                    @foreach($faqs as $key => $faqInfo)
+                        <li>
+                            <a href="/faqs#collapse_{{$faqInfo['unique_key']}}">{{ str_limit($faqInfo['question'], 30)}}</a>
+                        </li>
+                    @endforeach
+                </ul>
         </div>
+
     </div>
+
+
+
+
 </footer>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>

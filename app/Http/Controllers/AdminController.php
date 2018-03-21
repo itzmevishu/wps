@@ -468,7 +468,7 @@ class AdminController extends Controller {
 
         $limit = 500;
         $start = 0;
-
+        $active_courses = array();
         while($limit > 0){
 
             $getCourses = litmosAPI::getUserCourses($limit,$start);
@@ -506,29 +506,7 @@ class AdminController extends Controller {
 
                 $item->save();
 
-
-
-                /*
-                $checkTokens = Tokens::where('activation_code',$course->Code)->first();
-
-                if(! $checkTokens){
-                    if($course->ForSale && $course->Active) {
-                        if(strpos($course->Code, '-FAM-') !== false){
-                            $token = new Tokens;
-                            $token->activation_code = $course->Code;
-                            $token->tokens = 1;
-                            $token->save();
-                        }
-                        if(strpos($course->Code, '-GEN-') !== false){
-                            $token = new Tokens;
-                            $token->activation_code = $course->Code;
-                            $token->tokens = 5;
-                            $token->save();
-                        }
-                    }
-                }
-                */
-
+                $active_courses[] = $course->Id;
             }
 
             if(count($getCourses) > 0){
@@ -538,6 +516,12 @@ class AdminController extends Controller {
             }
 
         }
+
+
+        $allCourses = $titles = DB::table('catalog')->pluck('course_id');
+        $inactive_course = array_diff($allCourses, $active_courses);
+        DB::table('catalog')->whereIn('course_id', $inactive_course)->update(array('litmos_deleted' => true));
+
         Session::flash('success', 'Catalog refreshed!');
         return Redirect::to('/admin/catalog');
 

@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\ChequePayment;
+use App\Models\ChequePayment;
 use App\Http\Requests;
 use App\Models\Country;
 use App\Models\State;
@@ -436,6 +436,7 @@ class CheckoutController extends Controller {
     private function __singleCourse($order_id){
 
         //get sessions from cart
+        #Cart::instance('shopping')->content();
         $searchSession = Cart::instance('shopping')->search(array('options' => array('type' => 'single course')));
 
         if($searchSession) {
@@ -640,6 +641,7 @@ class CheckoutController extends Controller {
             $order_id = Orders::saveOrder($this->user);
             Orders::orderPaymentSuccess($order_id,'cheque',$orderTotal);
             Orders::orderSuccess($order_id);
+            $this->__singleSession($order_id);
             $this->__singleCourse($order_id);
 
             Cart::instance('promo')->destroy();
@@ -667,7 +669,7 @@ class CheckoutController extends Controller {
     public function downloadPDF($id){
         $getRecentOrder = Orders::where('id', '=', $id)->first();
 
-        $getRecentOrderDetails = OrderDetails::distinct()->select('order_id', 'course_sku','course_name','qty','course_price')->where('order_id',$getRecentOrder->id)->get();
+        $getRecentOrderDetails = OrderDetails::select('order_id', 'course_sku','course_name','qty','course_price')->where('order_id',$getRecentOrder->id)->get();
 
         $getAssigneeDetails = OrderDetails::where('order_id',$getRecentOrder->id)->get();
 

@@ -108,3 +108,9 @@ function wpsFacilityProvider()
     return $timeZoneList;
 }
 
+
+function getFaqs(){
+    $faqs = \Maven::get();
+    return $faqs;
+}
+

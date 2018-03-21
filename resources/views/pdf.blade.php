@@ -37,7 +37,7 @@
                 <table>
                     <tr>
                         <td class="title">
-                            <img src="https://www.altec.com/site/themes/altec/images/altec-logo.jpg" style="width:100%; max-width:300px;">
+                            <img src="http://wpsgha.litmos.com/upload/media/26616/logo/561975ca-3fbe-49f6-bf9d-85f9ecbc8ec9.png" style="width:100%; max-width:300px;">
                         </td>
 
                         <td style="width:380px;text-align: right;">
