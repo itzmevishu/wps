@@ -390,7 +390,7 @@ Route::group(['middleware' => 'auth'], function () {
     // Buy One Get One Feature
     Route::resource('bogo', 'BogoController');
 
-    Route::resource('settings', 'PhotoController');
+    Route::resource('settings', 'SettingController');
 
 });
 

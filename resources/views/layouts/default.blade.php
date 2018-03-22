@@ -115,7 +115,7 @@
                             <li role="separator" class="divider"></li>
                             @if($userAuth->site_admin == 1)
                                 <li><a href="/admin">Admin</a></li>
-
+                                <li><a href="/settings/create">Welcome Message</a></li>
                                 <li role="separator" class="divider"></li>
 
                             @endif
