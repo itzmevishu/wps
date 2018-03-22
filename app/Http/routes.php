@@ -40,6 +40,7 @@ Route::any('catalog/{parentName}/{childName}/{childId}','CourseController@catalo
 Route::group(['middleware' => 'App\Http\Middleware\Admin'], function() {
 //ADMIN
     Route::get('admin', 'AdminController@adminHome')->middleware('auth');
+    Route::get('maven', 'AdminController@adminHome')->middleware('auth');
 
     Route::get('admin/users', 'AdminController@showUsers')->middleware('auth');
     Route::post('admin/users/search', 'AdminController@searchUsers')->middleware('auth');
