@@ -76,7 +76,10 @@ class CourseController extends Controller {
 
     public function getCourses(Request $request)
     {
-        $availableCourses = Catalog::where('active',1)->where('for_sale', 1)->orderBy('name')->paginate(8);
+        $availableCourses = Catalog::where('active',1)
+                                    ->where('for_sale', 1)
+                                    ->where('litmos_deleted', 0)
+                                    ->orderBy('name')->paginate(8);
 
          if(Auth::check()){
             $userAuth= Auth::user();
