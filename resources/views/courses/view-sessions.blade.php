@@ -139,7 +139,7 @@
         </div>
         <div class="col-md-6">
             <span class="pull-right">
-                <a href="/show-cart" class="btn btn-primary pull-left">Show Cart</a>
+                <a href="/show-cart" class="btn btn-primary pull-left">View Cart</a>
             </span>
             <span class="pull-right" style="padding-right: 10px;">
                 <a href="/" class="btn btn-primary pull-left">Continue Shopping</a>

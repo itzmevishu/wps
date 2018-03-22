@@ -103,7 +103,7 @@
                 </li>
                 @if (Auth::check())
                     <li class="divider-vertical"></li>
-                    <li><a href="/sso">My Courses</a></li>
+                    <li><a href="/sso">My Dashboard</a></li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
                             {{$userAuth->first_name}} <span class="caret"></span>
