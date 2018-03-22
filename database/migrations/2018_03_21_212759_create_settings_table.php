@@ -16,7 +16,7 @@ class CreateSettingsTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create($this->tablename, function(Blueprint $table)
+		Schema::create('settings', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->string('key')->index();
@@ -31,6 +31,6 @@ class CreateSettingsTable extends Migration
 	 */
 	public function down()
 	{
-		Schema::drop($this->tablename);
+        Schema::drop('settings');
 	}
 }
