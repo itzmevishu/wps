@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 class Country extends Model{
 
     public static function getCountryList(){
-        $countries = Country::orderBy('order_by','ASC')->orderBy('country','ASC')->lists('country','country_code');
+        $countries = Country::orderBy('order_by','ASC')->orderBy('country','ASC')->lists('country','country');
 
         return $countries;
     }
