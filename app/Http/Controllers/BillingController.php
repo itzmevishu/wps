@@ -38,7 +38,7 @@ class BillingController extends Controller {
 
             $getAssigneeDetails = OrderDetails::where('order_id',$getRecentOrder->id)->get();
 
-            $getPromos = DB::table('ecomm_promos')->join('ecomm_promo_used','ecomm_promos.id','=','ecomm_promo_used.promo_id')->where('ecomm_promo_used.order_id',$getRecentOrder->id)->get();
+            $getPromos = DB::table('promos')->join('promos_used','promos.id','=','promo_used.promo_id')->where('promos_used.order_id',$getRecentOrder->id)->get();
 
             return View::make('billing/show-order-free',['orderInfo'=>$getRecentOrder,'orderDetailInfo'=>$getRecentOrderDetails,'assigneeDetails'=>$getAssigneeDetails,'promoDetails'=>$getPromos]);
 
@@ -47,7 +47,7 @@ class BillingController extends Controller {
 
             $getAssigneeDetails = OrderDetails::where('order_id',$getRecentOrder->id)->get();
 
-            $getPromos = DB::table('ecomm_promos')->join('ecomm_promo_used','ecomm_promos.id','=','ecomm_promo_used.promo_id')->where('ecomm_promo_used.order_id',$getRecentOrder->id)->get();
+            $getPromos = DB::table('promos')->join('promos_used','promos.id','=','promos_used.promo_id')->where('promos_used.order_id',$getRecentOrder->id)->get();
 
             return View::make('billing/show-order',['orderInfo'=>$getRecentOrder,'orderDetailInfo'=>$getRecentOrderDetails,'assigneeDetails'=>$getAssigneeDetails,'promoDetails'=>$getPromos]);
         }

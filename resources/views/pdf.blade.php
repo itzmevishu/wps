@@ -53,15 +53,17 @@
                 <table>
                     <tr>
                         <td style="width:300px;text-align: left;">
-                            {{ $billingDetails->address  }}<br>
-                            {{ $billingDetails->city }}, {{ $billingDetails->state }}<br>
+                            <strong>Billing Address: </strong><br/>
+                            {{ $billingDetails->address  }}<br />
+                            {{ $billingDetails->city }}, {{ $billingDetails->state }}<br />
                             {{ $billingDetails->country }}, {{ $billingDetails->zip_code }}
                         </td>
 
                         <td style="width:380px;text-align: right;">
-                            {{ $billingDetails->provider_name }}<br>
-                            {{ $billingDetails->npi }}, {{ $billingDetails->ptan }}<br>
-                            {{ $billingDetails->phone }}
+                            Provider: {{ $billingDetails->provider_name }}<br />
+                            NPI: {{ $billingDetails->npi }}<br/>
+                            PTAN: {{ $billingDetails->ptan }}<br />
+                            Phone: {{ $billingDetails->phone }}
                         </td>
                     </tr>
                 </table>

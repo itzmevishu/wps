@@ -20,7 +20,7 @@
             <thead>
             <tr>
                 <th>Course Name</th>
-                <th>Offered Course</th>
+                <th>Offered Percentage</th>
                 <td>Actions</td>
             </tr>
             </thead>

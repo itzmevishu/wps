@@ -7,12 +7,10 @@
              <p>
                 @if(Auth::check())
                     <strong style="font-size:large">Welcome {{$userAuth->first_name}}!</strong>
-                @else
-                     <strong style="font-size:large">Welcome!</strong>
                 @endif
             </p>
 
-                <p>Welcome to the WPS Learning Center!</p>
+                <p><?php echo $welcomeMessage; ?></p>
             @if(Auth::check())
                 @if(! empty(Session::get('freeFAM')))
                     <div class="alert alert-info" role="alert">

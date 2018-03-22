@@ -1,4 +1,3 @@
-
 <?php
 
 return [
@@ -164,7 +163,7 @@ return [
         Sukohi\Cahen\CahenServiceProvider::class,
         Sukohi\Maven\MavenServiceProvider::class,
 
-        Barryvdh\DomPDF\ServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class
 
 
 
@@ -219,8 +218,7 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Cahen'   => Sukohi\Cahen\Facades\Cahen::class,
         'Maven'   => Sukohi\Maven\Facades\Maven::class,
-        'PDF' => Barryvdh\DomPDF\Facade::class,
-
+        'PDF' => Barryvdh\DomPDF\Facade::class
     ],
 
 ];

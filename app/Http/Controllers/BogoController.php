@@ -56,6 +56,7 @@ class BogoController extends Controller
     {
         $courses = Catalog::where('active', 1)
             ->where('for_sale', 1)
+            ->where('litmos_deleted', 0)
             ->lists('name','id');
         return View::make('bogo.create')
             ->with('courses', $courses);
@@ -73,7 +74,8 @@ class BogoController extends Controller
         // read more on validation at http://laravel.com/docs/validation
         $rules = array(
             'course_id'       => 'required',
-            'course_id_offered' => 'required'
+            'num_of_courses' => 'required|integer',
+            'offer_percentage' => 'required|integer|max:100'
         );
         $validator = Validator::make($request->all(), $rules);
 
@@ -84,14 +86,30 @@ class BogoController extends Controller
                 ->withInput();
         } else {
             // store
-            $nerd = Bogo::firstOrNew(['course_id' => $request->input('course_id')]);
+
+            $data = $request->all();
+            $num_of_courses = $request->input('num_of_courses');
+            $offer_percentage = $request->input('offer_percentage');
+
+            if( $num_of_courses == 2 || $num_of_courses == 3){
+                $msg =  "1 person gets a % off";
+            } elseif($num_of_courses % 2 == 0)
+            {
+                $msg = ($num_of_courses -2). " person gets a $offer_percentage% off";
+            }
+            else
+            {
+                $msg = ($num_of_courses -1). " person gets a $offer_percentage% off";
+            }
+
+            /*$nerd = Bogo::firstOrNew(['course_id' => $request->input('course_id')]);
             $nerd->course_id       = $request->input('course_id');
             $nerd->course_id_offered      = $request->input('course_id_offered');
-            $nerd->save();
+            $nerd->save();*/
 
             // redirect
-            Session::flash('message', 'Successfully created nerd!');
-            return Redirect::to('bogo/');
+            Session::flash('message', $msg);
+            return Redirect::to('bogo/create');
         }
     }
 

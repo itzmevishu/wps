@@ -185,6 +185,11 @@
                 }).done(function(response){
                     $("#cartCount").html(response.count);
                     $('#myModal').modal('show');
+                }).error(function(jqXHR, textStatus, errorThrown) {
+                    if(jqXHR.status == 401){
+                        window.location.href = '/login';
+                    }
+
                 });
             });
 

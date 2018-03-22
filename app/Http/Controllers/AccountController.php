@@ -279,7 +279,7 @@ class AccountController extends Controller {
 
     public function singleSignOn(){
 
-        $userAuth= Auth::user();
+        $userAuth = Auth::user();
 
         //return $userAuth['litmos_id'];
 

@@ -178,6 +178,26 @@ glyphicon "></i>
                     </a>
 
                 </div>
+
+                <div class="col-md-4">
+                    <a href="/bogo" style="text-decoration: none;">
+                        <div class="dashboard_box">
+                            <div class="pull-right green_icon">
+                                <i class="glyphicon glyphicon-glyphicons-table"></i>
+                            </div>
+                            BOGO
+                            <div class="white_progress">
+
+                                <div class="white_progress_inner" style="width:100%;"></div>
+
+                            </div>
+                            <div class="dashboard-box-footer">Order History</div>
+                        </div>
+                    </a>
+
+                </div>
+
+
             <!--
                 <div class="col-md-4" style="">
                     <a href="/admin/sessions" style="text-decoration: none;">

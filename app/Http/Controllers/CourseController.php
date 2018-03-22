@@ -83,7 +83,8 @@ class CourseController extends Controller {
 
          }
 
-        return View::make('welcome',['courses'=>$availableCourses, 'searchTerm' =>'']);
+         $welcomeMessage = \App\Models\Setting::where('key', 'welcome')->pluck('value')->first();
+        return View::make('welcome',['courses'=>$availableCourses, 'searchTerm' =>'', 'welcomeMessage' => $welcomeMessage]);
     }
 
     public function catalogSubCategory(Request $request, $parentName, $childName, $childId){
@@ -197,7 +198,7 @@ class CourseController extends Controller {
 
             //return $getCurrency;
 
-            $z_price =number_format($z_price, 2, '.', '');
+            $z_price = number_format($z_price, 2, '.', '');
             $sessionResponse = litmosAPI::apiCheckIfSession($input,$courseID);
             $courseResponse = litmosAPI::apiGetSingleCourse($input,$courseID);
 

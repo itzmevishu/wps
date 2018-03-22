@@ -57,7 +57,7 @@ use App\Models\OrderDetails;
                         </div>
                         <?php $courseTotal = ($itemDetail['qty'] * $itemDetail['course_price'])?>
                         <div class="col-md-3">
-                            ${{money_format('%i',$courseTotal)}}
+                            ${{$courseTotal}}
                         </div>
                     </div>
                 @endforeach
@@ -65,7 +65,7 @@ use App\Models\OrderDetails;
                     <div class="row spacer">
                         <div class="col-md-5 price-align">{{$promoDetail->promo_code}} ({{$promoDetail->promo_desc}})</div>
                         <div class="col-md-4 price-align"><strong>Discount</strong></div>
-                        <div class="col-md-3"> -${{money_format('%i',$promoDetail->promo_amt)}}</div>
+                        <div class="col-md-3"> -${{$promoDetail->promo_amt}}</div>
                     </div>
                 @endforeach
                 <div class="row spacer">
@@ -73,7 +73,7 @@ use App\Models\OrderDetails;
                         <strong>Total</strong>
                     </div>
                     <div class="col-md-3">
-                        ${{money_format('%i',$orderInfo['order_total'])}}
+                        ${{$orderInfo['order_total']}}
                     </div>
                 </div>
                 <div class="row spacer">

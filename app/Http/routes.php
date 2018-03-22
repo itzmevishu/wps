@@ -181,18 +181,18 @@ Route::group(['middleware' => 'impersonate'], function()
 //Cart
 
 /* Remove course from cart */
-Route::post('remove-course','CartController@removeFromCart')->middleware('auth');
-Route::get('remove-course','CartController@removeFromCart')->middleware('auth');
+Route::post('remove-course','CartController@removeFromCart');
+Route::get('remove-course','CartController@removeFromCart');
 
 /* Update course qty */
-Route::post('update-cart','CartController@updateCart')->middleware('auth');
-Route::get('update-cart','CartController@updateCart')->middleware('auth');
+Route::post('update-cart','CartController@updateCart');
+Route::get('update-cart','CartController@updateCart');
 
 /* Add course to cart */
-Route::any('add-to-cart','CartController@addToCart')->middleware('auth');
+Route::any('add-to-cart','CartController@addToCart');
 
 /* show course from cart */
-Route::get('show-cart',array('as' => 'show.cart','uses' => 'CartController@showCart'))->middleware('auth');
+Route::get('show-cart',array('as' => 'show.cart','uses' => 'CartController@showCart'));
 
 /* add discount */
 Route::get('add-discount','PromoController@addDiscount')->middleware('auth');
@@ -222,16 +222,16 @@ Route::post('checkout-free','CheckoutController@stepFree')->middleware('auth');
 Route::get('checkout-free','CheckoutController@stepFree')->middleware('auth');
 
 /* Assign User to Self or Show Form for Other */
-Route::get('assign-course','CartController@assignCourse')->middleware('auth');
-Route::post('assign-course','CartController@assignCourse')->middleware('auth');
+Route::get('assign-course','CartController@assignCourse');
+Route::post('assign-course','CartController@assignCourse');
 
 /* Assign User to Other */
-Route::get('assign-course-other','CartController@assignExistingUserToCourse')->middleware('auth');
-Route::post('assign-course-other','CartController@assignExistingUserToCourse')->middleware('auth');
+Route::get('assign-course-other','CartController@assignExistingUserToCourse');
+Route::post('assign-course-other','CartController@assignExistingUserToCourse');
 
 /* Assign User to New */
-Route::get('assign-course-new','CartController@assignNewUserToCourse')->middleware('auth');
-Route::post('assign-course-new','CartController@assignNewUserToCourse')->middleware('auth');
+Route::get('assign-course-new','CartController@assignNewUserToCourse');
+Route::post('assign-course-new','CartController@assignNewUserToCourse');
 
 /* Assign Empty Users */
 Route::get('show-seat/{seatid?}','BillingController@showAssignSeat')->middleware('auth');
@@ -388,6 +388,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Buy One Get One Feature
     Route::resource('bogo', 'BogoController');
+
+    Route::resource('settings', 'PhotoController');
 
 });
 

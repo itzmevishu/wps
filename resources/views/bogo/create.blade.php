@@ -11,6 +11,17 @@
             @endif
         </div>
     </div>
+    <div class="row"  style="padding-top:25px;">
+        <div class="col-md-12" style="">
+            <h3>Buy One Get One</h3>
+            @if(! empty(Session::get('message')))
+                <div class="alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{Session::get('message')}}
+                </div>
+            @endif
+        </div>
+    </div>
     <div class="container">
         <h1 class="well">Create Offer</h1>
         <div class="col-lg-12 well">
@@ -23,10 +34,19 @@
                                 {{Form::select('course_id',$courses,NULL,['placeholder' => 'Select Course','class'=>'form-control','id'=>'promoType','tabindex'=>9])}}
                                 <div class="errors">{{$errors->first('course_id')}}</div>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-sm-6 form-group">
-                                {{Form::label('course_id_offered','Course Offered')}}<br>
-                                {{Form::select('course_id_offered',$courses,NULL,['placeholder' => 'Select free course','class'=>'form-control','id'=>'promoType','tabindex'=>9])}}
-                                <div class="errors">{{$errors->first('course_id_offered')}}</div>
+                                {{Form::label('course_id_offered','Number of Courses')}}<br>
+                                {{Form::text('num_of_courses','',['class'=>'form-control col-md-12','maxlength'=>'80','tabindex'=>2])}}
+                                <div class="errors">{{$errors->first('num_of_courses')}}</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 form-group">
+                                {{Form::label('course_id_offered','Offer Percentage')}}<br>
+                                {{Form::text('offer_percentage','',['class'=>'form-control col-md-12','maxlength'=>'80','tabindex'=>2])}}
+                                <div class="errors">{{$errors->first('offer_percentage')}}</div>
                             </div>
                         </div>
                         {{ Form::submit('Create Offer',['class'=>'btn btn-lg btn-info','tabindex'=>17]) }}

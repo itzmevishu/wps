@@ -197,25 +197,51 @@
         </div>
     </div>
 </div>
+<!--
 <footer >
     <div class="container">
         <div class="footer-item">
             <a href="faqs" ><strong>Frequently Asked Questions</strong></a>
-            @php($faqs = getFaqs())
-                <ul>
-                    @foreach($faqs as $key => $faqInfo)
-                        <li>
-                            <a href="/faqs#collapse_{{$faqInfo['unique_key']}}">{{ str_limit($faqInfo['question'], 30)}}</a>
-                        </li>
-                    @endforeach
-                </ul>
         </div>
 
     </div>
+</footer>
+-->
 
+<footer>
+    <div style="min-height: 250px;" class="footer" id="footer-sub">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5> Have a Question? </h5>
+                    <ul>
+                        <li><a href="faqs" >FAQ</a><hr></li>
+                        <li><a href="mailto:surveyamil@wpsic.com">surveyamil@wpsic.com</a><hr></li>
+                    </ul>
+                </div>
 
-
-
+                <div class="col-md-4">
+                    <h5> Helpful Websites </h5>
+                    <ul>
+                        <li><a href=""><a href="http://www.wpsgha.com">WPS GHA Portal</a><hr></li>
+                        <li><a href=""><a href="http://www.cms.gov">CMS Website</a><hr></li>
+                    </ul>
+                </div>
+<!--
+                <div class="col-md-4">
+                    <h5> MISC </h5>
+                    <ul>
+                        <li><a href="">Online Shopping</a><hr></li>
+                        <li><a href="">Affliate Program</a><hr></li>
+                        <li><a href="">Gift Card</a><hr></li>
+                        <li><a href="">Subscription</a><hr></li>
+                        <li><a href="">Sitemap</a></li>
+                    </ul>
+                </div>
+-->
+            </div>
+        </div>
+    </div>
 </footer>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
@@ -226,6 +252,8 @@
 <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
 
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
 
 <script>
     $(function () {
@@ -241,6 +269,118 @@
 </script>
 
 @yield('scripts')
+<style>
+    #footer-sub{
+        background-color: #fff;
+        border-top: 1px solid #dbdbdb;
+    }
 
+    #footer-main{
+        background-color: #012b72;
+    }
+
+    #footer-sub h5{
+        color:#565656;
+        margin-top: 25px;
+    }
+
+    #footer-sub ul{
+        list-style: none;
+        margin-top: 20px;
+    }
+
+    #footer-sub hr{
+        margin: 5px;
+
+    }
+
+    #footer-sub ul li{
+        margin-left: -38px;
+    }
+
+    #footer-sub a:link {
+        text-decoration: none;
+        color:#565656;
+        font-size: 12px;
+    }
+
+    #footer-sub a:visited {
+        text-decoration: none;
+        color:#565656;
+    }
+
+
+    #footer-sub a:hover {
+        text-decoration: none;
+        color: blue;
+    }
+
+
+    #footer-sub a:active {
+        text-decoration: none;
+        color:#565656;
+    }
+
+    .vertical-line{
+        border-right: 1px solid #dbdbdb;
+        margin: 8px;
+        padding: 0px;
+    }
+
+    #sub-two{
+        margin: 0px;
+        padding: 0px;
+    }
+
+    #sub-two .vertical-line h4{
+        color:#6d6c6c;
+    }
+
+
+    #footer-main ul{
+        list-style: none;
+    }
+
+    #footer-main ul li{
+        float:left;
+        text-decoration: none;
+        padding-left: 15px;
+        margin-top: 17px;
+    }
+
+    #footer-main a:link {
+        color:white;
+        font-size: 12px;
+    }
+
+    #footer-main a:visited {
+        color:white;
+    }
+
+
+    #footer-main a:hover {
+        text-decoration: none;
+        color: #00b9f5;
+    }
+
+
+    #footer-main a:active {
+        color:white;
+    }
+
+    .glyphicon-search{
+        font-size: 20px;
+    }
+
+    #social-menu{
+        float: right;
+        margin-right: 60px;
+    }
+
+    #side-padding{
+        padding: 0px;
+        margin: 0px;
+    }
+</style>
 </body>
 </html>
