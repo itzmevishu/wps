@@ -18,6 +18,7 @@ class Catalog extends Model{
     public static function courses(){
         return Catalog::where('active',1)
                         ->where('for_sale', 1)
+                        ->where('litmos_deleted', 0)
                         ->orderBy('name')
                         ->lists( 'name', 'id');
     }
