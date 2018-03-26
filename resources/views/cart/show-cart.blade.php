@@ -128,10 +128,10 @@
             <div class="col-md-12">
                 <div class="row" style="">
                     <div class="col-md-9" style="text-align: right;">
-                       BOGO Discount:
+                       BOGO:
                     </div>
                     <div class="col-md-2" style="text-align: right">
-                        ${{$bogoDiscount}}
+                        -${{$bogoDiscount}}
                     </div>
                     <div class="col-md-1 " style="text-align: right">
                     </div>

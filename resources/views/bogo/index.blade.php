@@ -13,8 +13,8 @@
         </div>
     </div>
     <div class="row well" style="padding-top:10px;margin-left:0px;margin-right:0px;">
-        <div class="col-md-12">
-            <h4>Offers Created</h4>
+        <div class="col-md-12 pull-right">
+            <a href="/bogo/create" class="btn btn-info" role="button">Create Offer</a>
         </div>
         <table class="table table-striped">
             <thead>
@@ -27,13 +27,13 @@
             <tbody>
             @foreach($bogos as $key => $offer)
             <tr>
-                <td>{{$offer['course']}}</td>
-                <td>{{$offer['offer']}}</td>
+                <td>{{$offer->name}}</td>
+                <td>{{$offer->offer}}</td>
 
                 <!-- we will also add show, edit, and delete buttons -->
                 <td>
 
-                {{ Form::open(array('url' => 'bogo/' . $offer['id'], 'class' => 'pull-middle')) }}
+                {{ Form::open(array('url' => 'bogo/' . $offer->id, 'class' => 'pull-middle')) }}
                 {{ Form::hidden('_method', 'DELETE') }}
                 {{ Form::submit('Delete', array('class' => 'btn btn-warning')) }}
                 {{ Form::close() }}

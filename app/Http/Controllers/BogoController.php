@@ -36,15 +36,8 @@ class BogoController extends Controller
                                 from `catalog` 
                                 inner join `bogos` on `catalog`.`id` = `bogos`.`course_id` order by `bogos`.`id`"));
 
-        $bogos = array();
-        foreach ($result as $offer){
-
-            $offer_course = Catalog::where('id', $offer->offer)->value('name');
-            $bogos[] = array('id' => $offer->id, 'course' => $offer->name, 'offer' => $offer_course);
-        }
-
         return View::make('bogo.index')
-            ->with('bogos', $bogos);
+            ->with('bogos', $result);
     }
 
     /**
