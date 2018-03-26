@@ -139,7 +139,7 @@ class AddMoneyController extends HomeController
 
             $item->setName($row->name)
 
-            ->setCurrency('INR')
+            ->setCurrency('USD')
 
                 ->setQuantity($row->qty)
 
@@ -151,7 +151,7 @@ class AddMoneyController extends HomeController
         $item3 = new Item();
         $item3->setName('Bogo Discount')
             ->setDescription('Bogo Discount')
-            ->setCurrency('INR')
+            ->setCurrency('USD')
             ->setQuantity(1)
             ->setPrice("-$discount");
         $items[] = $item3;
@@ -162,7 +162,7 @@ class AddMoneyController extends HomeController
 
         $amount = new Amount();
 
-        $amount->setCurrency('INR')
+        $amount->setCurrency('USD')
 
             ->setTotal($this->cartTotal);
 
