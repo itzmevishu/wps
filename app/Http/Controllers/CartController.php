@@ -96,6 +96,7 @@ class CartController extends Controller {
         if($freeCourseInput) {
             $this->__addShoppingCart($freeCourseInput, $modSessionArray, $sessionDetails, $seatQty, $sessionPaypal, $sessionLocation);
         }
+        helpers::bogoCheck();
         helpers::promoCheck();
         if($request->ajax()){
             return array('count' => Cart::instance('shopping')->count());
@@ -108,10 +109,11 @@ class CartController extends Controller {
     public function showCart()
     {
         //Cart::instance('promo')->destroy();
-
+        #Cart::instance('bogo')->destroy();
         $cart = Cart::instance('shopping')->content();
         $cartTotal = Cart::instance('shopping')->total();
         $cartCount = Cart::instance('shopping')->count();
+        $bogo_discount = Cart::instance('bogo')->total();
 
         //dd($cart);
 
@@ -119,22 +121,24 @@ class CartController extends Controller {
         $discountTotal = Cart::instance('promo')->total();
 
         $checkPromos = Promo::getAvailablePromos();
-
-        //dd($discountTotal);
-
-        $cartTotal =number_format($cartTotal, 2, '.', '');        
+        $cartTotal = number_format($cartTotal, 2, '.', '');
 
         if (Auth::check())
         {
             // The user is logged in...
             $userAuth= Auth::user();
-            
-             
+
         }
 
+        /*
+         *  WHY DO WE REQUIRE BELOW LOGIC NOW ?
+         *  Vishal Kalappagari
+         */
+
         helpers::promoCheck();
+
         //helpers::removePromoCheck();
-        return View::make('cart.show-cart',['promos'=>$checkPromos,'discount'=>$discount,'discountTotal'=>$discountTotal,'cart'=>$cart,'currencyRate'=>'','cartTotal'=>$cartTotal,'cartCount'=>$cartCount]);
+        return View::make('cart.show-cart',['promos'=>$checkPromos,'discount'=>$discount,'discountTotal'=>$discountTotal,'cart'=>$cart,'currencyRate'=>'','cartTotal'=>$cartTotal,'cartCount'=>$cartCount, 'bogoDiscount' => $bogo_discount]);
 
     }
 
@@ -202,7 +206,7 @@ class CartController extends Controller {
 
         helpers::promoCheck();
         helpers::removePromoCheck();
-
+        helpers::bogoCheck();
         return Redirect::action('CartController@showCart');
     }
 

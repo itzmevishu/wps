@@ -8,5 +8,6 @@ class Bogo extends Model
 {
     protected $table = 'bogos';
 
-    protected $fillable = ['course_id', 'course_id_offered'];
+    protected $fillable = ['course_id', 'offer'];
+
 }

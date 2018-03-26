@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBogosTable extends Migration
+class AddPromoFamToPromosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,11 +12,10 @@ class CreateBogosTable extends Migration
      */
     public function up()
     {
-        Schema::create('bogos', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('course_id')->unsigned();
-            $table->string('offer');
-            $table->timestamps();
+        Schema::table('promos', function (Blueprint $table) {
+            $table->boolean('promo_fam')
+                ->after('promo_qty')
+                ->default(false);
         });
     }
 
@@ -27,6 +26,8 @@ class CreateBogosTable extends Migration
      */
     public function down()
     {
-        Schema::drop('bogos');
+        Schema::table('promos', function (Blueprint $table) {
+            //
+        });
     }
 }

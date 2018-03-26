@@ -37,14 +37,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-6 form-group">
-                                {{Form::label('course_id_offered','Number of Courses')}}<br>
-                                {{Form::text('num_of_courses','',['class'=>'form-control col-md-12','maxlength'=>'80','tabindex'=>2])}}
-                                <div class="errors">{{$errors->first('num_of_courses')}}</div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6 form-group">
-                                {{Form::label('course_id_offered','Offer Percentage')}}<br>
+                                {{Form::label('offer_percentage','Offer Percentage')}}<br>
                                 {{Form::text('offer_percentage','',['class'=>'form-control col-md-12','maxlength'=>'80','tabindex'=>2])}}
                                 <div class="errors">{{$errors->first('offer_percentage')}}</div>
                             </div>

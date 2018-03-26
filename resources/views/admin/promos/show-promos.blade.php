@@ -76,7 +76,7 @@
 
                     <div class="col-md-1 userGridColItem"><a href="/admin/promos/delete/{{$promo->id}}">delete</a></div>
                     <?php
-                        $getPromoCount = DB::table('ecomm_promo_used')->where('promo_id',$promo->id)->count();
+                        $getPromoCount = DB::table('promos_used')->where('promo_id',$promo->id)->count();
 
                     ?>
                     <div class="col-md-12" style="padding-bottom: 5px;font-style: italic;">

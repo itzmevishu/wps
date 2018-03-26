@@ -75,7 +75,9 @@ class CheckoutController extends Controller {
         $this->cart = Cart::instance('shopping')->content();
         $this->cartTotal = Cart::instance('shopping')->total();
         $this->cartCount = Cart::instance('shopping')->count();
-        $this->discount = Cart::instance('promo')->total();
+        $promo_discount = Cart::instance('promo')->total();
+        $bogo_count = Cart::instance('bogo')->total();
+        $this->discount = $promo_discount + $bogo_count;
 
         /** setup PayPal api context **/
 
@@ -226,7 +228,7 @@ class CheckoutController extends Controller {
 
             $getAssigneeDetails = OrderDetails::where('order_id',$getRecentOrder->id)->get();
 
-            $getPromos = DB::table('ecomm_promos')->join('ecomm_promo_used','ecomm_promos.id','=','ecomm_promo_used.promo_id')->where('ecomm_promo_used.order_id',$getRecentOrder->id)->get();
+            $getPromos = DB::table('ecomm_promos')->join('promos_used','ecomm_promos.id','=','promos_used.promo_id')->where('promos_used.order_id',$getRecentOrder->id)->get();
 
             return View::make('thank-you-free',['orderInfo'=>$getRecentOrder,'orderDetailInfo'=>$getRecentOrderDetails,'assigneeDetails'=>$getAssigneeDetails,'promoDetails'=>$getPromos]);
 
@@ -245,8 +247,8 @@ class CheckoutController extends Controller {
 
             $getAssigneeDetails = OrderDetails::where('order_id',$getRecentOrder->id)->get();
 
-            #$getPromos = DB::table('ecomm_promos')->join('ecomm_promo_used','ecomm_promos.id','=','ecomm_promo_used.promo_id')->where('ecomm_promo_used.order_id',$getRecentOrder->id)->get();
-            $getPromos = array();
+            $getPromos = DB::table('ecomm_promos')->join('promos_used','ecomm_promos.id','=','promos_used.promo_id')->where('promos_used.order_id',$getRecentOrder->id)->get();
+
             return View::make('thank-you',['orderInfo'=>$getRecentOrder,'orderDetailInfo'=>$getRecentOrderDetails,'assigneeDetails'=>$getAssigneeDetails,'promoDetails'=>$getPromos]);
         }
     }

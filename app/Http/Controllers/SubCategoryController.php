@@ -31,7 +31,7 @@ class SubCategoryController extends Controller {
 
         $sub_categories = Category::where('level', 2)->orderBy('name','ASC')->lists('name','id');
 
-        $courses = Catalog::orderBy('name','ASC')->lists('name','id');
+        $courses = \App\Models\Catalog::courses();
 
         $result =  DB::table('categories')->select('sub_category.id','sub_category.name as subcategory_name','categories.name as category_name')
             ->leftJoin('categories as sub_category','sub_category.parent_id','=','categories.id')
@@ -92,7 +92,7 @@ class SubCategoryController extends Controller {
             $category_id = $parent_id;
         }
 
-        $courses = Catalog::orderBy('name','ASC')->lists('name','id');
+        $courses = \App\Models\Catalog::courses();
 
         $getSubCourses = Catalog::where('category_courses.category_id',$id)
             ->select('catalog.id','catalog.name')

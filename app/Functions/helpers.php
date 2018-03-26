@@ -295,5 +295,56 @@ class helpers {
         
 
     }
+
+    /*
+     *  BOGO Feature
+     *
+     */
+
+    public static function bogoCheck(){
+        $cart = Cart::instance('shopping')->content();
+        $cartTotal = Cart::instance('shopping')->total();
+        $cartCount = Cart::instance('shopping')->count();
+        Cart::instance('bogo')->destroy();
+        $toal_price = 0;
+
+        foreach ($cart as $cartDetail){
+            $row_id = $cartDetail['rowid'];
+            $course_id = $cartDetail['id'];
+            $qty = $cartDetail['qty'];
+
+            $price = $cartDetail['price'];
+            $bogo_info = \App\Models\Catalog::where('course_id', $course_id)
+                ->with('bogo')
+                ->first();
+
+            $offer_percentage = $bogo_info->bogo->offer;
+            $discount = 0;
+            if( $qty == 1){
+                $discount = 0;
+                $toal_price += $price ;
+            } elseif( $qty == 2 || $qty == 3) {
+                $num_of_courses = 1;
+                $discount = (($num_of_courses * $price) * ($offer_percentage / 100));
+                $toal_price += (($qty * $price) - $discount);
+            }elseif($qty % 2 == 0) {
+                $num_of_courses = $qty -2;
+                $discount =  (($num_of_courses*$price) * ($offer_percentage/100));
+                $toal_price += (($qty * $price) - $discount);
+            } else
+            {
+                $num_of_courses = $qty - 1;
+                $discount =  (($num_of_courses*$price) * ($offer_percentage/100));
+                $toal_price += (($qty * $price) - $discount);
+            }
+
+            Cart::instance('bogo')->add(time(), time(), 1, $discount);
+        }
+
+
+        //
+    }
+
+
 }
 

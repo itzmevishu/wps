@@ -152,6 +152,7 @@ class SessionsController extends Controller
 
         Cart::instance('shopping')->destroy();
         Cart::instance('promo')->destroy();
+        Cart::instance('bogo')->destroy();
 
         Auth::logout();
 

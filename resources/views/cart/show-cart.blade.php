@@ -124,6 +124,21 @@
                 </div>
             </div>
         </div>
+        <div class="row" style="padding-top:5px;">
+            <div class="col-md-12">
+                <div class="row" style="">
+                    <div class="col-md-9" style="text-align: right;">
+                       BOGO Discount:
+                    </div>
+                    <div class="col-md-2" style="text-align: right">
+                        ${{$bogoDiscount}}
+                    </div>
+                    <div class="col-md-1 " style="text-align: right">
+                    </div>
+
+                </div>
+            </div>
+        </div>
         <div class="row" style="padding-top:25px;">
             <div class="col-md-12">
                 <div class="row" style="padding-top:15px;border-top: #cccccc 1px solid;">
@@ -132,7 +147,7 @@
                     </div>
                     <div class="col-md-2" style="text-align: right">
                         <?php
-                        $cartTotal =($cartTotal - $discountTotal);
+                        $cartTotal =($cartTotal - $discountTotal - $bogoDiscount);
                         $cartTotal =number_format($cartTotal, 2, '.', '');
                         ?>
                         <strong>

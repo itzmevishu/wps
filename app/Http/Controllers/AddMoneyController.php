@@ -70,8 +70,10 @@ class AddMoneyController extends HomeController
         $this->cart = Cart::instance('shopping')->content();
         $this->cartTotal = Cart::instance('shopping')->total();
         $this->cartCount = Cart::instance('shopping')->count();
-        $this->discount = Cart::instance('promo')->total();
-
+        $promo_discount = Cart::instance('promo')->total();
+        $bogo_count = Cart::instance('bogo')->total();
+        $this->discount = $promo_discount + $bogo_count;
+        $this->cartTotal = $this->cartTotal - $this->discount;
         /** setup PayPal api context **/
 
         $paypal_conf = \Config::get('paypal');
@@ -142,10 +144,17 @@ class AddMoneyController extends HomeController
                 ->setQuantity($row->qty)
 
                 ->setPrice($row->price); /** unit price **/
+
             $items[] = $item;
         }
-
-
+        $discount = $this->discount;
+        $item3 = new Item();
+        $item3->setName('Bogo Discount')
+            ->setDescription('Bogo Discount')
+            ->setCurrency('INR')
+            ->setQuantity(1)
+            ->setPrice("-$discount");
+        $items[] = $item3;
 
         $item_list = new ItemList();
 

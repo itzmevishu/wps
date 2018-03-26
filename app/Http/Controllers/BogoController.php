@@ -32,14 +32,14 @@ class BogoController extends Controller
     {
         $result =
 
-            DB::select(DB::raw("select `catalog`.`name`, `bogos`.`id` , `bogos`.`course_id_offered` 
+            DB::select(DB::raw("select `catalog`.`name`, `bogos`.`id` , `bogos`.`offer` 
                                 from `catalog` 
                                 inner join `bogos` on `catalog`.`id` = `bogos`.`course_id` order by `bogos`.`id`"));
 
         $bogos = array();
         foreach ($result as $offer){
 
-            $offer_course = Catalog::where('id', $offer->course_id_offered)->value('name');
+            $offer_course = Catalog::where('id', $offer->offer)->value('name');
             $bogos[] = array('id' => $offer->id, 'course' => $offer->name, 'offer' => $offer_course);
         }
 
@@ -74,7 +74,6 @@ class BogoController extends Controller
         // read more on validation at http://laravel.com/docs/validation
         $rules = array(
             'course_id'       => 'required',
-            'num_of_courses' => 'required|integer',
             'offer_percentage' => 'required|integer|max:100'
         );
         $validator = Validator::make($request->all(), $rules);
@@ -86,7 +85,7 @@ class BogoController extends Controller
                 ->withInput();
         } else {
             // store
-
+/*
             $data = $request->all();
             $num_of_courses = $request->input('num_of_courses');
             $offer_percentage = $request->input('offer_percentage');
@@ -101,14 +100,13 @@ class BogoController extends Controller
             {
                 $msg = ($num_of_courses -1). " person gets a $offer_percentage% off";
             }
-
-            /*$nerd = Bogo::firstOrNew(['course_id' => $request->input('course_id')]);
-            $nerd->course_id       = $request->input('course_id');
-            $nerd->course_id_offered      = $request->input('course_id_offered');
-            $nerd->save();*/
+*/
+            $nerd = Bogo::firstOrNew(['course_id' => $request->input('course_id')]);
+            $nerd->offer      = $request->input('offer_percentage');
+            $nerd->save();
 
             // redirect
-            Session::flash('message', $msg);
+            Session::flash('message', "Offer created Successfully");
             return Redirect::to('bogo/create');
         }
     }

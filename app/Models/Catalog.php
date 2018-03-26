@@ -24,4 +24,13 @@ class Catalog extends Model{
     }
 
 
+    /**
+     * Get the post that the comment belongs to.
+     */
+    public function bogo()
+    {
+        return $this->hasOne(\App\Models\Bogo::class, 'course_id');
+    }
+
+
 }

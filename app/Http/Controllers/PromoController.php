@@ -59,7 +59,7 @@ class PromoController extends Controller {
             //check if only use once
             if($check_promo->promo_single_use){
                 //check if user has used this promo
-                $customerPromos = DB::table('ecomm_promo_used')->where('promo_id',$check_promo->id)
+                $customerPromos = DB::table('promo_used')->where('promo_id',$check_promo->id)
                     ->where('user_id',$userAuth['id'])->get();
 
                 if(count($customerPromos) > 0){
