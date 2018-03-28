@@ -75,9 +75,9 @@
                 @endif
             </p>
 
-            <p>Welcome to the Altec Sentry eLearning store!</p>
+            <p>Welcome to the WPS Learning center!</p>
             @if(Auth::check())
-                <p>Do you have a new vehicle to register for free training? <a href="/account/register-vehicle" class="linkText">Register your vehicle now!</a></p>
+
                 @if(! empty(Session::get('freeFAM')))
                     <div class="alert alert-info" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>

@@ -522,6 +522,8 @@ class AdminController extends Controller {
         $inactive_course = array_diff($allCourses, $active_courses);
         DB::table('catalog')->whereIn('course_id', $inactive_course)->update(array('litmos_deleted' => true));
 
+        CourseSession::saveSessions();
+
         Session::flash('success', 'Catalog refreshed!');
         return Redirect::to('/admin/catalog');
 
