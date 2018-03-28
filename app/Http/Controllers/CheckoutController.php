@@ -731,7 +731,7 @@ class CheckoutController extends Controller {
         $order_id = Orders::saveOrder($this->user);
         if ($result->getState() == 'approved') {
 
-            $cartTotal = $this->cartTotal;
+            $cartTotal = $this->cartTotal - $this->discount;
 
             //save order to order table
 
@@ -744,6 +744,7 @@ class CheckoutController extends Controller {
 
             Cart::instance('promo')->destroy();
             Cart::instance('shopping')->destroy();
+            Cart::instance('bogo')->destroy();
 
 
             /** it's all right **/

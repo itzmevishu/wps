@@ -45,14 +45,30 @@ class ComposerServiceProvider extends ServiceProvider
                          , down1_name 
                          , down2_name';
             $result = \Illuminate\Support\Facades\DB::select($sql);
+/*echo "<pre>";
+print_r($result);*/
 
 
-            $menu = $subItems = array();
+/*            $menu = $subItems = array();
             for ($i = 0; $i < count($result); $i++) {
                 if(in_array($result[$i]->down2_name, $subItems) === false){
                     array_push($subItems, $result[$i]->down2_name);
                     $menu[$result[$i]->root_name][$result[$i]->down1_name][] = array("id" => $result[$i]->down2_id, "name" => $result[$i]->down2_name);
+
                 }
+            }
+*/
+
+            $menu = $subItems = array();
+            for ($i = 0; $i < count($result); $i++) {
+                //if(in_array($result[$i]->down2_name, $subItems) === false){
+                    //array_push($subItems, $result[$i]->down2_name);
+                    if($result[$i]->down1_name != "") {
+                        $menu[$result[$i]->root_name][$result[$i]->down1_name][] = array("id" => $result[$i]->down2_id, "name" => $result[$i]->down2_name);
+                    } elseif($result[$i]->down1_name == "") {
+                        $menu[$result[$i]->root_name] = $result[$i]->root_name;
+                    }
+                //}
             }
 
             $view->with(['cartCount'=>$cartCount,'userAuth'=>$userAuth,'getURL'=>$getURL,'menu' => $menu]);

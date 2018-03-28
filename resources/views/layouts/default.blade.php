@@ -146,22 +146,24 @@
                             {{ $key }}
                             <span class="caret"></span>
                         </a>
-                        <ul class="dropdown-menu multi-level">
+                        @if(is_array($menuItem))
+                            <ul class="dropdown-menu multi-level">
                             @foreach($menuItem as $sKey => $sMenuItem)
                                 <li class="dropdown-submenu">
                                     <a href="/catalog/{{$key}}/{{$sKey}}/all" >{{$sKey}}</a>
-
-                                    <ul class="dropdown-menu">
-                                        @foreach($sMenuItem as $tKey => $tInfo)
-                                            @if($tInfo['name'] != "")
-                                            <li><a href="/catalog/{{$key}}/{{$sKey}}/{{$tInfo['id']}}">{{$tInfo['name']}}</a></li>
-                                            @endif
-                                        @endforeach
-                                    </ul>
-
+                                    @if(is_array($sMenuItem))
+                                        <ul class="dropdown-menu">
+                                            @foreach($sMenuItem as $tKey => $tInfo)
+                                                @if($tInfo['name'] != "")
+                                                    <li><a href="/catalog/{{$key}}/{{$sKey}}/{{$tInfo['id']}}">{{$tInfo['name']}}</a></li>
+                                                @endif
+                                            @endforeach
+                                        </ul>
+                                    @endif
                                 </li>
                             @endforeach
-                        </ul>
+                            </ul>
+                        @endif
                     </li>
                 @endforeach
 
