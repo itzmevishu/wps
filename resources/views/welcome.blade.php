@@ -70,11 +70,11 @@
                     <div style="position: relative">
                         <a href="/confirm-course?courseid={{$course['course_id']}}" style="text-decoration:none;">
                         @if($course['price'] == 0)
-                            <div><div class="ribbon-wrapper-green"><div class="ribbon-green">FREE</div></div><img src="{{$image_file}}" style="width:100%"></div>
+                            <div><div class="ribbon-wrapper-green"><div class="ribbon-green">FREE</div></div><img src="{{$image_file}}" style="width:258px;height:258px;"></div>
                         @elseif($days <= 30)
-                             <div><div class="ribbon-wrapper-green"><div class="ribbon-green">NEW</div></div><img src="{{$image_file}}" style="width:100%"></div>
+                             <div><div class="ribbon-wrapper-green"><div class="ribbon-green">NEW</div></div><img src="{{$image_file}}" style="width:258px;height:258px;"></div>
                         @elseif($end_days <= 7)
-                                <div><div class="ribbon-wrapper-green"><div class="ribbon-green">Closing Soon</div></div><img src="{{$image_file}}" style="width:100%"></div>
+                                <div><div class="ribbon-wrapper-green"><div class="ribbon-green">Closing Soon</div></div><img src="{{$image_file}}" style="width:258px;height:258px;"></div>
                         @else
                             <div><img src="{{$course['image']}}" style="width:258px;height:258px;"></div>
                         @endif
