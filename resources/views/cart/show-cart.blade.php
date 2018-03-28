@@ -192,9 +192,12 @@
                     </div>
                     <div class="row spacer">
                     <div class="col-md-12 button-align">
+                        <!--
                         {{ Form::open(['url' =>env('APP_URL').'/checkout-step-1']) }}
                         {{ Form::submit('Begin Checkout',['class'=>'btn btn-primary btn-md','style'=>"margin-right:0px;"]) }}
                         {{ Form::close() }}
+                        -->
+                            {!! Html::link('/payment_type', 'Begin Checkout', array('class'=>'btn btn-primary btn-md','style'=>"margin-right:0px;")) !!}
                     </div>
                     </div>
                 @else

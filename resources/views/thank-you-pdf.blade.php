@@ -13,7 +13,7 @@ use App\Models\OrderDetails;
             <p><h4>Thank you for your purchase!</h4></p>
             <p>
                 <strong>Assign Courses</strong><br>
-                If you haven't already, assign the seat for your course to either yourself or another Altec Sentry learner. You can assign seats now or come back later and assign the seats from your "Orders" page (find it by hovering on your name at the top right of the menu above).</p>
+                If you haven't already, assign the seat for your course to either yourself or another WPS Learning Center. You can assign seats now or come back later and assign the seats from your "Orders" page (find it by hovering on your name at the top right of the menu above).</p>
             <p>
                 <strong>View Your Courses</strong><br>
                 You can view your courses by clicking on the "My Courses" link above. This link will be available anytime you are logged into the Altec Sentry website.
