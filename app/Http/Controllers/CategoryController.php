@@ -56,7 +56,21 @@ class CategoryController extends Controller {
 
     public function deleteCategory(Request $request, $id){
 
-        Category::where('id',$id)->delete();
+        $category = Category::find($id);
+        $sub_categories = DB::table('categories')
+            ->where('parent_id', $id)->pluck('id');
+        if(is_array($sub_categories)){
+
+            /* delete using tertiary ID */
+            $tCategories = DB::table('categories')->whereIn('parent_id', $sub_categories)->pluck('id');
+            DB::table('category_courses')->whereIn('category_id', $tCategories)->delete();
+
+            DB::table('categories')->whereIn('parent_id', $sub_categories)->delete();
+            DB::table('categories')->whereIn('id', $sub_categories)->delete();
+        }
+
+
+        $category->delete();
 
         return Redirect::to('/admin/category/view-all');
     }

@@ -15,7 +15,9 @@ class Category extends Model{
      */
     protected $table = 'categories';
 
-    //public static $table = 'plans';
-
+    public function categories()
+    {
+        return $this->hasMany('App\Models\Category', 'parent_id');
+    }
 
 }
