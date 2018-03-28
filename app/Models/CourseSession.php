@@ -89,9 +89,10 @@ class CourseSession extends Model
 
 
     private static function formatDate($date){
+        //$date = strstr(filter_var($date, FILTER_SANITIZE_NUMBER_INT), '-', true);
+        preg_match( '/\/Date\((\d+)/', $date, $startDate );
 
-        $date = strstr(filter_var($date, FILTER_SANITIZE_NUMBER_INT), '-', true);
-        return  date("Y-m-d H:m:s",(string)floor($date/1000));
+        return  date("Y-m-d H:m:s",(string)floor($startDate[1]/1000));
 
     }
 
