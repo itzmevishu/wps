@@ -234,20 +234,22 @@ class AccountController extends Controller {
                             Address::createAddress($profileId, $input['address'], $input['city'], $input['state'], $input['zip_code']);
                             $this->updateProfileFieldValues($profileId, $input);
                         }
-                        $user = User::createUser($input['first_name'], $input['last_name'], $input['email_address'], $input['password'], $profileId, $lmsUserID);
+                        #$user = User::createUser($input['first_name'], $input['last_name'], $input['email_address'], $input['password'], $profileId, $lmsUserID);
+                        #Auth::loginUsingId($user->id);
+
+                        $user = User::createNewLogin($input,$lmsUserID,$lmsOriginalID,$clientIP);
+                        #Auth::login($user);
                         Auth::loginUsingId($user->id);
                     }
                 } catch (Exception $e) {
                     Log::error($e);
                 }
 
-                $user = User::createNewLogin($input,$lmsUserID,$lmsOriginalID,$clientIP);
 
-                Auth::login($user);
 
                 // using your customer id we will create
                 // brain tree customer id with same id
-                $response = \Braintree_Customer::create([
+                /*$response = \Braintree_Customer::create([
                    'id' => $user->id
                 ]);
 
@@ -255,7 +257,7 @@ class AccountController extends Controller {
                 if( $response->success) {
                     $user->braintree_id = $response->customer->id;
                     $user->save();
-                }
+                }*/
 
 
 
