@@ -196,9 +196,7 @@
             <form class="form-horizontal" method="POST" id="payment-form" role="form" action="{!! URL::route('addmoney.paypal') !!}" >
                 {{ csrf_field() }}
                 <input type="hidden" name="landing_page" value="billing">
-                <input type="image" name="submit"
-                       src="https://www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif"
-                       alt="PayPal - The safer, easier way to pay online">
+                <input type="submit" class="btn btn-primary" value="Pay with Paypal">
             </form>
             <!--
             <a href="/checkout-step-2" class="btn btn-primary">Continue to Billing</a>
@@ -214,7 +212,7 @@
                     <p>You are now leaving The WPS Learning Center website.</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
                 </div>
             </div>
         </div>
