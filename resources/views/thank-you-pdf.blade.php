@@ -10,13 +10,13 @@ use App\Models\OrderDetails;
         <div class="col-md-12" style="">
 
             <h2 class="ecomm_pageTitle">Order Confirmation</h2>
-            <p><h4>Thank you for your purchase!</h4></p>
+            <p><h4>Thank you for your order!</h4></p>
             <p>
                 <strong>Assign Courses</strong><br>
                 If you haven't already, assign the seat for your course to either yourself or another WPS Learning Center. You can assign seats now or come back later and assign the seats from your "Orders" page (find it by hovering on your name at the top right of the menu above).</p>
             <p>
                 <strong>View Your Courses</strong><br>
-                You can view your courses by clicking on the "My Courses" link above. This link will be available anytime you are logged into the Altec Sentry website.
+                You can view your courses by clicking on the "My Courses" link above. This link will be available anytime you are logged into the WPS Learning Center.
             </p>
             <p>
                 {!! Html::link('/downloadPDF/'.$orderInfo['id'], 'Download Order', array('class'=>'btn btn-primary btn-md','style'=>"margin-right:0px;")) !!}
