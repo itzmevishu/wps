@@ -409,3 +409,5 @@ Route::resource('course_sessions', 'CourseSessionController');
 Route::get('account/profile/{email}','AccountController@completeProfile');
 Route::post('account/update_profile','AccountController@updateProfile');
 
+
+Route::controller('password', 'RemindersController');
