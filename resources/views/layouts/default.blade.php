@@ -218,7 +218,7 @@
                     <h5> Have a Question? </h5>
                     <ul>
                         <li><a href="faqs" >FAQ</a><hr></li>
-                        <li><a href="mailto:surveyamil@wpsic.com">surveyamil@wpsic.com</a><hr></li>
+                        <li><a href="mailto:surveymail@wpsic.com">surveymail@wpsic.com</a><hr></li>
                     </ul>
                 </div>
 
