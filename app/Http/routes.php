@@ -410,4 +410,27 @@ Route::get('account/profile/{email}','AccountController@completeProfile');
 Route::post('account/update_profile','AccountController@updateProfile');
 
 
+
 Route::controller('password', 'RemindersController');
+
+
+
+
+Route::get('sendemail', function () {
+
+    $data = array(
+        'name' => "Learning Laravel",
+    );
+
+    Mail::send('emails.welcome', $data, function ($message) {
+
+        $message->from('itzmevishu@gmail.com', 'Learning Laravel');
+
+        $message->to('itzmevishu@gmail.com')->subject('Learning Laravel test email');
+
+    });
+
+    return "Your email has been sent successfully";
+
+});
+
