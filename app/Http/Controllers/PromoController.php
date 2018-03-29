@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
+use App\Models\Catalog;
 use App\Models\Country;
 use App\Models\User;
 use App\Models\Promo;
@@ -105,9 +106,10 @@ class PromoController extends Controller {
 
                 //get product id
                 $sale_product = PromoCourse::where('promo_id',$check_promo->id)->first();
+                $course_id = Catalog::where("id", $sale_product['course_id'])->first()->course_id;
 
                 //get row id if in cart
-                $item_row = Cart::instance('shopping')->search(array('id' => $sale_product['course_id']));
+                $item_row = Cart::instance('shopping')->search(array('id' => $course_id));
 
                 //if item exists, get the price of the item
                 if($item_row){

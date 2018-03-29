@@ -559,7 +559,7 @@ class CheckoutController extends Controller {
             // process the customer payment
             $result = \Braintree_Transaction::sale([
                 'amount' => $paymentAmount,
-                'channel'=> 'Altec Sentry eLearning store',
+                'channel'=> 'WPS Learning Center',
                 'paymentMethodNonce' => $payment_method_nonce
             ]);
 

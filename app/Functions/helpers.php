@@ -232,7 +232,7 @@ class helpers {
         $email_array = array('first_name'=>$firstName,'last_name'=>$lastName,'email'=>$emailAddress,'class_name'=>$sessionName,'course_name'=>$courseName,'class_start'=>$startDate,'class_end'=>$endDate,'location'=>$location);
         
         Mail::send('emails.iltConfirmation', $email_array, function ($message) use ($email_array) {
-            $message->to($email_array['email'], $email_array['first_name'].' '.$email_array['last_name'])->subject('Altec Sentry: '.$email_array['course_name'].' Enrollment');
+            $message->to($email_array['email'], $email_array['first_name'].' '.$email_array['last_name'])->subject('WPS Learning Center: '.$email_array['course_name'].' Enrollment');
         });
     }
 
@@ -259,7 +259,7 @@ class helpers {
         );
        
         Mail::send('emails.email-order', $email_array, function ($message) use ($email_array) {
-            $message->to($email_array['emailAddress'], $email_array['emailName'])->subject('Altec Sentry Store: Order Confirmation');
+            $message->to($email_array['emailAddress'], $email_array['emailName'])->subject('WPS Learning Center: Order Confirmation');
         });
 
     }
@@ -290,7 +290,7 @@ class helpers {
         );
        
         Mail::send('emails.email-order-free', $email_array, function ($message) use ($email_array) {
-            $message->to($email_array['emailAddress'], $email_array['emailName'])->subject('Altec Sentry Store: Order Confirmation');
+            $message->to($email_array['emailAddress'], $email_array['emailName'])->subject('WPS Learning Store: Order Confirmation');
         });
         
 

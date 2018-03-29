@@ -20,7 +20,7 @@
     <div class="row"  style="padding-top:25px;" >
             <div class="col-md-6">
                 <div class="row spacer">
-                    <p>To shop in the Altec Store, enter your Altec Academy email address.</p>
+                    <p>To shop in the WPS Store, enter your WPS Learning Center email address.</p>
                     <p>You will be asked to verify your account information and a verification email will be sent to you.</p>
                     <p>Don't have an account? {{link_to('/new-account?courseid='.Input::get('courseid'),'Register Now')}}</p>
                 </div>

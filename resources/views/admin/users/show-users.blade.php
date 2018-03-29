@@ -4,7 +4,7 @@
 
 <div class="row" style="padding-top:25px;">
     <a href="/admin">Return to Admin</a>
-    <h3>Altec Store Accounts</h3>
+    <h3>WPS Learning Store Accounts</h3>
 
     <div class="row spacer ">
         <div class="col-md-6 text-left">

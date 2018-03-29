@@ -13,7 +13,7 @@ $orderTotal =0;
     <meta charset="utf-8">
 </head>
 <body>
-<h2>Altec Sentry Store Order Confirmation</h2>
+<h2>WPS Learning Center Order Confirmation</h2>
 
 <table>
     <tr>

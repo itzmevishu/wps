@@ -37,7 +37,7 @@
                             <div class="col-md-6">
                                 <div class="row spacer" style=" padding:5px;">
                                     <h3 style="margin-top: 0px;">Welcome!</h3>
-                                    <p>Welcome to the Altec Sentry eLearning store!</p>
+                                    <p>Welcome to the WPS Learning Center!</p>
 
 
                                 </div>

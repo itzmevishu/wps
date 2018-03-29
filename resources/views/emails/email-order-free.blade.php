@@ -10,7 +10,7 @@ use App\Models\OrderDetails;
     <meta charset="utf-8">
 </head>
 <body>
-<h2>Altec Sentry Purchase Summary</h2>
+<h2>WPS Learning Purchase Summary</h2>
 
 <table>
     <tr>

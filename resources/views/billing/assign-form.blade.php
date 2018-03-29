@@ -13,14 +13,14 @@
             @endif
             <div class="row ecomm_pageTitleWrapper">
                 <div class="col-md-5" style="">
-                    <h2 class="ecomm_pageTitle">Assign Altec Sentry Learner</h2>
+                    <h2 class="ecomm_pageTitle">Assign WPS Learning Learner</h2>
                 </div>
             </div>
         </div>
     </div>
     <div class="row spacer">
         <div class="col-md-12">
-            <p>Please use the form to search for a Altec Sentry Learner. If no user is found, you will have the ability to create the user.</p>
+            <p>Please use the form to search for a WPS Learning Learner. If no user is found, you will have the ability to create the user.</p>
             <h4>Course Name</h4>
             <span style="font-size:medium"> 
                 @if($course['session_name'] == '')
@@ -33,8 +33,8 @@
     </div>    
     <div class="row well" id="searchform">
         <div class="col-md-12">
-            <strong>Find Altec Sentry Learner</strong><br>
-            Check if the user you want to assign already has an Altec Sentry learning account.
+            <strong>Find WPS Learning Learner</strong><br>
+            Check if the user you want to assign already has an WPS Learning learning account.
         </div>
         <div class="col-md-4" style="padding-top: 10px">
 
@@ -54,7 +54,7 @@
 
     <div class="row well spacer" style="display:none;" id="foundUser">
         <div class="col-md-12">
-            <strong>Is this the correct Altec Sentry Learner?</strong><br>
+            <strong>Is this the correct WPS Learning Learner?</strong><br>
             <div style="margin-top:10px;"><span id="firstname"></span> <span id="lastname"></span> (<span id="username"></span>)</div>
             {{ Form::open(['url' => env('APP_URL').'/billing/assign-to-existing/'.$seatid]) }}
             {{Form::hidden('litmosid',NULL,['id'=>'litmosid'])}}
@@ -77,7 +77,7 @@
     @endif
         <div class="row">
             <div class="col-md-12">
-            <strong>Create a New Altec Sentry Learner</strong><br>
+            <strong>Create a New WPS Learning Learner</strong><br>
             The user you searched for was not found. Please fill out the form to create an account.
             </div>
         </div>

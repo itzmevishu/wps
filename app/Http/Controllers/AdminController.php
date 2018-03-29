@@ -288,7 +288,7 @@ class AdminController extends Controller {
     public function showPromForm(){
         //get promotypes
         $getPromoTypes = PromoType::lists('promo_type_desc','id');
-        $getCourses = Catalog::lists('name','course_id');
+        $getCourses = Catalog::courses();
 
 
         return View::make('admin.promos.promo-form',['getPromoTypes'=>$getPromoTypes,'courseList'=>$getCourses,'search'=>'no']);

@@ -84,14 +84,14 @@
                     </div>
                 @if($promo->promo_type_id == 2 || $promo->promo_type_id == 3)
                     <?php
-                        $getCourses = DB::table('ecomm_catalog')->select('lms_title')->join('ecomm_promo_course_LU','lms_course_id','=','course_id')->where('promo_id',$promo->id)->get();
+                        $getCourses = DB::table('catalog')->select('name')->join('promos_course','catalog.id','=','promos_course.course_id')->where('promo_id',$promo->id)->get();
 
                     ?>
 
                 <div class="col-md-12" style="padding-bottom: 5px;font-style: italic;">
                     Courses @if($promo->promo_all_products_req) (All required) @endif @if(!$promo->promo_all_products_req) (At least ONE required) @endif:
                     @foreach($getCourses as $course)
-                        / {{$course->lms_title}} &nbsp;&nbsp;
+                        / {{$course->name}} &nbsp;&nbsp;
                     @endforeach
                 </div>
                 @endif

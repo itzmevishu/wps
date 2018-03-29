@@ -17,7 +17,7 @@
                                     <div>
                                         <div style="font-size:10pt;font-family:helvetica,arial,verdana">
                                             <p><span style="color:rgb(0,0,0);font-family:Arial;white-space:pre-wrap">Hello {{ $first_name }},</span></p>
-                                            <p><span style="color:rgb(0,0,0);font-family:Arial;white-space:pre-wrap">Please verify your Altec Store account by clicking the following link:</span></p>
+                                            <p><span style="color:rgb(0,0,0);font-family:Arial;white-space:pre-wrap">Please verify your WPS Learning Center by clicking the following link:</span></p>
                                             <p><span style="color:rgb(0,0,0);font-family:Arial;white-space:pre-wrap"><a href="{{$url}}/verify-account?token={{$userToken}}">{{$url}}/verify-account?token={{$userToken}}</a></span></p>
 
                                         </div>

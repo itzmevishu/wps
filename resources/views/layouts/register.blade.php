@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE11"/>
-    <title>Altec Store</title>
+    <title>WPS Learning Center</title>
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{$custom_css_file}}">

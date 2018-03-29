@@ -12,7 +12,7 @@
             @endif
             <div class="row ecomm_pageTitleWrapper">
                 <div class="col-md-5" style="">
-                    <h2 class="ecomm_pageTitle">Assign Altec Sentry Learner</h2>
+                    <h2 class="ecomm_pageTitle">WPS Learning Center Account</h2>
                 </div>
             </div>
         </div>
@@ -49,7 +49,7 @@
 
     <div class="row spacer well" id="foundUser" style="display:none">
         <div class="col-md-12">
-            <strong>Is this the correct Altec Sentry Learner?</strong><br>
+            <strong>Is this the correct WPS Learning Center?</strong><br>
             <div style="margin-top:10px;"><span id="firstname"></span> <span id="lastname"></span> (<span id="email"></span>)</div>
             
             {{ Form::open(['url' => env('APP_URL').'/assign-course-other']) }}

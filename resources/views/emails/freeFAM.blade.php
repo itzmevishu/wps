@@ -16,10 +16,10 @@
                                         <div style="font-size:10pt;font-family:helvetica,arial,verdana">
 
                                             Dear {{ $first_name }},<br>
-                                            Don't forget to choose your free Altec Sentry course!
-                                            <p>You can choose your course by logging into the Altec Sentry store or clicking the link below.</p>
+                                            Don't forget to choose your free WPS Learning Center Course!
+                                            <p>You can choose your course by logging into the WPS Learning Center or clicking the link below.</p>
                                             <p><a href="{{$url}}">{{$url}}</a></p>
-                                            <p>Thanks!<br>Altec Sentry</p>
+                                            <p>Thanks!<br>WPS Learning Center</p>
 
                                         </div>
                                     </div>

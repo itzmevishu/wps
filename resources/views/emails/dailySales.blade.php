@@ -15,7 +15,7 @@
                                     <div>
                                         <div style="font-size:10pt;font-family:helvetica,arial,verdana">
 
-                                            Please find the Altec Sentry Store daily sales.
+                                            Please find the WPS Learning Center daily sales.
 
                                         </div>
                                     </div>
