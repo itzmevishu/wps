@@ -28,7 +28,16 @@ use Cart;
 use DB;
 
 class CourseController extends Controller {
-    
+
+
+    public function __construct()
+    {
+        if(Auth::check() === false){
+            Cart::instance('promo')->destroy();
+            Cart::instance('shopping')->destroy();
+            Cart::instance('bogo')->destroy();
+        }
+    }
 
 	/**
 	 * Display a listing of the resource.
@@ -93,10 +102,13 @@ class CourseController extends Controller {
     public function catalogSubCategory(Request $request, $parentName, $childName, $childId){
 
         $level  = Category::where('id',$childId)->value('level');
-        if($childId == 'all'){
+        if($childName == 'all' && $childId == 'all'){
+            $category_id = Category::where('name',$parentName)->value('id');
+            $getSubCatCourses = CategoryCourse::select('catalog_id')->where('category_id', $category_id)->get();
+        }elseif($childId == 'all'){
             $category_id = Category::where('name',$childName)->value('id');
             $childIds  = Category::where('parent_id',$category_id)->pluck('id');
-            $getSubCatCourses = CategoryCourse::select('catalog_id')->whereIn('category_id', $childIds)->get();
+            $getSubCatCourses = CategoryCourse::select('catalog_id')->where('category_id', $category_id)->get();
         } else {
             $getSubCatCourses = CategoryCourse::select('catalog_id')->where('category_id', $childId)->get();
         }

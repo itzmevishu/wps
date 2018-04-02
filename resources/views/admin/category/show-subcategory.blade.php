@@ -76,13 +76,13 @@
                         {{Form::text('subcat_name',NULL,['class'=>'form-control col-md-4','maxlength'=>'80','tabindex'=>1,'placeholder'=>'Enter Sub Category Name'])}}
                     </div>
                 </div>
-                @if($level == 3)
+
                 <div class="row spacer">
                     <div class="col-md-12">
                         {{Form::select('courses[]',$courses,NULL,['class'=>'form-control col-md-4','maxlength'=>'80','tabindex'=>1,'placeholder'=>'Choose Courses ( CTRL + Mouse Click)','multiple'=>true,'size'=>15])}}
                     </div>
                 </div>
-                @endif
+
             </div>
 
             <div class="modal-footer text-right">

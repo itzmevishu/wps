@@ -142,7 +142,7 @@
 
                 @foreach($menu as $key => $menuItem)
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="" role="button" aria-expanded="false">
+                        <a class="dropdown-toggle"  href="/catalog/{{$key}}/all/all" role="button" aria-expanded="false">
                             {{ $key }}
                             <span class="caret"></span>
                         </a>

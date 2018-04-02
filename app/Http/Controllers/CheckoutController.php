@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Models\ChequePayment;
 use App\Http\Requests;
 use App\Models\Country;
+use App\Models\OrderLog;
+use App\Models\Profile;
 use App\Models\State;
 use App\Models\Currency;
 #use App\Models\User;
@@ -289,6 +291,7 @@ class CheckoutController extends Controller {
         $searchSession = Cart::instance('shopping')->search(array('options' => array('type' => 'single session')));
         Log::info($searchSession);
         if($searchSession) {
+
             foreach ($searchSession as $sessionIds) {
 
                 //get cart details for this session
@@ -440,8 +443,8 @@ class CheckoutController extends Controller {
         //get sessions from cart
         #Cart::instance('shopping')->content();
         $searchSession = Cart::instance('shopping')->search(array('options' => array('type' => 'single course')));
-
         if($searchSession) {
+
             foreach ($searchSession as $sessionIds) {
 
                 //get cart details for this session
@@ -600,37 +603,54 @@ class CheckoutController extends Controller {
     public function selectPaymentOption(Request $request){
         $params = $request->all();
         if($params['payment_type'] == 'cheque'){
-            return Redirect::to('/pay-by-cheque');
+            session(['payment_type' => 'check']);
         } else {
-            return Redirect::to('/checkout-step-1');
+            session(['payment_type' => 'check']);
         }
+        return Redirect::to('/checkout-step-1');
     }
 
     public function payByCheque(Request $request){
         $states = State::getStateList();
         $countries = Country::getCountryList();
+        $profile_id = Auth::user()->profile_id;
+        $profile = Profile::find($profile_id);
+
+        $attendees = array();
+        if($this->cartCount){
+            foreach ($this->cart as $key => $cartInfo){
+                $cartIntemInfo = Cart::instance('shopping')->get($key);
+                $getAssignTo = $cartIntemInfo->options->assignTo;
+                $attendees =  array_merge($attendees, $getAssignTo);
+            }
+        }
+
         return View::make('checkout.pay_by_cheque', array('states' => $states,
-            'countries' => $countries));
+            'countries' => $countries, 'attendees' => $attendees, 'profile' => $profile));
     }
 
     public function createChequePayment(Request $request){
         $params = $request->all();
         // validate
         $rules = array(
+            'seminar_name' => 'required',
+            'seminar_date' => 'required',
             'provider_name' => 'required',
             'npi'      => 'required',
             'ptan' => 'required',
             'address' => 'required',
             'city' => 'required',
             'state' => 'required',
-            'country' => 'required',
-            'zip_code' => 'required',
-            'phone' => 'required'
+            'phone' => 'required',
+            'check_amount' => 'required',
+            'check_number' => 'required'
         );
         $validator = Validator::make(Input::all(), $rules);
 
+
         // process the login
         if ($validator->fails()) {
+
             return Redirect::to('pay-by-cheque')
                 ->withErrors($validator)
                 ->withInput();
@@ -646,8 +666,24 @@ class CheckoutController extends Controller {
             $this->__singleSession($order_id);
             $this->__singleCourse($order_id);
 
+            $attendees = array();
+            if($this->cartCount){
+                foreach ($this->cart as $key => $cartInfo){
+                    $cartIntemInfo = Cart::instance('shopping')->get($key);
+                    $getAssignTo = $cartIntemInfo->options->assignTo;
+                    $attendees =  array_merge($attendees, $getAssignTo);
+                }
+                $order = Orders::find($order_id);
+                $order->attendees = json_encode($attendees);
+                $order->save();
+            }
+
+
+
+
             Cart::instance('promo')->destroy();
             Cart::instance('shopping')->destroy();
+            Cart::instance('bogo')->destroy();
             // store
             $cp = new ChequePayment();
             $cp->provider_name       = Input::get('provider_name');
@@ -655,11 +691,14 @@ class CheckoutController extends Controller {
             $cp->ptan = Input::get('ptan');
             $cp->address = Input::get('address');
             $cp->state = Input::get('state');
-            $cp->country = Input::get('country');
-            $cp->zip_code = Input::get('zip_code');
             $cp->phone = Input::get('phone');
             $cp->user_id = $this->user->id;
             $cp->order_id = $order_id;
+            $cp->seminar_name = Input::get('seminar_name');
+            $cp->seminar_date = date('Y-m-d 00:00:00', strtotime(Input::get('seminar_date')));
+            $cp->check_number = Input::get('check_number');
+            $cp->check_amount = Input::get('check_amount');
+
             $cp->save();
 
             // redirect
@@ -672,6 +711,7 @@ class CheckoutController extends Controller {
         $getRecentOrder = Orders::where('id', '=', $id)->first();
 
         $getRecentOrderDetails = OrderDetails::select('order_id', 'course_sku','course_name','qty','course_price')->where('order_id',$getRecentOrder->id)->get();
+
 
         $getAssigneeDetails = OrderDetails::where('order_id',$getRecentOrder->id)->get();
 

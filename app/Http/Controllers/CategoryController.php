@@ -15,7 +15,7 @@ use View;
 use Form;
 use Input;
 use Session;
-
+use App\Models\CategoryCourse;
 
 
 class CategoryController extends Controller {
@@ -25,20 +25,27 @@ class CategoryController extends Controller {
     public function showCategories(Request $request){
 
     	$getCategories = Category::where('level', 1)->get();
+        $courses = \App\Models\Catalog::courses();
 
-    	return View::make('admin.category.show-category',['categories'=>$getCategories]);
+    	return View::make('admin.category.show-category',['categories'=>$getCategories, 'courses' => $courses]);
         
     }
 
     public function addCategory(Request $request){
 
-    	$input=$request->all();
+    	$input = $request->all();
 
     	$saveCategory = new Category();
         $saveCategory ->name = $input['cat_name'];
         $saveCategory ->level = 1;
         $saveCategory->save();
 
+        if(isset($input['courses']) && count($input['courses']) >= 1){
+
+            foreach($input['courses'] as $course){
+                CategoryCourse::firstOrCreate(array('category_id' => $saveCategory->id, 'catalog_id' => $course));
+            }
+        }
         return Redirect::to('/admin/category/view-all');
         
     }
@@ -51,7 +58,9 @@ class CategoryController extends Controller {
         ->orderBy('name','ASC')
             ->lists('name','id');
 
-    	return View::make('admin.category.edit-category',['category'=>$category,'subcategories'=>$sub_categories]);
+        $courses = \App\Models\Catalog::courses();
+        $selectedCourses = CategoryCourse::where('category_id', $id)->pluck('catalog_id')->toArray();
+        return View::make('admin.category.edit-category',['category'=>$category,'subcategories'=>$sub_categories, 'courses' => $courses, 'selectedCourses' => $selectedCourses]);
     }
 
     public function deleteCategory(Request $request, $id){
@@ -83,6 +92,12 @@ class CategoryController extends Controller {
         $getCategory ->name = $input['name'];
         $getCategory->save();
 
+        if(isset($input['courses']) && count($input['courses']) >= 1){
+            CategoryCourse::where('category_id', $id)->delete();
+            foreach($input['courses'] as $course){
+                CategoryCourse::firstOrCreate(array('category_id' => $id, 'catalog_id' => $course));
+            }
+        }
 
         if(isset($input['subcats'])) {
             $subcats = $input['subcats'];
@@ -100,7 +115,7 @@ class CategoryController extends Controller {
             }
         }
 
-        return Redirect::to('/admin/category/edit/'.$id);
+        return Redirect::to('admin/category/view-all');
     }
 
 

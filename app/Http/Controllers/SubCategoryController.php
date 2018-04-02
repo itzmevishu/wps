@@ -137,15 +137,17 @@ class SubCategoryController extends Controller {
         
 
         $input = $request->all();
-        $level = $input['level'];
 
         $getCategory = Category::find($id);
+        $level = $getCategory['level'];
         $getCategory ->name = $input['subcat_name'];
+
         if($level == 3) {
             $getCategory->parent_id = $input['sub_cat_name'];
         } else {
             $getCategory->parent_id = $input['cat_name'];
         }
+
         $getCategory->save();
         if(isset($input['courses'])) {
             CategoryCourse::where('category_id', '=', $id)->delete();
@@ -153,9 +155,6 @@ class SubCategoryController extends Controller {
 
                 foreach ($input['courses'] as $course) {
                     CategoryCourse::firstOrCreate(array('category_id' => $id, 'catalog_id' => $course));
-                    #$category_course ->category_id = $id;
-                    #$category_course ->catalog_id = $course;
-                    #$category_course->save();
                 }
             }
         }

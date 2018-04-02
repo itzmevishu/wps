@@ -22,6 +22,9 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function profile(){
+        return $this->hasOne('App\Models\Profile');
+    }
 
     public static function getUserByEmail($email) {
         return User::where('email', '=', $email)->first();
@@ -52,7 +55,7 @@ class User extends Authenticatable
         return $user;
     }
 
-    public static function createNewLogin($userInput,$lmsUserID,$lmsOriginalID,$clientIP){
+    public static function createNewLogin($userInput, $lmsUserID, $lmsOriginalID, $profile_id){
         $user = new User;
         $user->name=$userInput['first_name'].' '.$userInput['last_name'];
         $user->first_name=$userInput['first_name'];
@@ -63,6 +66,7 @@ class User extends Authenticatable
         $user->litmos_id =$lmsUserID;
         $user->litmos_original_id = $lmsOriginalID;      
         $user->active=1;
+        $user->profile_id = $profile_id;
         $user->save();
         return $user;
     }

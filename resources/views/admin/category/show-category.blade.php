@@ -50,6 +50,16 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal-body ">
+                <div class="row">
+                    <div class="col-md-12">
+                        {{Form::label('cat_name','Course Name')}}<br>
+                        {{Form::select('courses[]',$courses,NULL,['class'=>'form-control col-md-4','maxlength'=>'80','tabindex'=>1,'placeholder'=>'Choose Courses ( CTRL + Mouse Click)','multiple'=>true,'size'=>15])}}
+                    </div>
+                </div>
+            </div>
+
             <div class="modal-footer text-right">
                 <div class="row">
                     <div class="col-md-12">

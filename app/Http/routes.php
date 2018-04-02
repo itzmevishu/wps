@@ -424,13 +424,12 @@ Route::get('sendemail', function () {
 
     Mail::send('emails.welcome', $data, function ($message) {
 
-        $message->from('itzmevishu@gmail.com', 'Learning Laravel');
+        $message->from('vishalkalappagari@gmail.com', 'Learning Laravel');
 
-        $message->to('itzmevishu@gmail.com')->subject('Learning Laravel test email');
+        $message->to('vishalkalappagari@gmail.com')->subject('Learning Laravel test email');
 
     });
 
     return "Your email has been sent successfully";
 
 });
-

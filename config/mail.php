@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'from' => ['address' => 'info@learnpass.com', 'name' => 'Learnpass Info'],
+    'from' => ['address' => 'info@learnpass.com', 'name' => 'WPS Learning Center'],
 
     /*
     |--------------------------------------------------------------------------
@@ -108,5 +108,13 @@ return [
     */
 
     'sendmail' => '/usr/sbin/sendmail -bs',
+
+    'stream' => [
+        'ssl' => [
+            'allow_self_signed' => true,
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+        ],
+    ],
 
 ];

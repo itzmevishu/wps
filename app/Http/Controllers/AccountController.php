@@ -555,9 +555,10 @@ class AccountController extends Controller {
 
     public function findVerifyLMSAccount(Request $request)
     {
-        $input=$request->all();
+        $input = $request->all();
+
         //check if username exists... if it does, add course to user's account
-        $checkUserExistsRequest = litmosAPI::apiUserExists($input['email']);
+        $checkUserExistsRequest = litmosAPI::apiUserExists($input['username']);
 
         //get status code for username exists
         $requestCode = $checkUserExistsRequest->getStatusCode();
@@ -573,7 +574,7 @@ class AccountController extends Controller {
             return View::make('users.verify-user',['userinfo'=>$checkUserExistsRequest,'verify'=>1]);
 
         }else{
-            return Redirect::to('/new-account')->with('email',$input['email']);
+            return Redirect::to('/new-account')->with('email_address',$input['username']);
         }
 
     }

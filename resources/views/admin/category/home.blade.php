@@ -33,11 +33,11 @@
             <a href="/admin/subcategory/view-all/3" class="btn btn-primary">View Tertiary-Categories</a>
         </div>
 
-
+<!--
         <div class="col-md-12 spacer" style="">
             <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Category</button>
         </div>
-
+-->
     </div>
     <div class="row spacer">
         <div class="col-md-12" style="">

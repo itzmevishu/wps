@@ -213,7 +213,7 @@ class CartController extends Controller {
     public function assignCourse(Request $request)
     {
 
-        $input=$request->all();
+        $input = $request->all();
 
         //return $input;
 
@@ -287,17 +287,12 @@ class CartController extends Controller {
     public function assignNewUserToCourse(Request $request)
     {
 
-        $input=$request->all();
-
-        //return $input;
-
-            $rules = [
-                'first_name' => 'required',
-                'last_name' => 'required',
-                'email' => 'required|email|unique:users'
-            ];
-
-
+        $input = $request->all();
+        $rules = [
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required|email|unique:users'
+        ];
 
 
         $validator = Validator::make($input, $rules);
@@ -307,12 +302,8 @@ class CartController extends Controller {
             // get the error messages from the validator
             $messages = $validator->messages();
 
-            //return $messages;
-
             // redirect our user back to the form with the errors from the validator
             return Redirect::to('/assign-course?show=1&assign=Assign To Other&rowid='.$input['rowid'].'&arraycnt='.$input['arraycnt'])->withInput()->withErrors($validator);
-
-            //var_dump($validator);
 
         }
 
@@ -321,7 +312,7 @@ class CartController extends Controller {
         $userCreateRequest = litmosAPI::apiUserCreate($newUserArray, 'true');
 
         $requestCode = $userCreateRequest->getStatusCode();
-        dd($requestCode);
+
 
         if ($requestCode == 201) {
 

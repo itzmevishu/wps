@@ -193,11 +193,15 @@
             @endforeach
         </div>
         <div class="spacer col-md-12 text-right">
-            <form class="form-horizontal" method="POST" id="payment-form" role="form" action="{!! URL::route('addmoney.paypal') !!}" >
-                {{ csrf_field() }}
-                <input type="hidden" name="landing_page" value="billing">
-                <input type="submit" class="btn btn-primary" value="Pay with Paypal">
-            </form>
+            @if(session('payment_type') == 'paypal')
+                <form class="form-horizontal" method="POST" id="payment-form" role="form" action="{!! URL::route('addmoney.paypal') !!}" >
+                    {{ csrf_field() }}
+                    <input type="hidden" name="landing_page" value="billing">
+                    <input type="submit" class="btn btn-primary" value="Pay with Paypal">
+                </form>
+            @else
+                <a href="/pay-by-cheque" class="btn btn-primary">Continue to Billing</a>
+            @endif
             <!--
             <a href="/checkout-step-2" class="btn btn-primary">Continue to Billing</a>
             <a href="/preview-checkout" class="btn btn-primary">Continue to Billing 2</a>

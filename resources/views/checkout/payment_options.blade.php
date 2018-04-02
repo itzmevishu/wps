@@ -37,7 +37,7 @@
 
             </div>
             <div class="row"><br/></div>
-            {{ Form::submit('Begin Checkout',['class'=>'btn btn-primary btn-md','style'=>"margin-right:0px;"]) }}
+            {{ Form::submit('Continue',['class'=>'btn btn-primary btn-md','style'=>"margin-right:0px;"]) }}
             {{ Form::close() }}
         </div>
     </div>

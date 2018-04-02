@@ -20,15 +20,34 @@
         <div class="row">
         @if(count($courses)>0)
             @foreach($courses as $course)
-            <?php $imageName = $course['image']; ?>
+                    @php
+
+                        $image_file =  $course['image'];
+
+                        $now = time(); // or your date as well
+                        $your_date = strtotime($course['created_at']);
+                        $datediff = $now - $your_date;
+
+                        $days =  round($datediff / (60 * 60 * 24));
+
+
+                        $access_till_date = strtotime($course['access_till_date']);
+                        $end_date_diff = $now - $access_till_date;
+
+                        $end_days =  round($end_date_diff / (60 * 60 * 24));
+
+                    @endphp
                 
                 <div class="col-sm-3 spacer" style="border-bottom: 1px solid #ccc;padding-top:10px;">
                     <div style="position: relative">
-                        <a href="/confirm-course?courseid={{$course['course_id']}}" style="text-decoration:none;">
                         @if($course['price'] == 0)
-                            <div><div class="ribbon-wrapper-green"><div class="ribbon-green">FREE</div></div><img src="/images/courses/{{$imageName}}.png" style="width:100%"></div>
+                            <div><div class="ribbon-wrapper-green"><div class="ribbon-green">FREE</div></div><img src="{{$image_file}}" style="width:258px;height:258px;"></div>
+                        @elseif($days <= 30)
+                            <div><div class="ribbon-wrapper-green"><div class="ribbon-green">NEW</div></div><img src="{{$image_file}}" style="width:258px;height:258px;"></div>
+                        @elseif($end_days <= 7)
+                            <div><div class="ribbon-wrapper-green"><div class="ribbon-green">Closing Soon</div></div><img src="{{$image_file}}" style="width:258px;height:258px;"></div>
                         @else
-                            <div><img src="{{$imageName}}" style="width:100%"></div>
+                            <div><img src="{{$course['image']}}" style="width:258px;height:258px;"></div>
                         @endif
 
                         <div style="min-height:60px;"><h4>{{$course['name']}}</h4></div>
