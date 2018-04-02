@@ -19,26 +19,26 @@ class Profile extends Model {
      */
     protected $hidden = array();
 
-    public static function createProfile($provider_name, $phone_number, $timezone, $npi, $ptan, $specialty = '') {
+    public static function createProfile($input) {
         $profile = new Profile();
-        $profile->provider_name = $provider_name;
-        $profile->phone_number = $phone_number;
-        $profile->timezone = $timezone;
-        $profile->npi = $npi;
-        $profile->ptan = $ptan;
-        $profile->specialty = $specialty;
+        $profile->provider_name = $input['provider_company'];
+        $profile->phone_number = $input['work_phone'];
+        $profile->timezone = $input['timezone'];
+        $profile->npi = $input['national_provider_identifier'];
+        $profile->ptan = $input['provider_transaction_access_number'];
+        $profile->specialty = $input['custom_9'];
         $profile->save();
         return $profile;
     }
 
-    public static function updateProfile($profile_id, $provider_name, $phone_number, $timezone, $npi, $ptan, $specialty) {
+    public static function updateProfile($profile_id,$input) {
         $profile = Profile::find($profile_id);
-        $profile->provider_name = $provider_name;
-        $profile->phone_number = $phone_number;
-        $profile->timezone = $timezone;
-        $profile->npi = $npi;
-        $profile->ptan = $ptan;
-        $profile->specialty = $specialty;
+        $profile->provider_name = $input['provider_company'];
+        $profile->phone_number = $input['work_phone'];
+        $profile->timezone = $input['timezone'];
+        $profile->npi = $input['national_provider_identifier'];
+        $profile->ptan = $input['provider_transaction_access_number'];
+        $profile->specialty = $input['custom_9'];
         $profile->save();
         return $profile;
     }

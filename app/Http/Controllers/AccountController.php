@@ -228,7 +228,7 @@ class AccountController extends Controller {
                 try {
                     if (!User::getUserByEmail($input['email_address'])) {
                         $profileId = 0;
-                        $profile = Profile::createProfile($input['provider_company'], $input['work_phone'], $input['timezone'], $input['national_provider_identifier'], $input['provider_transaction_access_number'], $input['custom_9']);
+                        $profile = Profile::createProfile($input);
                         if ($profile->id > 0) {
                             $profileId = $profile->id;
                             Address::createAddress($profileId, $input['address'], $input['city'], $input['state'], $input['zip_code']);
@@ -237,7 +237,7 @@ class AccountController extends Controller {
                         #$user = User::createUser($input['first_name'], $input['last_name'], $input['email_address'], $input['password'], $profileId, $lmsUserID);
                         #Auth::loginUsingId($user->id);
 
-                        $user = User::createNewLogin($input,$lmsUserID,$lmsOriginalID,$clientIP);
+                        $user = User::createNewLogin($input,$lmsUserID,$lmsOriginalID,$profileId);
                         #Auth::login($user);
                         Auth::loginUsingId($user->id);
                     }
@@ -426,10 +426,19 @@ class AccountController extends Controller {
 
     public function editUser()
     {
-        $userAuth= Auth::user();
+        $userAuth = Auth::user();
 
         $states = State::getStateList();
         $countries = Country::getCountryList();
+        $profile = Profile::find($userAuth->profile_id);
+        $address = Address::getByProfileId($userAuth->profile_id);
+        $profile_fields = ProfileFieldValue::getProfileFieldValues($userAuth->profile_id);
+        $custom_fields = array();
+        foreach ($profile_fields as $key => $info){
+            $option = Dropdown::where( 'id',  $info['dropdown_id'])->first()->option_name;
+
+            $custom_fields[$info['profile_field_id']] = $option;
+        }
 
         $timeZoneList = [
 
@@ -441,7 +450,8 @@ class AccountController extends Controller {
             'Hawaiian Standard Time' => 'Hawaiian Timezone'
         ];
 
-        return View::make('users.edit-user',['states'=>$states,'timeZones'=>$timeZoneList,'countries'=>$countries,'user'=>$userAuth]);
+        return View::make('users.edit-user',['states'=>$states,'timeZones'=>$timeZoneList,'countries'=>$countries,
+            'user'=>$userAuth, 'profile' => $profile, 'address' => $address, 'custom_fields' => $custom_fields]);
 
     }
 
@@ -601,7 +611,7 @@ class AccountController extends Controller {
 
     public function updateAccount(Request $request){
 
-        $input=$request->all();
+        $input = $request->all();
 
         $userAuth= Auth::user();
 
@@ -617,7 +627,19 @@ class AccountController extends Controller {
                           'between:8,50',
                           'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/'
                          ),
-                'password_confirmation'=>'same:password'              
+                'password_confirmation'=>'same:password',
+                'provider_company'=>'required',
+                'address'=>'required',
+                'city'=>'required',
+                'state'=>'required',
+                'zip_code'=>'required|numeric',
+                'work_phone'=>'required|numeric',
+                'timezone'=>'required',
+                'national_provider_identifier'=>'required|digits:10',
+                'provider_transaction_access_number'=>'required',
+                'part_a_or_part_b_provider'=>'required',
+                'MAC_jurisdiction'=>'required',
+                'primary_facility_or_provider_type'=>'required'
             ];
         
 
@@ -628,7 +650,7 @@ class AccountController extends Controller {
             // get the error messages from the validator
             $messages = $validator->messages();
 
-            //return $messages;
+            return $messages;
 
             // redirect our user back to the form with the errors from the validator
             return Redirect::to('/account/profile')->withInput()->withErrors($validator);
@@ -671,7 +693,9 @@ class AccountController extends Controller {
         }
 
         $user = User::updateExistingLogin($input,$userAuth['id']);
-
+        Profile::updateProfile($user->profile_id, $input);
+        Address::createAddress($user->profile_id, $input['address'], $input['city'], $input['state'], $input['zip_code']);
+        $this->updateProfileFieldValues($user->profile_id, $input);
         Auth::login($user);
 
         return Redirect::to('/account/profile')->with('message','Profile updated!');
@@ -827,7 +851,7 @@ class AccountController extends Controller {
         try {
             if (User::getUserByEmail($input['email_address'])) {
                 $profileId = 0;
-                $profile = Profile::createProfile($input['provider_company'], $input['work_phone'], $input['timezone'], $input['national_provider_identifier'], $input['provider_transaction_access_number'], $input['custom_9']);
+                $profile = Profile::createProfile($input);
                 if ($profile->id > 0) {
                     $profileId = $profile->id;
                     Address::createAddress($profileId, $input['address'], $input['city'], $input['state'], $input['zip_code']);

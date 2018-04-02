@@ -144,7 +144,7 @@ class litmosAPI {
                 'LoginKey'=>'',
                 'IsCustomUsername'=>$lmsCustomName,
                 'SkipFirstLogin'=>$lmsSkipFirstLogin,
-                'TimeZone'=>$editUser['']
+                'TimeZone'=>$editUser['timezone']
             ];
         }
 
