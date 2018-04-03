@@ -48,7 +48,7 @@
                 <div class="col-md-12">
                     {{Form::label('email','Email Address')}}<br>
                     {{Form::text('email',NULL,['class'=>'form-control','maxlength'=>'255','autocomplete'=>'off','tabindex'=>5])}}
-                    <div class="errors">{{$errors->first('username')}}</div>
+                    <div class="errors">{{$errors->first('email')}}</div>
                 </div>
             </div>
             <!--

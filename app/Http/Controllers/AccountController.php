@@ -109,7 +109,7 @@ class AccountController extends Controller {
         $input = $request->all();
 
         //check if we have the id in the local db
-        $userInfo = User::where('email',$input['email_address'])->first();
+        $userInfo = User::where('email',$input['email'])->first();
 
         if(count($userInfo) && $userInfo->active == 0){
             $user_token = uniqid('', true);
@@ -136,8 +136,8 @@ class AccountController extends Controller {
         $rules=[
             'first_name'=>'required',
             'last_name'=>'required',
-            'email_address'=>'required|email',
-            'email_address_confirm'=>'same:email_address',
+            'email'=>'required|email|unique:users',
+            'email_address_confirm'=>'same:email',
             'password'=>'required|confirmed|between:8,50',
             'password_confirmation'=>'same:password',
             'provider_company'=>'required',
@@ -175,7 +175,7 @@ class AccountController extends Controller {
         $newUserArray = $litmosAPI->createUserArray($input,false,'learner',true,false,true,$input['password']);
 
         //check if username exists... if it does, add course to user's account
-        $checkUserExistsRequest = $litmosAPI->apiUserExists($input['email_address']);
+        $checkUserExistsRequest = $litmosAPI->apiUserExists($input['email']);
 
         //get status code for username exists
         $requestCode = $checkUserExistsRequest->getStatusCode();
@@ -183,7 +183,7 @@ class AccountController extends Controller {
         //success checking if user exists
         if($requestCode == 200) {
 
-            $checkUserExistsRequest = json_decode($checkUserExistsRequest->getBody());
+            $litmos_user_info = json_decode($checkUserExistsRequest->getBody());
 
             $user_token = uniqid('', true);
 
@@ -192,13 +192,13 @@ class AccountController extends Controller {
             $clientIP = $request->getClientIp();
 
 
-            $user = User::createExistingLMSLogin($input,$checkUserExistsRequest->Id,$checkUserExistsRequest->OriginalId,$user_token,$clientIP);
+            $user = User::createExistingLMSLogin($input,$litmos_user_info->Id,$litmos_user_info->OriginalId,$user_token,$clientIP);
 
             $email_array = array('userToken'=>$user_token,'first_name'=>$user['first_name'],'last_name'=>$user['last_name'],'email'=>$user['email'],'url'=>env('APP_URL'));
 
             //return $email_array['file'];
             Mail::send('emails.lmsVerification', $email_array, function ($message) use ($email_array) {
-                $message->to($email_array['email'], $email_array['first_name'].' '.$email_array['last_name'])->subject('Altec eComm Demo Verification');
+                $message->to($email_array['email'], $email_array['first_name'].' '.$email_array['last_name'])->subject('WPS Learning Center Verification');
             });
 
             return Redirect::to('/email-verification');
@@ -226,7 +226,7 @@ class AccountController extends Controller {
                 $clientIP = $request->getClientIp();
 
                 try {
-                    if (!User::getUserByEmail($input['email_address'])) {
+                    if (!User::getUserByEmail($input['email'])) {
                         $profileId = 0;
                         $profile = Profile::createProfile($input);
                         if ($profile->id > 0) {

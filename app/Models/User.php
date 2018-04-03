@@ -60,8 +60,8 @@ class User extends Authenticatable
         $user->name=$userInput['first_name'].' '.$userInput['last_name'];
         $user->first_name=$userInput['first_name'];
         $user->last_name=$userInput['last_name'];        
-        $user->email = $userInput['email_address'];
-        $user->username=$userInput['email_address'];
+        $user->email = $userInput['email'];
+        $user->username=$userInput['email'];
         $user->password=Hash::make($userInput['password']);
         $user->litmos_id =$lmsUserID;
         $user->litmos_original_id = $lmsOriginalID;      
@@ -76,8 +76,8 @@ class User extends Authenticatable
         $user->name=$userInput['first_name'].' '.$userInput['last_name'];
         $user->first_name=$userInput['first_name'];
         $user->last_name=$userInput['last_name'];        
-        $user->email = $userInput['email_address'];
-        $user->username=$userInput['email_address'];
+        $user->email = $userInput['email'];
+        $user->username=$userInput['email'];
         $user->password=Hash::make($userInput['password']);
         $user->lms_flag=1;
         $user->litmos_id =$lmsUserID;

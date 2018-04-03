@@ -89,20 +89,39 @@ class litmosAPI {
             'UserName'=> $newUser['email'],
             'FirstName'=> $newUser['first_name'],
             'LastName'=> $newUser['last_name'],
-            'FullName'=> $newUser['first_name'] . " ". $newUser['last_name'],
-            'Email'=>$newUser['email'],
-            'AccessLevel'=>$lmsAccessLevel,
-            'DisableMessages'=>$lmsSendMessages,
-            'Active'=>$lmsUserActive,
+            'FullName'=>'',
+            'Email'=> $newUser['email'],
+            'AccessLevel'=> $lmsAccessLevel,
+            'DisableMessages'=> $lmsSendMessages,
+            'Active'=> $lmsUserActive,
             'Skype'=>'',
-            'PhoneWork'=>'',
+            'PhoneWork'=> self::format_phone_us($newUser['work_phone']),
             'PhoneMobile'=>'',
             'LastLogin'=>'',
             'LoginKey'=>'',
-            'IsCustomUsername'=>$lmsCustomName,
-            'Password'=>'',
-            'SkipFirstLogin'=>$lmsSkipFirstLogin,
-            'TimeZone'=>''
+            'IsCustomUsername'=> $lmsCustomName,
+            'Password'=> '',
+            'SkipFirstLogin'=> $lmsSkipFirstLogin,
+            'TimeZone'=>$newUser['timezone'],
+            'Street1'=>$newUser['address'],
+            'Street2'=>'',
+            'City'=>$newUser['city'],
+            'State'=>$newUser['state'],
+            'PostalCode'=>$newUser['zip_code'],
+            'Country'=>'',
+            'CompanyName'=>$newUser['provider_company'],
+            'JobTitle'=>'',
+            'CustomField1'=>$newUser['national_provider_identifier'],
+            'CustomField2'=>$newUser['provider_transaction_access_number'],
+            'CustomField3'=>$newUser['part_a_or_part_b_provider'],
+            'CustomField4'=>$newUser['MAC_jurisdiction'],
+            'CustomField5'=>$newUser['primary_facility_or_provider_type'],
+            'CustomField6'=>$newUser['custom_6'],
+            'CustomField7'=>$newUser['custom_7'],
+            'CustomField8'=>$newUser['custom_8'],
+            'CustomField9'=>$newUser['custom_9'],
+            'CustomField10'=>'',
+            'Culture'=>''
         ];
         return $postArray;
     }
@@ -154,18 +173,18 @@ class litmosAPI {
      public static function apiUserExists($userEmail)
     {
         $client = new \GuzzleHttp\Client(['base_uri'=>'https://api.litmos.com/v1.svc/']);
+            $createRequest = $client->request('GET', 'users/' . $userEmail,
+                [
+                    'query' =>
+                        [
+                            'apikey' => config('LITMOS_KEY'),
+                            'source' => config('LITMOS_SOURCE'),
+                        ],
+                    'body' => '',
+                    'headers' => ['Content-Type' => 'application/json'],
+                    'http_errors' => false
+                ]);
 
-        $createRequest =$client->request('GET','users/'.$userEmail,
-            [
-                'query' =>
-                    [
-                        'apikey' => config('LITMOS_KEY'),
-                        'source' => config('LITMOS_SOURCE')
-                    ],
-                'body' => '',
-                'headers' => ['Content-Type' => 'application/json'],
-                'http_errors' => false
-            ]);
 
         return $createRequest;
     }
@@ -583,6 +602,26 @@ class litmosAPI {
         $createJson =  json_decode($courseRequest->getBody());
         return $createJson;
     }
+
+    public function getUserById($litmos_user_id)
+    {
+        $client = new \GuzzleHttp\Client(['base_uri'=>'https://api.litmos.com/v1.svc/']);
+        $createRequest = $client->request('GET', 'users/' . $litmos_user_id,
+            [
+                'query' =>
+                    [
+                        'apikey' => config('LITMOS_KEY'),
+                        'source' => config('LITMOS_SOURCE'),
+                    ],
+                'body' => '',
+                'headers' => ['Content-Type' => 'application/json'],
+                'http_errors' => false
+            ]);
+
+        $result = json_decode($createRequest->getBody());
+        return $result;
+    }
+
 }
 
 

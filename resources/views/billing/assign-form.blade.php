@@ -84,48 +84,52 @@
         {{ Form::open(['url' => env('APP_URL').'/billing/assign-to-new/'.$seatid]) }}
         <div class="row spacer">
             <div class="col-md-6">
-                {{Form::label('first_name','First Name')}}&nbsp;&nbsp;<span class="text-muted small">(required)</span><br>
+                {{Form::label('first_name','First Name')}}&nbsp;&nbsp;<span class="text-muted small">*</span><br>
                 {{Form::text('first_name','',['class'=>'form-control','maxlength'=>'100','autocomplete'=>'off','tabindex'=>1])}}
                 <div class="errors">{{$errors->first('first_name')}}</div>
             </div>
             <div class="col-md-6">
-                {{Form::label('last_name','Last Name')}}&nbsp;&nbsp;<span class="text-muted small">(required)</span><br>
+                {{Form::label('last_name','Last Name')}}&nbsp;&nbsp;<span class="text-muted small">*</span><br>
                 {{Form::text('last_name','',['class'=>'form-control','maxlength'=>'100','autocomplete'=>'off','tabindex'=>2])}}
                 <div class="errors">{{$errors->first('last_name')}}</div>
             </div>
         </div>
         <div class="row spacer">
             <div class="col-md-6">
-                {{Form::label('username','Email Address')}}&nbsp;&nbsp;<span class="text-muted small">(required)</span><br>
-                {{Form::text('username','',['class'=>'form-control','maxlength'=>'255','autocomplete'=>'off','tabindex'=>3, 'id'=>'username_2'])}}
-                <div class="errors">{{$errors->first('username')}}</div>
+                {{Form::label('email','Email Address')}}<span class="text-muted small">*</span><br>
+                {{Form::text('email',NULL,['class'=>'form-control','maxlength'=>'255','autocomplete'=>'off','tabindex'=>3])}}
+                <div class="errors">{{$errors->first('email')}}</div>
             </div>
-            <div class="col-md-6">
-                {{Form::label('company_name','Company')}}&nbsp;&nbsp;<span class="text-muted small">(required)</span><br>
-                {{Form::text('company_name','',['class'=>'form-control','maxlength'=>'100','autocomplete'=>'off','tabindex'=>4])}}
-                <div class="errors">{{$errors->first('company_name')}}</div>
-            </div>
-        </div>
-        <div class="row spacer">
-            <div class="col-md-6">
-                {{Form::label('title','Title')}}&nbsp;&nbsp;<span class="text-muted small">(required)</span><br>
-                {{Form::text('title','',['class'=>'form-control','maxlength'=>'100','autocomplete'=>'off','tabindex'=>5])}}
-                <div class="errors">{{$errors->first('title')}}</div>
-            </div>
-            <div class="col-md-6">
-                {{Form::label('phone','Work Phone')}}&nbsp;&nbsp;<span class="text-muted small">(required)</span><br>
-                {{Form::text('phone','',['class'=>'form-control','maxlength'=>'50','autocomplete'=>'off','tabindex'=>6])}}
-                <div class="errors">{{$errors->first('phone')}}</div>
+            <div class="row spacer">
+                <div class="col-md-6">
+                    {{Form::label('address','Address')}}<span class="text-muted small">*</span><br>
+                    {{Form::text('address',null,['class'=>'form-control','maxlength'=>'100','autocomplete'=>'off','tabindex'=>4])}}
+                    <div class="errors">{{$errors->first('address')}}</div>
+                </div>
+
             </div>
         </div>
         <div class="row spacer">
             <div class="col-md-6">
-                {{Form::label('country','Country')}}&nbsp;&nbsp;<span class="text-muted small">(required)</span><br>
-                {{Form::select('country',$countries,NULL,['placeholder' => 'Please Select Country','class'=>'form-control','id'=>'countrydd','tabindex'=>7])}}
-                <div class="errors">{{$errors->first('country')}}</div>
+                {{Form::label('city','City')}}<span class="text-muted small">*</span><br>
+                {{Form::text('city',null,['class'=>'form-control','maxlength'=>'255','autocomplete'=>'off','tabindex'=>5])}}
+                <div class="errors">{{$errors->first('city')}}</div>
             </div>
             <div class="col-md-6">
-                {{Form::label('timezone','Timezone')}}&nbsp;&nbsp;<span class="text-muted small">(required)</span><br>
+                {{Form::label('state','State')}}<span class="text-muted small">*</span><br>
+                {{Form::text('state',null,['class'=>'form-control','maxlength'=>'100','style'=>'display:none','id'=>'statetext','tabindex'=>6])}}
+                {{Form::select('state',$states,null,['placeholder' => 'Please Select State','class'=>'form-control','id'=>'statedd','tabindex'=>6])}}
+                <div class="errors">{{$errors->first('state')}}</div>
+            </div>
+        </div>
+        <div class="row spacer">
+            <div class="col-md-6">
+                {{Form::label('zip_code','Zip Code')}}<span class="text-muted small">*</span><br>
+                {{Form::text('zip_code',null,['class'=>'form-control','maxlength'=>'100','autocomplete'=>'off','tabindex'=>7])}}
+                <div class="errors">{{$errors->first('zip_code')}}</div>
+            </div>
+            <div class="col-md-6">
+                {{Form::label('timezone','Timezone')}}&nbsp;&nbsp;<span class="text-muted small">*</span><br>
                 {{Form::select('timezone',$timeZones,NULL,['placeholder' => 'Please Select a Timezone','class'=>'form-control','id'=>'id','tabindex'=>8])}}
 
                 <div class="errors">{{$errors->first('timezone')}}</div>
@@ -135,39 +139,87 @@
         <div class="row spacer">
 
             <div class="col-md-6">
-                {{Form::label('street_address','Address')}}&nbsp;&nbsp;<span class="text-muted small">(required)</span><br>
-                {{ Form::text('street_address',NULL,['class'=>'form-control','maxlength'=>'100','autocomplete'=>'off','tabindex'=>9])}}
-                <div class="errors">{{$errors->first('street_address')}}</div>
+                {{Form::label('provider_company','Company')}}<br>
+                {{Form::text('provider_company',null,['class'=>'form-control','maxlength'=>'100','autocomplete'=>'off','tabindex'=>9])}}
+                <div class="errors">{{$errors->first('company_name')}}</div>
             </div>
             <div class="col-md-6">
-                {{Form::label('city','City')}}&nbsp;&nbsp;<span class="text-muted small">(required)</span><br>
-                {{Form::text('city','',['class'=>'form-control','maxlength'=>'100','autocomplete'=>'off','tabindex'=>10])}}
-                <div class="errors">{{$errors->first('city')}}</div>
+                {{Form::label('work_phone','Work Phone')}}<br>
+                {{Form::text('work_phone',isset($profile->phone_number)?$profile->phone_number:'',['class'=>'form-control','maxlength'=>'50','autocomplete'=>'off','tabindex'=>10])}}
+                <div class="errors">{{$errors->first('work_phone')}}</div>
+            </div>
+        </div>
+
+            <div class="row spacer">
+
+                <div class="col-md-12">
+                    <hr/>
+                </div>
             </div>
 
 
-
-        </div>
         <div class="row spacer">
             <div class="col-md-6">
-                {{Form::label('state','State')}}&nbsp;&nbsp;<span class="text-muted small">(required)</span><br>
-                {{Form::text('state',NULL,['class'=>'form-control','maxlength'=>'100','style'=>'display:none','id'=>'statetext','tabindex'=>11])}}
-                {{Form::select('state',$states,NULL,['placeholder' => 'Please Select State','class'=>'form-control','id'=>'statedd','tabindex'=>11])}}
-
-                <div class="errors">{{$errors->first('state')}}</div>
+                {{Form::label('national_provider_identifier','National Provider Identifier (NPI)')}}&nbsp;&nbsp;<span class="text-muted small">*&nbsp;&nbsp;(use only numbers)</span><br>
+                {{Form::text('national_provider_identifier',null,['class'=>'form-control','maxlength'=>'10','autocomplete'=>'off','tabindex'=>11])}}
+                <div class="errors">{{$errors->first('national_provider_identifier')}}</div>
             </div>
             <div class="col-md-6">
-                {{Form::label('zip_code','Zip Code')}}&nbsp;&nbsp;<span class="text-muted small">(required)</span><br>
-                {{Form::text('zip_code','',['class'=>'form-control','maxlength'=>'100','autocomplete'=>'off','tabindex'=>12])}}
-                <div class="errors">{{$errors->first('zip_code')}}</div>
+                {{Form::label('provider_transaction_access_number','Provider Transaction Access Number (PTAN)')}}&nbsp;&nbsp;<span class="text-muted small">*</span><br>
+                {{Form::text('provider_transaction_access_number',null,['class'=>'form-control','maxlength'=>'100','autocomplete'=>'off','tabindex'=>12])}}
+                <div class="errors">{{$errors->first('provider_transaction_access_number')}}</div>
+            </div>
+        </div>
+
+            <div class="row spacer">
+                <div class="col-md-6">
+                    {{Form::label('part_a_or_part_b_provider','Are you a Part A or Part B provider?')}}&nbsp;&nbsp;<span class="text-muted small">*</span><br>
+                    {{Form::select('part_a_or_part_b_provider',array('' => 'Please Select an Option')+wpsProviderAB(),null,['class'=>'form-control','tabindex'=>13])}}
+                    <div class="errors">{{$errors->first('part_a_or_part_b_provider')}}</div>
+                </div>
+                <div class="col-md-6">
+                    {{Form::label('MAC_jurisdiction','Which MAC Jurisdiction are you a part of?')}}&nbsp;&nbsp;<span class="text-muted small">*</span><br>
+                    {{Form::select('MAC_jurisdiction',array('' => 'Please Select an Option')+wpsMACJurisdiction(), null, ['class'=>'form-control','tabindex'=>14])}}
+                    <div class="errors">{{$errors->first('MAC_jurisdiction')}}</div>
+                </div>
             </div>
 
-
+            <div class="row spacer">
+                <div class="col-md-6">
+                    {{Form::label('primary_facility_or_provider_type','Primary Facility or Provider Type')}}&nbsp;&nbsp;<span class="text-muted small">*</span><br>
+                    {{Form::select('primary_facility_or_provider_type',array('' => 'Please Select an Option')+wpsFacilityProvider() ,null,['class'=>'form-control','tabindex'=>15])}}
+                    <div class="errors">{{$errors->first('primary_facility_or_provider_type')}}</div>
+                </div>
+                <div class="col-md-6">
+                    {{Form::label('custom_6','Secondary Facility or Provider Type')}}<br>
+                    {{Form::select('custom_6',array('' => 'Please Select an Option')+wpsFacilityProvider(), null,['class'=>'form-control','tabindex'=>16])}}
+                </div>
             </div>
+
+            <div class="row spacer">
+                <div class="col-md-6">
+                    {{Form::label('custom_7','Tertiary Facility or Provider Type')}}<br>
+                    {{Form::select('custom_7',array('' => 'Please Select an Option')+wpsFacilityProvider(), null, ['class'=>'form-control','tabindex'=>17])}}
+                </div>
+                <div class="col-md-6">
+                    {{Form::label('custom_8','Physician Specialty Code')}}<br>
+                    {{Form::select('custom_8',array('' => 'Please Select an Option')+wpsSpecialtyCodes() , null, ['class'=>'form-control','tabindex'=>18])}}
+                </div>
+            </div>
+            <div class="row spacer">
+                <div class="col-md-6">
+                    {{Form::label('custom_9','Please list any other Facility, Provider Type, or Specialty')}}<br>
+                    {{Form::text('custom_9',null ,['class'=>'form-control','maxlength'=>'500','autocomplete'=>'off','tabindex'=>19])}}
+                </div>
+                <div class="col-md-6">
+                    &nbsp;
+                </div>
+            </div>
+
         <div class="row spacer">
             <div class="col-md-12 text-right">
                 {{Form::hidden('assign','Assign To Other')}}
-                {{ Form::submit('Create New User',['class'=>'btn btn-primary','tabindex'=>13]) }}
+                {{ Form::submit('Create New User',['class'=>'btn btn-primary','tabindex'=>20]) }}
             </div>
         </div>
         {{ Form::close() }}
@@ -221,24 +273,22 @@
                     datatype: 'JSON',
                     success: function (resp) {
 
-                        if(resp == 500){
+                        if(resp == 500 || resp == 404){
                             $('#newuser').show();
                             $('#foundUser').hide();
                             $('#username_2').val($('#email').val());
                         }else{
-                            respJson = JSON.parse(resp);
-
+                            console.log(resp);
+                            respJson = jQuery.parseJSON(resp);
+                            //respJson = respJson[0];
                             $('#foundUser').show();
                             $('#searchform').hide();
                             $('#newuser').hide();
-
-                            $('#firstname').text(respJson.FirstName);
-                            $('#lastname').text(respJson.LastName);
-                            $('#username').text(respJson.UserName);
                             $('#litmosid').val(respJson.Id);
                             $('#FirstName').val(respJson.FirstName);
                             $('#LastName').val(respJson.LastName);
                             $('#UserName').val(respJson.UserName);
+                            $('#username').html(respJson.UserName);
                             $('#CompanyName').val(respJson.CompanyName);
 
                         }

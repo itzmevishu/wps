@@ -33,9 +33,9 @@
             </div>
             <div class="row spacer">
                 <div class="col-md-12">
-                    {{Form::label('email_address','Email Address')}}&nbsp;&nbsp;<span class="text-muted small">*&nbsp;&nbsp;(this will be your username)</span><br>
-                    {{Form::text('email_address',session()->get( 'email_address' ),['class'=>'form-control','maxlength'=>'255','autocomplete'=>'off','tabindex'=>3])}}
-                    <div class="errors">{{$errors->first('email_address')}}</div>
+                    {{Form::label('email','Email Address')}}&nbsp;&nbsp;<span class="text-muted small">*&nbsp;&nbsp;(this will be your username)</span><br>
+                    {{Form::text('email',null,['class'=>'form-control','maxlength'=>'255','autocomplete'=>'off','tabindex'=>3])}}
+                    <div class="errors">{{$errors->first('email')}}</div>
                 </div>
             </div>
             @if (!isset($user))

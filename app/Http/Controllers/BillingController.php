@@ -251,17 +251,23 @@ class BillingController extends Controller {
 
         $input=$request->all();
 
+
         $rules=[
             'first_name'=>'required',
             'last_name'=>'required',
-            'username'=>'required|email|unique:ecomm_users',
-            'company_name'=>'required',
-            'phone'=>'required|between:10,15',
-            'street_address' => 'required',
-            'city' => 'required',
-            'state' => 'required',
+            'email'=>'required|email|unique:users',
+            'provider_company'=>'required',
+            'address'=>'required',
+            'city'=>'required',
+            'state'=>'required',
             'zip_code'=>'required',
-            'timezone'=>'required'
+            'work_phone'=>'required|between:10,15',
+            'timezone'=>'required',
+            'national_provider_identifier'=>'required|digits:10',
+            'provider_transaction_access_number'=>'required',
+            'part_a_or_part_b_provider'=>'required',
+            'MAC_jurisdiction'=>'required',
+            'primary_facility_or_provider_type'=>'required'
         ];
 
         $validator = Validator::make($input, $rules);
@@ -290,7 +296,7 @@ class BillingController extends Controller {
             $createJson = json_decode($userCreateRequest->getBody());
 
             CourseAssignment::updateExistingUserAssignments('existing',$createJson->Id,$input['first_name']
-                                ,$input['last_name'],$input['username'],$input['company_name'],$seatid);
+                                ,$input['last_name'],$input['email'],$input['provider_company'],$seatid);
 
             $seatDetails=CourseAssignment::find($seatid);
         $courseDetails=OrderDetails::find($seatDetails->order_detail_id);
@@ -310,7 +316,7 @@ class BillingController extends Controller {
                 if($requestCode2 == 200){
                     $assignSuccess = true;
                     //send ILT email
-                    helpers::emailILTSession($courseDetails->course_name,$courseDetails->session_name,$courseDetails->location,$courseDetails->start_date,$courseDetails->end_date,$input['first_name'],$input['last_name'],$input['username']);
+                    helpers::emailILTSession($courseDetails->course_name,$courseDetails->session_name,$courseDetails->location,$courseDetails->start_date,$courseDetails->end_date,$input['first_name'],$input['last_name'],$input['email']);
 
                     return Redirect::to('/orders/order-details/'.$courseDetails->order_id);
 
