@@ -32,7 +32,11 @@ class Profile extends Model {
     }
 
     public static function updateProfile($profile_id,$input) {
+
         $profile = Profile::find($profile_id);
+        if(!$profile){
+            $profile = new Profile();
+        }
         $profile->provider_name = $input['provider_company'];
         $profile->phone_number = $input['work_phone'];
         $profile->timezone = $input['timezone'];

@@ -308,7 +308,7 @@ class CartController extends Controller {
         }
 
         //create user here
-        $newUserArray = litmosAPI::createNewAssigned($input, false, 'learner', true, false, true);
+        $newUserArray = litmosAPI::createUserArray($input, false, 'learner', true, false, true, 'wpsLc@123');
         $userCreateRequest = litmosAPI::apiUserCreate($newUserArray, 'true');
 
         $requestCode = $userCreateRequest->getStatusCode();

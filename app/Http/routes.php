@@ -100,7 +100,7 @@ Route::group(['middleware' => 'App\Http\Middleware\Admin'], function() {
     });
 
 
-
+    Route::get('resetapp', 'AdminController@resetApp')->middleware('auth');
 
 });
 //ACCOUNT
@@ -433,3 +433,6 @@ Route::get('sendemail', function () {
     return "Your email has been sent successfully";
 
 });
+
+
+

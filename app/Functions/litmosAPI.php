@@ -40,22 +40,22 @@ class litmosAPI {
 
         $postArray = [
             'Id'=>'',
-            'UserName'=>$newUser['email_address'],
-            'FirstName'=>$newUser['first_name'],
-            'LastName'=>$newUser['last_name'],
+            'UserName'=> $newUser['email'],
+            'FirstName'=> $newUser['first_name'],
+            'LastName'=> $newUser['last_name'],
             'FullName'=>'',
-            'Email'=>$newUser['email_address'],
-            'AccessLevel'=>$lmsAccessLevel,
-            'DisableMessages'=>$lmsSendMessages,
-            'Active'=>$lmsUserActive,
+            'Email'=> $newUser['email'],
+            'AccessLevel'=> $lmsAccessLevel,
+            'DisableMessages'=> $lmsSendMessages,
+            'Active'=> $lmsUserActive,
             'Skype'=>'',
             'PhoneWork'=> self::format_phone_us($newUser['work_phone']),
             'PhoneMobile'=>'',
             'LastLogin'=>'',
             'LoginKey'=>'',
-            'IsCustomUsername'=>$lmsCustomName,
-            'Password'=>$lmsPassword,
-            'SkipFirstLogin'=>$lmsSkipFirstLogin,
+            'IsCustomUsername'=> $lmsCustomName,
+            'Password'=> $lmsPassword,
+            'SkipFirstLogin'=> $lmsSkipFirstLogin,
             'TimeZone'=>$newUser['timezone'],
             'Street1'=>$newUser['address'],
             'Street2'=>'',
@@ -86,10 +86,10 @@ class litmosAPI {
     {
         $postArray = [
             'Id'=>'',
-            'UserName'=>$newUser['email'],
-            'FirstName'=>$newUser['first_name'],
-            'LastName'=>$newUser['last_name'],
-            'FullName'=>'',
+            'UserName'=> $newUser['email'],
+            'FirstName'=> $newUser['first_name'],
+            'LastName'=> $newUser['last_name'],
+            'FullName'=> $newUser['first_name'] . " ". $newUser['last_name'],
             'Email'=>$newUser['email'],
             'AccessLevel'=>$lmsAccessLevel,
             'DisableMessages'=>$lmsSendMessages,
@@ -159,8 +159,8 @@ class litmosAPI {
             [
                 'query' =>
                     [
-                        'apikey' => env('LITMOS_KEY'),
-                        'source' => env('LITMOS_SOURCE')
+                        'apikey' => config('LITMOS_KEY'),
+                        'source' => config('LITMOS_SOURCE')
                     ],
                 'body' => '',
                 'headers' => ['Content-Type' => 'application/json'],
@@ -178,8 +178,8 @@ class litmosAPI {
             [
                 'query' =>
                     [
-                        'apikey' => env('LITMOS_KEY'),
-                        'source' => env('LITMOS_SOURCE'),
+                        'apikey' => config('LITMOS_KEY'),
+                        'source' => config('LITMOS_SOURCE'),
                         'sendmessage' => $sendMessage
                     ],
                 'json' => $newUserArray,
@@ -200,8 +200,8 @@ class litmosAPI {
             [
                 'query' =>
                     [
-                        'apikey' => env('LITMOS_KEY'),
-                        'source' => env('LITMOS_SOURCE')
+                        'apikey' => config('LITMOS_KEY'),
+                        'source' => config('LITMOS_SOURCE')
                     ],
                 'body' => json_encode($updateUserArray),
                 'headers' => ['Content-Type' => 'application/json'],
@@ -257,8 +257,8 @@ class litmosAPI {
             [
                 'query'   =>
                     [
-                        'apikey' => env('LITMOS_KEY'),
-                        'source'=> env('LITMOS_SOURCE'),
+                        'apikey' => config('LITMOS_KEY'),
+                        'source'=> config('LITMOS_SOURCE'),
                         'sendmessage'=>$sendMessage
                     ],
                 'body' => $course,
@@ -277,8 +277,8 @@ class litmosAPI {
             [
                 'query'   =>
                     [
-                        'apikey' => env('LITMOS_KEY'),
-                        'source'=> env('LITMOS_SOURCE')
+                        'apikey' => config('LITMOS_KEY'),
+                        'source'=> config('LITMOS_SOURCE')
                     ],
                 'body' => '',
                 'headers' => ['Content-Type' => 'application/json'],
@@ -297,8 +297,8 @@ class litmosAPI {
             [
                 'query'   =>
                     [
-                        'apikey' => env('LITMOS_KEY'),
-                        'source'=> env('LITMOS_SOURCE'),
+                        'apikey' => config('LITMOS_KEY'),
+                        'source'=> config('LITMOS_SOURCE'),
                         'sendmessage'=>$sendMessage
                     ],
                 'body' => json_encode($courseArray),
@@ -318,8 +318,8 @@ class litmosAPI {
             [
                 'query' =>
                     [
-                        'apikey' => env('LITMOS_KEY'),
-                        'source' => env('LITMOS_SOURCE')
+                        'apikey' => config('LITMOS_KEY'),
+                        'source' => config('LITMOS_SOURCE')
                     ],
                 'headers' => ['Content-Type' => 'application/json'],
                 'http_errors' => false
@@ -364,8 +364,8 @@ class litmosAPI {
             [
                 'query'   =>
                     [
-                        'apikey' => env('LITMOS_KEY'),
-                        'source'=> env('LITMOS_SOURCE'),
+                        'apikey' => config('LITMOS_KEY'),
+                        'source'=> config('LITMOS_SOURCE'),
                         'limit'=> 1000,
                         'sort'=> 'name'
                     ],
@@ -389,8 +389,8 @@ class litmosAPI {
             [
                 'query'   =>
                     [
-                        'apikey' => env('LITMOS_KEY'),
-                        'source'=> env('LITMOS_SOURCE'),
+                        'apikey' => config('LITMOS_KEY'),
+                        'source'=> config('LITMOS_SOURCE'),
                         'limit'=> 1000,
                         'sort'=> 'name'
                     ],
@@ -414,8 +414,8 @@ class litmosAPI {
             [
                 'query'   =>
                     [
-                        'apikey' => env('LITMOS_KEY'),
-                        'source'=> env('LITMOS_SOURCE')
+                        'apikey' => config('LITMOS_KEY'),
+                        'source'=> config('LITMOS_SOURCE')
                     ],
                 'body' => '',
                 'headers' => ['Content-Type' => 'application/json'],
@@ -437,8 +437,8 @@ class litmosAPI {
             [
                 'query'   =>
                     [
-                        'apikey' => env('LITMOS_KEY'),
-                        'source'=> env('LITMOS_SOURCE')
+                        'apikey' => config('LITMOS_KEY'),
+                        'source'=> config('LITMOS_SOURCE')
                     ],
                 'body' => '',
                 'headers' => ['Content-Type' => 'application/json'],
@@ -460,8 +460,8 @@ class litmosAPI {
             [
                 'query'   =>
                     [
-                        'apikey' => env('LITMOS_KEY'),
-                        'source'=> env('LITMOS_SOURCE'),
+                        'apikey' => config('LITMOS_KEY'),
+                        'source'=> config('LITMOS_SOURCE'),
                         'limit'=> 1000,
                         'search'=> $refCode
                     ],
@@ -479,6 +479,7 @@ class litmosAPI {
 
     public static function getUserCourses($limit,$start)
     {
+
         $client = new \GuzzleHttp\Client(['base_uri'=>'https://api.litmos.com/v1.svc/']);
 
         $postURI = 'courses';
@@ -487,17 +488,17 @@ class litmosAPI {
             [
                 'query'   =>
                     [
-                        'apikey' => env('LITMOS_KEY'),
-                        'source'=> env('LITMOS_SOURCE'),
+                        'apikey' => config('LITMOS_KEY'),
+                        'source'=> config('LITMOS_SOURCE'),
                         'limit'=> $limit,
                         'start'=> $start
                     ],
                 'body' => '',
                 'headers' => ['Content-Type' => 'application/json'],
-                'http_errors' => false
+                'http_errors' => true
             ]);
 
-        $createJson=  json_decode($courseRequest->getBody());
+        $createJson =  json_decode($courseRequest->getBody());
 
         return $createJson;
     }
@@ -510,8 +511,8 @@ class litmosAPI {
             [
                 'query'   =>
                     [
-                        'apikey' => env('LITMOS_KEY'),
-                        'source' => env('LITMOS_SOURCE'),
+                        'apikey' => config('LITMOS_KEY'),
+                        'source' => config('LITMOS_SOURCE'),
                         'search'=>$teamCode
                     ],
                 'headers' => ['Content-Type' => 'application/json'],
@@ -549,8 +550,8 @@ class litmosAPI {
             [
                 'query'   =>
                     [
-                        'apikey' => env('LITMOS_KEY'),
-                        'source' => env('LITMOS_SOURCE'),
+                        'apikey' => config('LITMOS_KEY'),
+                        'source' => config('LITMOS_SOURCE'),
                         'sendmessage'=>'false'
                     ],
                 'body' => $teamArray,
@@ -571,8 +572,8 @@ class litmosAPI {
             [
                 'query'   =>
                     [
-                        'apikey' => env('LITMOS_KEY'),
-                        'source'=> env('LITMOS_SOURCE')
+                        'apikey' => config('LITMOS_KEY'),
+                        'source'=> config('LITMOS_SOURCE')
                     ],
                 'body' => '',
                 'headers' => ['Content-Type' => 'application/json'],

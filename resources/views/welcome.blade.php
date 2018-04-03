@@ -10,7 +10,7 @@
                 @endif
             </p>
 
-                <p><?php echo $welcomeMessage; ?></p>
+                <p><?php echo config('welcome'); ?></p>
             @if(Auth::check())
                 @if(! empty(Session::get('freeFAM')))
                     <div class="alert alert-info" role="alert">

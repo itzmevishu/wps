@@ -430,9 +430,12 @@ class AccountController extends Controller {
 
         $states = State::getStateList();
         $countries = Country::getCountryList();
+
         $profile = Profile::find($userAuth->profile_id);
+
         $address = Address::getByProfileId($userAuth->profile_id);
         $profile_fields = ProfileFieldValue::getProfileFieldValues($userAuth->profile_id);
+
         $custom_fields = array();
         foreach ($profile_fields as $key => $info){
             $option = Dropdown::where( 'id',  $info['dropdown_id'])->first()->option_name;
@@ -613,7 +616,7 @@ class AccountController extends Controller {
 
         $input = $request->all();
 
-        $userAuth= Auth::user();
+        $userAuth = Auth::user();
 
 
         //return $input;
@@ -649,8 +652,6 @@ class AccountController extends Controller {
 
             // get the error messages from the validator
             $messages = $validator->messages();
-
-            return $messages;
 
             // redirect our user back to the form with the errors from the validator
             return Redirect::to('/account/profile')->withInput()->withErrors($validator);
@@ -692,10 +693,22 @@ class AccountController extends Controller {
             return Redirect::to('/account/profile')->with('errorMsg','We had an issue updating your profile. Please try again. 1');
         }
 
+        $user = User::find($userAuth['id']);
+        $profile_id = $user->profile_id;
+
+        if($profile_id) {
+            Profile::updateProfile($profile_id, $input);
+            Address::updateAddress($profile_id, $input['address'], $input['city'], $input['state'], $input['zip_code']);
+        } else {
+            $profile = Profile::createProfile($input);
+            $profile_id = $profile->id;
+            $input['profile_id'] = $profile_id;
+            Address::createAddress($profile_id, $input['address'], $input['city'], $input['state'], $input['zip_code']);
+        }
+
         $user = User::updateExistingLogin($input,$userAuth['id']);
-        Profile::updateProfile($user->profile_id, $input);
-        Address::createAddress($user->profile_id, $input['address'], $input['city'], $input['state'], $input['zip_code']);
-        $this->updateProfileFieldValues($user->profile_id, $input);
+
+        $this->updateProfileFieldValues($profile_id, $input);
         Auth::login($user);
 
         return Redirect::to('/account/profile')->with('message','Profile updated!');
@@ -849,9 +862,15 @@ class AccountController extends Controller {
 
 
         try {
-            if (User::getUserByEmail($input['email_address'])) {
+            if ($userAuth) {
                 $profileId = 0;
-                $profile = Profile::createProfile($input);
+                if(isset($userAuth->profile_id) && empty($userAuth->profile_id) === false){
+                    $profile = Profile::updateProfile($userAuth->profile_id, $input);
+                } else {
+                    $profile = Profile::createProfile($input);
+                }
+
+
                 if ($profile->id > 0) {
                     $profileId = $profile->id;
                     Address::createAddress($profileId, $input['address'], $input['city'], $input['state'], $input['zip_code']);

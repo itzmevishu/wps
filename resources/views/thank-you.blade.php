@@ -101,7 +101,7 @@ use App\Models\OrderDetails;
                             </div>
                         </div>
                     </div>
-                    <?php $getAssignedUsers = CourseAssignment::where('order_detail_id',$detailInfo->id)->get(); ?>
+                    <?php $getAssignedUsers = CourseAssignment::where('order_detail_id',$detailInfo->id)->get();?>
                     <div class="col-md-6">
                         @foreach($getAssignedUsers as $key=>$userInfo)
 

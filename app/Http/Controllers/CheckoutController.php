@@ -240,7 +240,7 @@ class CheckoutController extends Controller {
 
             $getAssigneeDetails = OrderDetails::where('order_id',$getRecentOrder->id)->get();
 
-            $getPromos = array();
+            $getPromos = DB::table('promos')->join('promos_used','promos.id','=','promos_used.promo_id')->where('promos_used.order_id',$getRecentOrder->id)->get();
 
             return View::make('thank-you-pdf',['orderInfo'=>$getRecentOrder,'orderDetailInfo'=>$getRecentOrderDetails,'assigneeDetails'=>$getAssigneeDetails,'promoDetails'=>$getPromos]);
 
@@ -320,116 +320,120 @@ class CheckoutController extends Controller {
                     //dd($orderDetailId);
                     //loop through all the users that need to be created and/or assigned to the modules & sessions
                     foreach ($assignToArray as $assignTo) {
+                        if($assignTo['litmosid'] != '') {
+                            //do not send emails from LMS
+                            $sendMessage = 'false';
+                            $newCourse = litmosAPI::createSingleCourseXML($sessionInfo['id']);
+                            Log::info("New Course");
+                            Log::info($newCourse);
+                            //if assigning to existing LMS user
+                            if ($assignTo['assign'] == 'existing' || $assignTo['assign'] == 'self') {
+                                $getCourseRequest = litmosAPI::apiAssignCourseSession($newCourse, $sendMessage, $assignTo['litmosid']);
 
-                        //do not send emails from LMS
-                        $sendMessage = 'false';
-                        $newCourse = litmosAPI::createSingleCourseXML($sessionInfo['id']);
-                        Log::info("New Course");
-                        Log::info($newCourse);
-                        //if assigning to existing LMS user
-                        if ($assignTo['assign'] == 'existing' || $assignTo['assign'] == 'self') {
-                            $getCourseRequest = litmosAPI::apiAssignCourseSession($newCourse, $sendMessage, $assignTo['litmosid']);
-
-
-                            $requestCode = $getCourseRequest->getStatusCode();
-
-
-                            if ($requestCode == 201) {
-                                $getCourseSessionRequest = litmosAPI::apiSessionRegistration($sessionInfo['id'], $sessionMod['moduleid'], $sessionMod['sessionid'], $assignTo['litmosid']);
-                                $requestCode2 = $getCourseSessionRequest->getStatusCode();
-
-                                if($requestCode2 == 200){
-                                    Log::info("Assign Success");
-                                    $assignSuccess = true;
-                                    //send ILT email
-                                    helpers::emailILTSession($sessionInfo['name'],$sessionMod['session_name'],$sessionMod['location'],$sessionMod['start_date'],$sessionMod['end_date'],$assignTo['firstname'],$assignTo['lastname'],$assignTo['litmosusername']);
-                                }else{
-                                    $assignSuccess = false;
-                                    $assignSuccess = false;
-                                    Log::info("litmosAPI::apiSessionRegistration Failed");
-//                                    Log::info($requestCode2->getBody());
-                                }
-                            }else{
-                                $assignSuccess = false;
-                                Log::info("litmosAPI::apiAssignCourseSession Failed");
-                             //   Log::info($getCourseRequest->getBody());
-                            }
-
-                            CourseAssignment::saveExistingUserAssignments($assignTo['assign'],$assignTo['litmosid'],
-                                $assignTo['firstname']
-                                ,$assignTo['lastname'],$assignTo['litmosusername'],$orderDetailId,
-                                $assignSuccess,$assignTo['company']);
-                        }
-                        Log::info("creating new LMS user :: ". $assignTo['assign']);
-                        //creating new LMS user
-                        if ($assignTo['assign'] == 'new') {
-                            //check if user has been created
-
-                            $checkUserExistsRequest = litmosAPI::apiUserExists($assignTo['litmosusername']);
-                            $requestCode = $checkUserExistsRequest->getStatusCode();
-
-                            if ($requestCode == 200) {
-                                $existingUser = json_decode($checkUserExistsRequest->getBody());
-                                $getCourseRequest = litmosAPI::apiAssignCourseSession($newCourse, $sendMessage, $existingUser->Id);
 
                                 $requestCode = $getCourseRequest->getStatusCode();
 
+
                                 if ($requestCode == 201) {
-                                    $getCourseSessionRequest = litmosAPI::apiSessionRegistration($sessionInfo['id'], $sessionMod['moduleid'], $sessionMod['sessionid'], $existingUser->Id);
+                                    $getCourseSessionRequest = litmosAPI::apiSessionRegistration($sessionInfo['id'], $sessionMod['moduleid'], $sessionMod['sessionid'], $assignTo['litmosid']);
                                     $requestCode2 = $getCourseSessionRequest->getStatusCode();
 
-                                    if($requestCode2 == 200){
+                                    if ($requestCode2 == 200) {
+                                        Log::info("Assign Success");
                                         $assignSuccess = true;
+                                        //send ILT email
+                                        helpers::emailILTSession($sessionInfo['name'], $sessionMod['session_name'], $sessionMod['location'], $sessionMod['start_date'], $sessionMod['end_date'], $assignTo['firstname'], $assignTo['lastname'], $assignTo['litmosusername']);
+                                    } else {
+                                        $assignSuccess = false;
+                                        $assignSuccess = false;
+                                        Log::info("litmosAPI::apiSessionRegistration Failed");
+//                                    Log::info($requestCode2->getBody());
+                                    }
+                                } else {
+                                    $assignSuccess = false;
+                                    Log::info("litmosAPI::apiAssignCourseSession Failed");
+                                    //   Log::info($getCourseRequest->getBody());
+                                }
 
-                                        helpers::emailILTSession($sessionInfo['name'],$sessionMod['session_name'],$sessionMod['location'],$sessionMod['start_date'],$sessionMod['end_date'],$assignTo['firstname'],$assignTo['lastname'],$assignTo['litmosusername']);
-                                    }else{
+                                CourseAssignment::saveExistingUserAssignments($assignTo['assign'], $assignTo['litmosid'],
+                                    $assignTo['firstname']
+                                    , $assignTo['lastname'], $assignTo['litmosusername'], $orderDetailId,
+                                    $assignSuccess, $assignTo['company']);
+                            }
+                            Log::info("creating new LMS user :: " . $assignTo['assign']);
+                            //creating new LMS user
+                            if ($assignTo['assign'] == 'new') {
+                                //check if user has been created
+
+                                $checkUserExistsRequest = litmosAPI::apiUserExists($assignTo['litmosusername']);
+                                $requestCode = $checkUserExistsRequest->getStatusCode();
+
+                                if ($requestCode == 200) {
+                                    $existingUser = json_decode($checkUserExistsRequest->getBody());
+                                    $getCourseRequest = litmosAPI::apiAssignCourseSession($newCourse, $sendMessage, $existingUser->Id);
+
+                                    $requestCode = $getCourseRequest->getStatusCode();
+
+                                    if ($requestCode == 201) {
+                                        $getCourseSessionRequest = litmosAPI::apiSessionRegistration($sessionInfo['id'], $sessionMod['moduleid'], $sessionMod['sessionid'], $existingUser->Id);
+                                        $requestCode2 = $getCourseSessionRequest->getStatusCode();
+
+                                        if ($requestCode2 == 200) {
+                                            $assignSuccess = true;
+
+                                            helpers::emailILTSession($sessionInfo['name'], $sessionMod['session_name'], $sessionMod['location'], $sessionMod['start_date'], $sessionMod['end_date'], $assignTo['firstname'], $assignTo['lastname'], $assignTo['litmosusername']);
+                                        } else {
+                                            $assignSuccess = false;
+                                        }
+
+                                    } else {
                                         $assignSuccess = false;
                                     }
 
-                                }else{
-                                    $assignSuccess = false;
-                                }
+                                    CourseAssignment::saveExistingUserAssignments('existing', $existingUser->Id, $existingUser->FirstName
+                                        , $existingUser->LastName, $existingUser->UserName, $orderDetailId, $assignSuccess, $existingUser->CompanyName);
 
-                                CourseAssignment::saveExistingUserAssignments('existing',$existingUser->Id,$existingUser->FirstName
-                                    ,$existingUser->LastName,$existingUser->UserName,$orderDetailId,$assignSuccess,$existingUser->CompanyName);
+                                } else {
+                                    Log::info("creating new LMS leaner user :: " . $assignTo['assign']);
+                                    $newUserArray = litmosAPI::createNewAssigned($assignTo, false, 'learner', true, false, true);
+                                    $userCreateRequest = litmosAPI::apiUserCreate($newUserArray, 'true');
 
-                            } else {
-                                Log::info("creating new LMS leaner user :: ". $assignTo['assign']);
-                                $newUserArray = litmosAPI::createNewAssigned($assignTo, false, 'learner', true, false, true);
-                                $userCreateRequest = litmosAPI::apiUserCreate($newUserArray, 'true');
-
-                                $requestCode = $userCreateRequest->getStatusCode();
-                                Log::info("litmosAPI::createNewAssigned :: ". $requestCode);
-                                if ($requestCode == 201) {
-
-                                    //get response
-                                    $createJson = json_decode($userCreateRequest->getBody());
-
-                                    //get api response's user id
-                                    $lmsUserID = $createJson->Id;
-
-                                    $getCourseRequest = litmosAPI::apiAssignCourseSession($newCourse, $sendMessage, $lmsUserID);
-
-                                    $requestCode = $getCourseRequest->getStatusCode();
-                                    Log::info("litmosAPI::apiAssignCourseSession:: ". $requestCode);
+                                    $requestCode = $userCreateRequest->getStatusCode();
+                                    Log::info("litmosAPI::createNewAssigned :: " . $requestCode);
                                     if ($requestCode == 201) {
-                                        $getCourseSessionRequest = litmosAPI::apiSessionRegistration($sessionInfo['id'], $sessionMod['moduleid'], $sessionMod['sessionid'], $lmsUserID);
-                                        $requestCode2 = $getCourseSessionRequest->getStatusCode();
-                                        Log::info("litmosAPI::apiSessionRegistration :: ". $requestCode2);
-                                        if($requestCode2 == 200){
-                                            $assignSuccess = true;
-                                        }else{
-                                            $assignSuccess = false;
+
+                                        //get response
+                                        $createJson = json_decode($userCreateRequest->getBody());
+
+                                        //get api response's user id
+                                        $lmsUserID = $createJson->Id;
+
+                                        $getCourseRequest = litmosAPI::apiAssignCourseSession($newCourse, $sendMessage, $lmsUserID);
+
+                                        $requestCode = $getCourseRequest->getStatusCode();
+                                        Log::info("litmosAPI::apiAssignCourseSession:: " . $requestCode);
+                                        if ($requestCode == 201) {
+                                            $getCourseSessionRequest = litmosAPI::apiSessionRegistration($sessionInfo['id'], $sessionMod['moduleid'], $sessionMod['sessionid'], $lmsUserID);
+                                            $requestCode2 = $getCourseSessionRequest->getStatusCode();
+                                            Log::info("litmosAPI::apiSessionRegistration :: " . $requestCode2);
+                                            if ($requestCode2 == 200) {
+                                                $assignSuccess = true;
+                                            } else {
+                                                $assignSuccess = false;
+                                            }
                                         }
+                                    } else {
+                                        $assignSuccess = false;
+                                        $lmsUserID = '';
                                     }
-                                }else{
-                                    $assignSuccess = false;
-                                    $lmsUserID = '';
+
+                                    CourseAssignment::saveNewUserAssignments($assignTo, $lmsUserID, $orderDetailId, $assignSuccess);
                                 }
 
-                                CourseAssignment::saveNewUserAssignments($assignTo,$lmsUserID,$orderDetailId,$assignSuccess);
                             }
-
+                        }else{
+                            CourseAssignment::saveExistingUserAssignments('empty','',''
+                                ,'','',$orderDetailId,'false','');
                         }
                     }
                 }

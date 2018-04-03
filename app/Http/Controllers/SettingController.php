@@ -37,9 +37,10 @@ class SettingController extends Controller
      */
     public function create()
     {
-        $welcomeMessage = \App\Models\Setting::where('key', 'welcome')->pluck('value')->first();
+        $settings = \App\Models\Setting::lists('value', 'key')->toArray();
 
-        return View::make('settings.create', [ 'welcomeMessage' => $welcomeMessage]);
+        return View::make('settings.create')
+            ->with(compact('settings'));
     }
 
     /**
@@ -53,7 +54,9 @@ class SettingController extends Controller
 
 
         $rules = array(
-            'editordata'       => 'required'
+            'editordata'       => 'required',
+            'litmos_key'       => 'required',
+            'litmos_source'    => 'required'
         );
         $validator = Validator::make($request->all(), $rules);
 
@@ -65,16 +68,18 @@ class SettingController extends Controller
         } else {
             // store
 
-            $data = $request->all();
+            $fields = array('welcome' => 'editordata', 'LITMOS_KEY' => 'litmos_key', 'LITMOS_SOURCE' => 'litmos_source');
+            foreach ($fields as $key => $value){
+                $setting = \App\Models\Setting::firstOrNew(['key' => $key]);
+                $setting->key = $key;
+                $setting->value = trim($request->input($value));
+                $setting->save();
+            }
 
 
-            $nerd = \App\Models\Setting::firstOrNew(['key' => 'welcome']);
-            $nerd->key = 'welcome';
-            $nerd->value = $request->input('editordata');
-            $nerd->save();
 
             // redirect
-            Session::flash('message', 'Welcome message updated.');
+            Session::flash('message', 'Application Settings updated.');
             return Redirect::to('settings/create');
         }
     }

@@ -95,8 +95,7 @@ class CourseController extends Controller {
 
          }
 
-         $welcomeMessage = \App\Models\Setting::where('key', 'welcome')->pluck('value')->first();
-        return View::make('welcome',['courses'=>$availableCourses, 'searchTerm' =>'', 'welcomeMessage' => $welcomeMessage]);
+        return View::make('welcome',['courses'=>$availableCourses, 'searchTerm' =>'']);
     }
 
     public function catalogSubCategory(Request $request, $parentName, $childName, $childId){

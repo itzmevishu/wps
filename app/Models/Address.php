@@ -36,10 +36,14 @@ class Address extends Model {
 
     public static function updateAddress($profile_id, $address_string, $city, $state, $zip_code) {
         $address = self::getByProfileId($profile_id);
+        if(!$address){
+            $address = new Address();
+        }
         $address->address = $address_string;
         $address->city = $city;
         $address->state = $state;
         $address->zip_code = $zip_code;
+        $address->profile_id = $profile_id;
         $address->save();
         return $address;
     }

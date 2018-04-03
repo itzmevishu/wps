@@ -473,6 +473,11 @@ class AdminController extends Controller {
 
             $getCourses = litmosAPI::getUserCourses($limit,$start);
 
+            if(!is_array($getCourses) && empty($getCourses)){
+                Session::flash('error', 'Catalog refreshed failed');
+                return Redirect::to('/admin/catalog');
+            }
+
             foreach($getCourses as $course) {
 
                 $checkProduct = Catalog::where('course_id',$course->Id)->first();
@@ -600,6 +605,33 @@ class AdminController extends Controller {
         return View::make('admin.sessions.show-sessions',['sessions'=>$future_sessions]);
     }
 
+    public function resetApp(){
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('order_details')->truncate();
+        DB::table('orders')->truncate();
+        DB::table('addresses')->truncate();
+        DB::table('bogos')->truncate();
 
+        DB::table('course_assign')->truncate();
+        DB::table('course_sessions')->truncate();
+        DB::table('course_modules')->truncate();
+        DB::table('catalog')->truncate();
+
+        DB::table('category_courses')->truncate();
+        DB::table('categories')->truncate();
+        DB::table('cheque_payments')->truncate();
+
+        DB::table('profile_field_values')->truncate();
+        DB::table('profiles')->truncate();
+
+        DB::table('promos_course')->truncate();
+        DB::table('promos_used')->truncate();
+        DB::table('promos')->truncate();
+
+        DB::table('users')->where('site_admin', '=', 0)->delete();
+        DB::table('users')->where('site_admin', '=', 1)->update(['profile_id' => 0]);
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        return "Application reset successfully";
+    }
 
 }

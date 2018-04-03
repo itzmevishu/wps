@@ -94,7 +94,9 @@ class User extends Authenticatable
         $user->last_name=$userInput['last_name'];        
         $user->email = $userInput['email'];
         $user->username=$userInput['email'];
-        $user->password=Hash::make($userInput['password']);
+        if(isset($userInput['password']) && empty($userInput['password']) === false) {
+            $user->password = Hash::make($userInput['password']);
+        }
         if(isset($userInput['profile_id'])){
             $user->profile_id = $userInput['profile_id'];
         }
