@@ -609,7 +609,7 @@ class CheckoutController extends Controller {
         if($params['payment_type'] == 'cheque'){
             session(['payment_type' => 'check']);
         } else {
-            session(['payment_type' => 'check']);
+            session(['payment_type' => 'paypal']);
         }
         return Redirect::to('/checkout-step-1');
     }
