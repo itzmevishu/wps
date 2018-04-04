@@ -47,42 +47,48 @@
     <div class="row spacer">
         <div class="col-md-12" style="">
                 @php($loop = 1)
-                @foreach($categories as $key => $category)
-                    <div class="panel-group" id="{{strtolower(str_replace(' ', '', $key))}}">
-                        <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#{{strtolower(str_replace(' ', '', $key))}}" href="#collapse{{strtolower(str_replace(' ', '', $key))}}">{{$key}}
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapse{{strtolower(str_replace(' ', '', $key))}}" class="panel-collapse collapse">
-                    <div class="panel-body">
-                        <div class="panel-group" id="accordion{{$loop}}">
-                            @php($cloop = 1)
-                            @foreach($category as $sKey => $sCategory)
+                @if(is_array($categories) && !empty($categories))
+                    @foreach($categories as $key => $category)
+                        <div class="panel-group" id="{{strtolower(str_replace(' ', '', $key))}}">
                             <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion{{$loop}}" href="#collapse{{$loop}}{{$cloop}}">{{$sKey}}
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapse{{$loop}}{{$cloop}}" class="panel-collapse collapse in">
-                                    @foreach($sCategory as $tCategory)
-                                        <div class="panel-body">{{$tCategory['name']}}</div>
+                                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#{{strtolower(str_replace(' ', '', $key))}}" href="#collapse{{strtolower(str_replace(' ', '', $key))}}">{{$key}}
+                            </a>
+                        </h4>
+                    </div>
+                                    <div id="collapse{{strtolower(str_replace(' ', '', $key))}}" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="panel-group" id="accordion{{$loop}}">
+                                @php($cloop = 1)
+                                @if(is_array($category) && !empty($category))
+                                    @foreach($category as $sKey => $sCategory)
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#accordion{{$loop}}" href="#collapse{{$loop}}{{$cloop}}">{{$sKey}}
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapse{{$loop}}{{$cloop}}" class="panel-collapse collapse in">
+                                            @if(is_array($sCategory) && !empty($sCategory))
+                                                @foreach($sCategory as $tCategory)
+                                                    <div class="panel-body">{{$tCategory['name']}}</div>
+                                                @endforeach
+                                            @endif
+                                        </div>
+                                    </div>
+                                    @php($cloop++)
                                     @endforeach
-                                </div>
+                                @endif
                             </div>
-                            @php($cloop++)
-                            @endforeach
                         </div>
                     </div>
-                </div>
-            </div>
-                    </div>
-                    @php($loop++)
-                @endforeach
+                            </div>
+                        </div>
+                        @php($loop++)
+                    @endforeach
+                @endif
         </div>
     </div>
 
