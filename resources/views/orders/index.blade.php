@@ -13,6 +13,7 @@
 <table class="table table-striped table-bordered">
     <thead>
     <tr>
+        <td>Invoice</td>
         <td>Course ID</td>
         <td>Course Name</td>
         <td>User Email</td>
@@ -25,6 +26,7 @@
     <tbody>
     @foreach($orders as $key => $order)
         <tr>
+            <td>WPS-{{ $order->id }}</td>
             <td>{{ isset($order->order_details->course_id)?$order->order_details->course_id:'-----'  }}</td>
             <td>{{ isset($order->order_details->course_name)? $order->order_details->course_name:'----' }}</td>
             <td>{{ $order->user->email }}</td>

@@ -553,7 +553,7 @@ class AdminController extends Controller {
 
         //return $endRange;
         $query = \App\Models\OrderLog::orderBy('id', 'desc')
-                                        ->select('user_name as Name', 'user_email as Email','order_payment_id as PaymentType','order_total as Amount', 'order_date as OrderDate', 'course_name as CourseName');
+                                        ->select( DB::raw("CONCAT('WPS-', order_id) as InvoiceID") ,'user_name as Name', 'user_email as Email','order_payment_id as PaymentType','order_total as Amount', 'order_date as OrderDate', 'course_name as CourseName');
 
         if(!empty($input['from']) && !empty($input['to'])){
             $startRange =  date('Y-m-d 00:00:00',strtotime($input['from']));
