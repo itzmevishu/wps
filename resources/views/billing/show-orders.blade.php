@@ -16,7 +16,7 @@
 
             @foreach ($allOrders as $order)
                 <div class="row altBG">
-                    <div class="col-md-2 userGridColItem">LITMOS-{{$order->id}}</div>
+                    <div class="col-md-2 userGridColItem">WPS-{{$order->id}}</div>
                     <div class="col-md-3 userGridColItem">{{date('m-d-Y',strtotime($order->created_at))}}</div>
                     <div class="col-md-3 userGridColItem">${{$order->order_total}}</div>
                     <div class="col-md-2 userGridColItem"><a href="/orders/order-details/{{$order->id}}" class="btn btn-primary">View Details</a></div>

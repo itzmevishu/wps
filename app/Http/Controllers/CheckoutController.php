@@ -17,6 +17,7 @@ use App\Functions\helpers;
 use App\Functions\litmosAPI;
 use App\Functions\cardconnect;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
@@ -234,7 +235,7 @@ class CheckoutController extends Controller {
 
             return View::make('thank-you-free',['orderInfo'=>$getRecentOrder,'orderDetailInfo'=>$getRecentOrderDetails,'assigneeDetails'=>$getAssigneeDetails,'promoDetails'=>$getPromos]);
 
-        }elseif($getRecentOrder['payment_id'] == 'cheque'){
+        }elseif($getRecentOrder['payment_id'] == 'check'){
 
             $getRecentOrderDetails = OrderDetails::distinct()->select('order_id', 'course_sku','course_name','qty','course_price')->where('order_id',$getRecentOrder->id)->get();
 
@@ -606,7 +607,7 @@ class CheckoutController extends Controller {
 
     public function selectPaymentOption(Request $request){
         $params = $request->all();
-        if($params['payment_type'] == 'cheque'){
+        if($params['payment_type'] == 'check'){
             session(['payment_type' => 'check']);
         } else {
             session(['payment_type' => 'paypal']);
@@ -665,7 +666,7 @@ class CheckoutController extends Controller {
 
 
             $order_id = Orders::saveOrder($this->user);
-            Orders::orderPaymentSuccess($order_id,'cheque',$orderTotal);
+            Orders::orderPaymentSuccess($order_id,'check',$orderTotal);
             Orders::orderSuccess($order_id);
             $this->__singleSession($order_id);
             $this->__singleCourse($order_id);
@@ -721,11 +722,29 @@ class CheckoutController extends Controller {
 
         $billingDetails = ChequePayment::where('order_id',$getRecentOrder->id)->first();
 
+        $order_details = DB::table('orders')
+            ->leftJoin('order_details', 'orders.id', '=', 'order_details.order_id')
+            ->where('orders.id', '=', $id)
+            ->lists('order_details.id');
+
+        $attendees = array();
+        if(is_array($order_details) && !empty($order_details)){
+            $attendees = DB::table('course_assign')
+                ->whereIn('order_detail_id', $order_details)
+                ->get();
+        }
+
+        $check_payment_details = ChequePayment::where('order_id', '=', $id)->first();
+
+        $user = User::find($getRecentOrder->user_id)->first();
+
         $getPromos = array();
 
-        $pdf = PDF::loadView('pdf',['orderInfo'=>$getRecentOrder,'orderDetailInfo'=>$getRecentOrderDetails,'assigneeDetails'=>$getAssigneeDetails,'billingDetails'=>$billingDetails]);
+        $pdf = PDF::loadView('pdf',['orderInfo'=>$getRecentOrder,'orderDetailInfo'=>$getRecentOrderDetails,'assigneeDetails'=>$getAssigneeDetails,'billingDetails'=>$billingDetails, 'attendees' =>$attendees, 'check_payment_details' => $check_payment_details, 'user' => $user]);
 
         return $pdf->download('invoice.pdf');
+
+        //return View::make('pdf',['orderInfo'=>$getRecentOrder,'orderDetailInfo'=>$getRecentOrderDetails,'assigneeDetails'=>$getAssigneeDetails,'billingDetails'=>$billingDetails, 'attendees' =>$attendees, 'check_payment_details' => $check_payment_details, 'user' => $user]);
 
     }
 

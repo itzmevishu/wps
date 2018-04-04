@@ -28,7 +28,7 @@
         <div class="row">
             <div class="col-md-6 text-left">
                 <label for="payment_type">Pay By Check</label>
-                {{ Form::radio('payment_type', 'cheque') }}
+                {{ Form::radio('payment_type', 'check') }}
 
             </div>
             <div class="col-md-6 text-left">

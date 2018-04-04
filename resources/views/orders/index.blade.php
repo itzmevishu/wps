@@ -16,10 +16,10 @@
         <td>Course ID</td>
         <td>Course Name</td>
         <td>User Email</td>
-        <td>Payment ID</td>
+        <td>Payment Type</td>
         <td>Total Amount</td>
         <td>Status</td>
-        <td>Purchase date</td>
+        <td>Order date</td>
     </tr>
     </thead>
     <tbody>
@@ -29,7 +29,7 @@
             <td>{{ isset($order->order_details->course_name)? $order->order_details->course_name:'----' }}</td>
             <td>{{ $order->user->email }}</td>
             <td>{{ $order->payment_id }}</td>
-            <td>{{ $order->order_total }}</td>
+            <td>${{ $order->order_total }}</td>
             <td>{{ $order->success? 'Success':'Fail' }}</td>
             <td>{{ $order->created_at }}</td>
         </tr>

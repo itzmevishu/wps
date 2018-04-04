@@ -543,16 +543,27 @@ class AdminController extends Controller {
     public function getDataDump(Request $request){
         $input = $request->all();
 
-        $startRange =  date('Y-m-d',strtotime(substr($input['dateRange'],0,10)));
-        $endRange =  date('Y-m-d',strtotime(substr($input['dateRange'],13,10)));
+
 
         //return $endRange;
-        $orders = \App\Models\OrderLog::where('order_date', '>=',$startRange. ' 00:00:00')
-                                        ->where('order_date','<=',$endRange.' 23:59:59')
-                                        ->orderBy('id', 'desc')
-                                        ->get();
+        $query = \App\Models\OrderLog::orderBy('id', 'desc')
+                                        ->select('user_name as Name', 'user_email as Email','order_payment_id as PaymentType','order_total as Amount', 'order_date as OrderDate', 'course_name as CourseName');
 
-        Excel::create('All_Orders_'.$startRange.'-'.$endRange, function($excel) use($orders) {
+        if(!empty($input['from']) && !empty($input['to'])){
+            $startRange =  date('Y-m-d 00:00:00',strtotime($input['from']));
+            $endRange =  date('Y-m-d 23:59:59',strtotime($input['to']));
+
+            $query->where('order_date', '>=',$startRange);
+            $query->where('order_date','<=',$endRange);
+
+        }
+        if($input['report_type'] == 'card' || $input['report_type'] == 'check'){
+            $query->where('order_payment_id','=',$input['report_type']);
+        }
+
+        $orders = $query->get();
+
+        Excel::create('All_Orders', function($excel) use($orders) {
 
             $excel->sheet('Orders', function($sheet) use($orders) {
 

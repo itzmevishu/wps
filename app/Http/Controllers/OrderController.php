@@ -30,7 +30,6 @@ class OrderController extends Controller
     {
         //
         $orders = Orders::all();
-        // load the view and pass the nerds
         return view('orders.index')
             ->with('orders', $orders);
     }
