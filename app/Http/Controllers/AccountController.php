@@ -548,7 +548,7 @@ class AccountController extends Controller {
 
             //return $email_array['file'];
             Mail::send('emails.lmsVerification', $email_array, function ($message) use ($email_array) {
-                $message->to($email_array['email'], $email_array['first_name'].' '.$email_array['last_name'])->subject('Altec eComm Demo Verification');
+                $message->to($email_array['email'], $email_array['first_name'].' '.$email_array['last_name'])->subject('WPS Learning Center Account Verification');
             });
 
             return Redirect::to('/email-verification');
