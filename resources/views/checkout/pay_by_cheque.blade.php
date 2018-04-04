@@ -39,7 +39,7 @@
             </div>
             <div class="col-md-6">
                 {{Form::label('seminar_date','Seminar Date')}}<br>
-                {{Form::text('seminar_date',NULL,['class'=>'form-control','maxlength'=>'100'])}}
+                {{Form::text('seminar_date',NULL,['class'=>'form-control','maxlength'=>'100', 'id' => 'seminar_date'])}}
                 <div class="errors">{{$errors->first('seminar_date')}}</div>
             </div>
         </div>
@@ -178,6 +178,11 @@
 
 @stop
 @section('scripts')
+    <script>
+        $( function() {
+            $( "#seminar_date" ).datepicker();
+        } );
+    </script>
 @stop
 
 
