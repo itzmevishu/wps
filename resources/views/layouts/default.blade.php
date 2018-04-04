@@ -152,13 +152,21 @@
                                 <li class="dropdown-submenu">
                                     <a href="/catalog/{{$key}}/{{$sKey}}/all" >{{$sKey}}</a>
                                     @if(is_array($sMenuItem))
-                                        <ul class="dropdown-menu">
+                                            @php($i = 0)
                                             @foreach($sMenuItem as $tKey => $tInfo)
+
                                                 @if($tInfo['name'] != "")
-                                                    <li><a href="/catalog/{{$key}}/{{$sKey}}/{{$tInfo['id']}}">{{$tInfo['name']}}</a></li>
+                                                    @if($i == 0)
+                                                        <ul class="dropdown-menu">
+                                                    @endif
+                                                        <li><a href="/catalog/{{$key}}/{{$sKey}}/{{$tInfo['id']}}">{{$tInfo['name']}}</a></li>
+                                                    @if($i == 0)
+                                                        </ul>
+                                                    @endif
                                                 @endif
+                                                 @php($i++)
                                             @endforeach
-                                        </ul>
+
                                     @endif
                                 </li>
                             @endforeach
