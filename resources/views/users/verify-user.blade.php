@@ -81,6 +81,7 @@
             {{Form::hidden('zip_code',$userinfo->PostalCode)}}
             {{Form::hidden('phone',$userinfo->PhoneWork)}}
             {{Form::hidden('username',$userinfo->UserName)}}
+            {{Form::hidden('email',$userinfo->email)}}
             {{Form::hidden('country',$userinfo->Country)}}
             {{Form::hidden('timezone',$userinfo->TimeZone)}}
             {{Form::hidden('litmos_id',$userinfo->Id)}}
