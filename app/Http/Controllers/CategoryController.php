@@ -66,6 +66,7 @@ class CategoryController extends Controller {
     public function deleteCategory(Request $request, $id){
 
         $category = Category::find($id);
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         $sub_categories = DB::table('categories')
             ->where('parent_id', $id)->pluck('id');
         if(is_array($sub_categories)){
@@ -76,11 +77,14 @@ class CategoryController extends Controller {
 
             DB::table('categories')->whereIn('parent_id', $sub_categories)->delete();
             DB::table('categories')->whereIn('id', $sub_categories)->delete();
+
+        } else {
+            DB::table('category_courses')->where('category_id','=' ,$id)->delete();
         }
 
 
         $category->delete();
-
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         return Redirect::to('/admin/category/view-all');
     }
 
