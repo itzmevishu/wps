@@ -537,7 +537,13 @@ class AdminController extends Controller {
 
     public function dataDump()
     {
-        return View::make('admin.data-dump');
+        $courses = Catalog::where('active',1)
+            ->where('for_sale', 1)
+            ->where('litmos_deleted', 0)
+            ->orderBy('name')
+            ->lists( 'name', 'course_id');
+
+        return View::make('admin.data-dump', ['courses' => $courses]);
     }
 
     public function getDataDump(Request $request){
@@ -559,10 +565,12 @@ class AdminController extends Controller {
         }
         if($input['report_type'] == 'check'){
             $query->where('order_payment_id','=',$input['report_type']);
-        }if($input['report_type'] == 'card'){
+        }elseif($input['report_type'] == 'card'){
             $query->where('order_payment_id','<>','check');
         }
-
+        if(!empty($input['course_id'])){
+            $query->where('course_id','=',$input['course_id']);
+        }
         $orders = $query->get();
 
         Excel::create('All_Orders', function($excel) use($orders) {

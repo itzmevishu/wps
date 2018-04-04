@@ -73,6 +73,17 @@
     </div>
 
 </div>
+
+<div class="row spacer">
+
+        <div class="col-sm-6">
+            {{Form::label('course_id','Course')}}<br>
+            {{Form::select('course_id',$courses,NULL,['placeholder' => 'Select Course','class'=>'form-control col-md-4','id'=>'promoType','tabindex'=>9])}}
+            <div class="errors">{{$errors->first('course_id')}}</div>
+        </div>
+
+</div>
+
 <div class="row spacer">
 
     <div class="col-md-6">
