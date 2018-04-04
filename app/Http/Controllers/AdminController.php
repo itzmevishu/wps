@@ -557,8 +557,10 @@ class AdminController extends Controller {
             $query->where('order_date','<=',$endRange);
 
         }
-        if($input['report_type'] == 'card' || $input['report_type'] == 'check'){
+        if($input['report_type'] == 'check'){
             $query->where('order_payment_id','=',$input['report_type']);
+        }if($input['report_type'] == 'card'){
+            $query->where('order_payment_id','<>','check');
         }
 
         $orders = $query->get();
