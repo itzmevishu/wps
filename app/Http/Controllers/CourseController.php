@@ -162,7 +162,7 @@ class CourseController extends Controller {
 
         $session_id = (isset($input['sid'])) ? $input['sid']: null;
 
-        if ($input['courseid'] == '' ){
+        if (isset($input['courseid']) && $input['courseid'] == '' ){
             return Redirect::to('/welcome');
         }
 

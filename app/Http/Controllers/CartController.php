@@ -126,7 +126,7 @@ class CartController extends Controller {
         if (Auth::check())
         {
             // The user is logged in...
-            $userAuth= Auth::user();
+            $userAuth = Auth::user();
 
         }
 

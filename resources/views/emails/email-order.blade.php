@@ -33,7 +33,7 @@ $orderTotal =0;
             <td style="padding: 5px">{{$itemDetail['course_name']}}</td>
             <td style="padding: 5px">{{$itemDetail['qty']}}</td>
             <?php $courseTotal = ($itemDetail['qty'] * $itemDetail['course_price'])?>
-            <td style="padding: 5px">${{money_format('%i',$courseTotal)}}</td>
+            <td style="padding: 5px">${{number_format($courseTotal, 2)}}</td>
         </tr>
 
         <?php $orderTotal = $orderTotal + $courseTotal; ?>
@@ -43,7 +43,7 @@ $orderTotal =0;
         <tr>
             <td style="padding: 5px">{{$promoDetail->promo_code}} ({{$promoDetail->promo_desc}})</td>
             <td style="padding: 5px"><strong>Discount</strong></td>
-            <td style="padding: 5px"> -${{money_format('%i',$promoDetail->promo_amt)}}</td>
+            <td style="padding: 5px"> -${{number_format($promoDetail->promo_amt, 2)}}</td>
         </tr>
         <?php $promoTotal = $promoTotal + $promoDetail->promo_amt; ?>
     @endforeach
@@ -52,7 +52,7 @@ $orderTotal =0;
     <tr>
         <td style="padding: 5px"></td>
         <td style="padding: 5px"><strong>Total</strong></td>
-        <td style="padding: 5px"> ${{money_format('%i',$orderTotal)}}</td>
+        <td style="padding: 5px"> ${{number_format($orderTotal, 2)}}</td>
     </tr>
     <tr>
         <td style="padding:5px; border-bottom:1px solid #cccccc;border-top:1px solid #cccccc;" colspan="3">

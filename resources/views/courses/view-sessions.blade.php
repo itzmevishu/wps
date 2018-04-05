@@ -58,8 +58,10 @@
                 $details .= '<strong>Time:</strong> '.$comp->Days[0]->StartTime.' to '.' '. $comp->Days[0]->EndTime.' '.$comp->TimeZone.'<br>';
                 $details .= '<strong>Location:</strong> '.$comp->Location.'<br>';
                 $details .= '<strong>Instructor:</strong> '.$comp->InstructorName.'</p>';
-
-                if($comp->Accepted >= $comp->Slots){
+                if(empty($comp->Slots)){
+                    $displayRegister = '';
+                    $seatText = 'No Limit';
+                }elseif($comp->Accepted >= $comp->Slots){
                     $displayRegister = 'disabled';
                     $seatText = 'FULL';
                 } else{

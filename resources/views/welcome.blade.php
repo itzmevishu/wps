@@ -69,7 +69,7 @@
                 <div class="col-sm-3 spacer" style="border-bottom: 1px solid #ccc;padding-top:10px;">
                     <div style="position: relative">
                         <a href="/confirm-course?courseid={{$course['course_id']}}" style="text-decoration:none;">
-                        @if($course['price'] == 0)
+                        @if(intval($course['price']) == 0)
                             <div><div class="ribbon-wrapper-green"><div class="ribbon-green">FREE</div></div><img src="{{$image_file}}" style="width:258px;height:258px;"></div>
                         @elseif($days <= 30)
                              <div><div class="ribbon-wrapper-green"><div class="ribbon-green">NEW</div></div><img src="{{$image_file}}" style="width:258px;height:258px;"></div>

@@ -9,7 +9,8 @@
             <div class="row userGridRowHeader">
                 <div class="col-md-2 userGridColHeader" >Order Number</div>
                 <div class="col-md-3 userGridColHeader" >Order Date</div>
-                <div class="col-md-3 userGridColHeader" >Order Total</div>
+                <div class="col-md-2 userGridColHeader" >Order Total</div>
+                <div class="col-md-2 userGridColHeader" >&nbsp;</div>
                 <div class="col-md-1 userGridColHeader" >&nbsp;</div>
 
             </div>
@@ -18,14 +19,12 @@
                 <div class="row altBG">
                     <div class="col-md-2 userGridColItem">WPS-{{$order->id}}</div>
                     <div class="col-md-3 userGridColItem">{{date('m-d-Y',strtotime($order->created_at))}}</div>
-                    <div class="col-md-3 userGridColItem">${{$order->order_total}}</div>
+                    <div class="col-md-2 userGridColItem">${{$order->order_total}}</div>
                     <div class="col-md-2 userGridColItem">
-                        <span>
                             <a href="/orders/order-details/{{$order->id}}" class="btn btn-primary">View Details</a>
-                        </span>
-                        <span>
-                            <a href="/downloadPDF/{{$order->id}}" class="btn btn-primary">Download</a>
-                        </span>
+                    </div>
+                    <div class="col-md-1 userGridColItem">
+                            <a href="/downloadPDF/{{$order->id}}" class="btn btn-primary">Download Invoice</a>
                     </div>
                 </div>
             @endforeach

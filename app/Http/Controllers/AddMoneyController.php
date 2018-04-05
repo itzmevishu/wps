@@ -149,8 +149,8 @@ class AddMoneyController extends HomeController
         }
         $discount = $this->discount;
         $item3 = new Item();
-        $item3->setName('Bogo Discount')
-            ->setDescription('Bogo Discount')
+        $item3->setName('Discount')
+            ->setDescription('Discount')
             ->setCurrency('USD')
             ->setQuantity(1)
             ->setPrice("-$discount");
@@ -246,7 +246,7 @@ class AddMoneyController extends HomeController
 
         }
 
-        \Session::put('error','Unknown error occurred');
+        Session::put('error','Unknown error occurred');
 
         return Redirect::route('show.cart');
 

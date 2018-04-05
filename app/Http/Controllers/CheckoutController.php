@@ -99,15 +99,26 @@ class CheckoutController extends Controller {
 
         $this->cartTotal = $this->formatAmount($this->cartTotal);
         $this->discount = $this->formatAmount($this->discount);
+        $page_data = array('discount'=>$this->discount,
+            'cart' => $this->cart,
+            'cartTotal' => $this->cartTotal,
+            'cartCount' => $this->cartCount);
 
         if (Auth::check())
         {
-            return View::make('checkout.assignSeats',array('discount' => $this->discount,
-                'userInfo' => $this->user,
-                'cart' => $this->cart,
-                'cartTotal' => $this->cartTotal,
-                'cartCount' => $this->cartCount));
+            if(intval($this->cartTotal) == 0){
 
+                $currency_rate = 1;
+                $page_data = array_merge($page_data, array('currencyRate' => $currency_rate));
+                return View::make('checkout.preview-free',$page_data);
+
+            } else {
+                return View::make('checkout.assignSeats', array('discount' => $this->discount,
+                    'userInfo' => $this->user,
+                    'cart' => $this->cart,
+                    'cartTotal' => $this->cartTotal,
+                    'cartCount' => $this->cartCount));
+            }
         } else {
 
             return Redirect::to('/login')->with('userMsg','To complete your checkout, please either login or register.');
@@ -180,14 +191,15 @@ class CheckoutController extends Controller {
         $order_id = Orders::saveOrder($this->user);
 
         $orderTotal = $cartTotal - $discountTotal;
-        $payment_type = 'braintree'; // sprite
+        $payment_type = ''; // sprite
         $payment_status = false;
 
         if(isset($userbilling['free_checkout'])){
             Orders::orderPaymentSuccess($order_id,'free',$orderTotal);
+            $payment_status = true;
         }elseif($payment_type == 'sprite'){
             $payment_status =  $this->__stripePayment($order_id, $userbilling);
-        }else{
+        }elseif($payment_type == 'braintree'){
             $payment_status = $this->__braintreePayment($order_id, $request);
         }
 
@@ -211,12 +223,13 @@ class CheckoutController extends Controller {
         Orders::orderSuccess($order_id);
         Cart::instance('promo')->destroy();
         Cart::instance('shopping')->destroy();
+        Cart::instance('bogo')->destroy();
 
         //send orderID to email helper to send confirmation email
         if(isset($userbilling['free_checkout'])){
-            #helpers::emailFreeOrderConfirmation($order_id);
+            helpers::emailFreeOrderConfirmation($order_id);
         }else{
-            #helpers::emailOrderConfirmation($order_id);
+            helpers::emailOrderConfirmation($order_id);
         }
         return Redirect::to('/thank-you');
     }
@@ -227,7 +240,7 @@ class CheckoutController extends Controller {
         $getRecentOrder = Orders::where('user_id',$this->user->id)->where('success',1)->orderby('created_at','desc')->first();
 
         if($getRecentOrder['payment_id'] == 'free'){
-            $getRecentOrderDetails = OrderDetails::distinct()->select('order_id', 'course_sku','course_name','qty','course_price')->where('order_id',$getRecentOrder->id)->get();
+            $getRecentOrderDetails = OrderDetails::select('order_id', 'course_sku','course_name','qty','course_price')->where('order_id',$getRecentOrder->id)->get();
 
             $getAssigneeDetails = OrderDetails::where('order_id',$getRecentOrder->id)->get();
 
@@ -237,16 +250,16 @@ class CheckoutController extends Controller {
 
         }elseif($getRecentOrder['payment_id'] == 'check'){
 
-            $getRecentOrderDetails = OrderDetails::distinct()->select('order_id', 'course_sku','course_name','qty','course_price')->where('order_id',$getRecentOrder->id)->get();
+            $getRecentOrderDetails = OrderDetails::select('order_id', 'course_sku','course_name','qty','course_price')->where('order_id',$getRecentOrder->id)->get();
 
             $getAssigneeDetails = OrderDetails::where('order_id',$getRecentOrder->id)->get();
 
             $getPromos = DB::table('promos')->join('promos_used','promos.id','=','promos_used.promo_id')->where('promos_used.order_id',$getRecentOrder->id)->get();
 
-            return View::make('thank-you-pdf',['orderInfo'=>$getRecentOrder,'orderDetailInfo'=>$getRecentOrderDetails,'assigneeDetails'=>$getAssigneeDetails,'promoDetails'=>$getPromos]);
+            return View::make('thank-you-check',['orderInfo'=>$getRecentOrder,'orderDetailInfo'=>$getRecentOrderDetails,'assigneeDetails'=>$getAssigneeDetails,'promoDetails'=>$getPromos]);
 
         }else{
-            $getRecentOrderDetails = OrderDetails::distinct()->select('order_id', 'course_sku','course_name','qty','course_price')->where('order_id',$getRecentOrder->id)->get();
+            $getRecentOrderDetails = OrderDetails::select('order_id', 'course_sku','course_name','qty','course_price')->where('order_id',$getRecentOrder->id)->get();
 
             $getAssigneeDetails = OrderDetails::where('order_id',$getRecentOrder->id)->get();
 
@@ -689,7 +702,18 @@ class CheckoutController extends Controller {
             }
 
 
+            $promoDetails = Cart::instance('promo')->content();
 
+            if(!empty($promoDetails)) {
+                foreach ($promoDetails as $promoDetail) {
+                    $promoUser = new PromoUser;
+                    $promoUser->promo_id = $promoDetail['id'];
+                    $promoUser->user_id = $this->user['id'];
+                    $promoUser->order_id = $order_id;
+                    $promoUser->promo_amt = $promoDetail['subtotal'];
+                    $promoUser->save();
+                }
+            }
 
             Cart::instance('promo')->destroy();
             Cart::instance('shopping')->destroy();
@@ -709,11 +733,13 @@ class CheckoutController extends Controller {
             $cp->check_number = Input::get('check_number');
             $cp->check_amount = Input::get('check_amount');
 
-            $cp->save();
-
-            // redirect
-            #Session::flash('message', '');
-            return Redirect::to('/thank-you');
+            $isSaved = $cp->save();
+            if($isSaved){
+                helpers::emailOrderConfirmation($order_id);
+                return Redirect::to('/thank-you');
+            } else {
+                return Redirect::to('/store-catalog')->with('errormsg','Something wrong happened. Please try again');
+            }
         }
     }
 
@@ -727,17 +753,18 @@ class CheckoutController extends Controller {
 
         $billingDetails = ChequePayment::where('order_id',$getRecentOrder->id)->first();
 
-        $order_details = DB::table('orders')
+        $attendees = DB::table('orders')
             ->leftJoin('order_details', 'orders.id', '=', 'order_details.order_id')
+            ->leftJoin('course_assign', 'course_assign.order_detail_id', '=', 'order_details.id')
             ->where('orders.id', '=', $id)
-            ->lists('order_details.id');
-
-        $attendees = array();
+            //->lists('order_details.id')
+            ->get();
+        /*$attendees = array();
         if(is_array($order_details) && !empty($order_details)){
             $attendees = DB::table('course_assign')
                 ->whereIn('order_detail_id', $order_details)
                 ->get();
-        }
+        }*/
 
         $check_payment_details = ChequePayment::where('order_id', '=', $id)->first();
 

@@ -251,7 +251,7 @@
         <div id="client">
             <div class="to">INVOICE TO:</div>
             <h2 class="name">{{$user->name}}</h2>
-            <div class="address">{{ $billingDetails->address }}</div>
+            <div class="address">{!!  wordwrap($billingDetails->address, 50, "<br/>\n", true) !!}</div>
             <div class="email"><a href="mailto:{{$user->email}}">{{$user->email}}</a></div>
         </div>
         <div id="invoice">
@@ -286,6 +286,7 @@
                     <span style="font-weight: 500;">Attendee {{$key + 1}}:</span>
                     <p style="line-height: 9px;"><span style="font-weight: bold;">Name</span>: {{$attendeeInfo->first_name}} {{$attendeeInfo->last_name}}</p>
                     <p style="line-height: 9px;"><span style="font-weight: bold;">Email</span>:{{$attendeeInfo->username}}</p>
+                    <p style="line-height: 9px;">{{$attendeeInfo->course_name}}, {{$attendeeInfo->session_name}}</p>
                 </div>
                         @php($row++)
                 @if( $row == 2 || count($attendees) == $key+1)
