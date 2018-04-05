@@ -601,6 +601,11 @@ class CheckoutController extends Controller {
     }
 
     public function paymentOptions(Request $request){
+        $userAuth = Auth::user();
+        if(isset($userAuth->profile_id) && empty($userAuth->profile_id)){
+            Session::flash('message', 'Please update profile information.');
+            return redirect()->intended('/account/profile');
+        }
 
         return View::make('checkout.payment_options');
     }
