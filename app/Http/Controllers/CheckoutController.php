@@ -741,7 +741,7 @@ class CheckoutController extends Controller {
 
         $check_payment_details = ChequePayment::where('order_id', '=', $id)->first();
 
-        $user = User::find($getRecentOrder->user_id)->first();
+        $user = User::find($getRecentOrder->user_id);
 
         $getPromos = array();
 
