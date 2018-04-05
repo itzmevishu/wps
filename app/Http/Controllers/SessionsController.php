@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
+use App\Models\Address;
 use App\Models\Country;
 use App\Models\State;
 use App\Models\User;
@@ -19,6 +20,11 @@ use Mail;
 
 class SessionsController extends Controller
 {
+
+    public function __construct(Request $request)
+    {
+
+    }
 
     public function impersonate($id)
     {
@@ -48,7 +54,10 @@ class SessionsController extends Controller
         if ($request->input('courseid') != ''){
             if(Auth::check()) return Redirect::to('/confirm-course?courseid='.$request->input('courseid'));
         }else{
-            if(Auth::check()) return Redirect::to('/welcome');
+            if(Auth::check()) {
+
+                return Redirect::to('/welcome');
+            }
         }
 
 
@@ -99,8 +108,11 @@ class SessionsController extends Controller
         if(Auth::attempt(array('email' => $input['username'], 'password' => $input['password'], 'active' => 1)))
 
        {
-           $userAuth= Auth::user();
-
+           $userAuth = Auth::user();
+            if(isset($userAuth->profile_id) && empty($userAuth->profile_id)){
+                Session::flash('message', 'Please update profile information.');
+                return redirect()->intended('/account/profile');
+            }
            if ($input['course_id'] != ''){
                return Redirect::to('/confirm-course?courseid='.$input['course_id']);
            }else{
