@@ -690,7 +690,7 @@ class AccountController extends Controller {
 
         //success updating user
         if($updateUserRequestCode != 200) {
-            return Redirect::to('/account/profile')->with('errorMsg','We had an issue updating your profile. Please try again. 1');
+            return Redirect::to('/account/profile')->with('errorMsg','We had an issue updating your profile. Please try again.');
         }
 
         $user = User::find($userAuth['id']);
