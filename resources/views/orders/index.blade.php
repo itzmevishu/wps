@@ -21,6 +21,7 @@
         <td>Total Amount</td>
         <td>Status</td>
         <td>Order date</td>
+        <td>Invoice</td>
     </tr>
     </thead>
     <tbody>
@@ -34,6 +35,7 @@
             <td>${{ $order->order_total }}</td>
             <td>{{ $order->success? 'Success':'Fail' }}</td>
             <td>{{ $order->created_at }}</td>
+            <td><a href="downloadPDF/{{ $order->id }}">Download</a></td>
         </tr>
     @endforeach
     </tbody>
