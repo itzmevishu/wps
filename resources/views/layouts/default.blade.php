@@ -108,19 +108,16 @@
                                 <li class="dropdown-submenu">
                                     <a href="/catalog/{{$key}}/{{$sKey}}/all" >{{$sKey}}</a>
                                     @if(is_array($sMenuItem))
-                                            @php($i = 0)
                                             @foreach($sMenuItem as $tKey => $tInfo)
-
-                                                @if($tInfo['name'] != "")
-                                                    @if($i == 0)
-                                                        <ul class="dropdown-menu">
-                                                    @endif
-                                                        <li><a href="/catalog/{{$key}}/{{$sKey}}/{{$tInfo['id']}}">{{$tInfo['name']}}</a></li>
-                                                    @if($i == 0)
-                                                        </ul>
-                                                    @endif
+                                                @if($tKey == 0 && $sMenuItem[0]['id'] != '')
+                                                    <ul class="dropdown-menu">
                                                 @endif
-                                                 @php($i++)
+                                                @if($tInfo['name'] != '')
+                                                    <li><a href="/catalog/{{$key}}/{{$sKey}}/{{$tInfo['id']}}">{{$tInfo['name']}}</a></li>
+                                                @endif
+                                                @if ($tInfo === end($sMenuItem)&& $sMenuItem[0]['id'] != '')
+                                                    </ul>
+                                                @endif
                                             @endforeach
 
                                     @endif
