@@ -11,6 +11,7 @@ use Auth;
 use Cart;
 use DB;
 use Request;
+use Cache;
 
 class ComposerServiceProvider extends ServiceProvider
 {
@@ -33,7 +34,11 @@ class ComposerServiceProvider extends ServiceProvider
             $userAuth= Auth::user();
 
             $getURL = Request::url();
-            $sql = 'select root.name  as root_name, down1.name as down1_name, down2.name as down2_name, down2.id as down2_id
+
+            if (Cache::has('categories')){
+                $result = Cache::get('categories');
+            } else {
+                $sql = 'select root.name  as root_name, down1.name as down1_name, down2.name as down2_name, down2.id as down2_id
                       from categories as root
                     left outer join categories as down1
                         on down1.parent_id = root.id
@@ -44,20 +49,13 @@ class ComposerServiceProvider extends ServiceProvider
                         by root.id 
                          , down1_name 
                          , down2_name';
-            $result = \Illuminate\Support\Facades\DB::select($sql);
-/*echo "<pre>";
-print_r($result);*/
+                $result = \Illuminate\Support\Facades\DB::select($sql);
 
-
-/*            $menu = $subItems = array();
-            for ($i = 0; $i < count($result); $i++) {
-                if(in_array($result[$i]->down2_name, $subItems) === false){
-                    array_push($subItems, $result[$i]->down2_name);
-                    $menu[$result[$i]->root_name][$result[$i]->down1_name][] = array("id" => $result[$i]->down2_id, "name" => $result[$i]->down2_name);
-
-                }
+                Cache::put("categories", $result, 10);
             }
-*/
+
+
+
 
             $menu = $subItems = array();
             for ($i = 0; $i < count($result); $i++) {

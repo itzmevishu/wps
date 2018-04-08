@@ -24,7 +24,7 @@ class AddLitmosFieldsToCatalogTable extends Migration
             $table->char('name', 255);
             $table->boolean('for_sale')->nullable();
             $table->integer('original_id')->nullable();
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->string('ecommerce_short_description')->nullable();
             $table->string('ecommerce_long_description')->nullable();
             $table->char('course_code_for_bulk_import', 20)->nullable();

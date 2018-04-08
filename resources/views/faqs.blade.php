@@ -22,13 +22,13 @@
         <div class="panel-heading" role="tab" id="heading_{{ $faq->unique_key }}">
           <h4 class="panel-title">
             <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_{{ $faq->unique_key }}" aria-expanded="true" aria-controls="collapseOne">
-              {!! $faq->question !!}
+              {!! $faq->getQuestion('en') !!}
             </a>
           </h4>
         </div>
         <div id="collapse_{{ $faq->unique_key }}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading_{{ $faq->unique_key }}">
           <div class="panel-body">
-             {!! $faq->answer !!}
+             {!! $faq->getAnswer('en') !!}
           </div>
         </div>
           @if(!empty($faq->tags))

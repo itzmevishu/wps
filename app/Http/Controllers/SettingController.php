@@ -68,7 +68,7 @@ class SettingController extends Controller
         } else {
             // store
 
-            $fields = array('welcome' => 'editordata', 'LITMOS_KEY' => 'litmos_key', 'LITMOS_SOURCE' => 'litmos_source');
+            $fields = array('welcome' => 'editordata', 'LITMOS_KEY' => 'litmos_key', 'LITMOS_SOURCE' => 'litmos_source', 'google_analytics' => 'google_analytics');
             foreach ($fields as $key => $value){
                 $setting = \App\Models\Setting::firstOrNew(['key' => $key]);
                 $setting->key = $key;

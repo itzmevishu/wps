@@ -14,7 +14,7 @@
     "stripe/stripe-php": "4.*",
     "maatwebsite/excel": "~2.1.0",
     "league/csv": "^8.1",
-    "sukohi/maven": "2.*",
+    "sukohi/maven": "3.*",
     "braintree/braintree_php": "^3.26",
     "paypal/rest-api-sdk-php": "*",
     "ext-gd":"*",

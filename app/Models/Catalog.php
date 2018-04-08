@@ -32,5 +32,10 @@ class Catalog extends Model{
         return $this->hasOne(\App\Models\Bogo::class, 'course_id');
     }
 
+    public function modules()
+    {
+        return $this->hasMany(\App\Models\CourseModule::class, 'course_id');
+    }
+
 
 }

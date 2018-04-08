@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "17da711c3b053e101d77a70db8d31670",
+    "content-hash": "24eb9870f60654ef85e1a58d290cfdad",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -1863,22 +1863,24 @@
         },
         {
             "name": "sukohi/maven",
-            "version": "2.0.3",
+            "version": "3.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SUKOHI/Maven.git",
-                "reference": "141917570b5f5756b31d441de572a0cfd53560d3"
+                "reference": "51bd0ecd38ddee6f31731dd241132e9fb40b800e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SUKOHI/Maven/zipball/141917570b5f5756b31d441de572a0cfd53560d3",
-                "reference": "141917570b5f5756b31d441de572a0cfd53560d3",
+                "url": "https://api.github.com/repos/SUKOHI/Maven/zipball/51bd0ecd38ddee6f31731dd241132e9fb40b800e",
+                "reference": "51bd0ecd38ddee6f31731dd241132e9fb40b800e",
                 "shasum": ""
             },
             "require": {
                 "laravel/framework": "~5.2",
-                "laravelcollective/html": "5.2.*",
-                "sukohi/cahen": "2.*"
+                "laravelcollective/html": "~5.2",
+                "sukohi/cahen": "2.*",
+                "sukohi/neatness": "~4.0.2",
+                "sukohi/smoothness": "4.*"
             },
             "type": "library",
             "autoload": {
@@ -1897,7 +1899,76 @@
                 }
             ],
             "description": "A Laravel package to manage FAQ.",
-            "time": "2016-07-06T19:58:57+00:00"
+            "time": "2017-01-30T21:01:44+00:00"
+        },
+        {
+            "name": "sukohi/neatness",
+            "version": "4.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SUKOHI/Neatness.git",
+                "reference": "2c1e0d487f12809f15f4c8e297f6cdd2d5eb76de"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SUKOHI/Neatness/zipball/2c1e0d487f12809f15f4c8e297f6cdd2d5eb76de",
+                "reference": "2c1e0d487f12809f15f4c8e297f6cdd2d5eb76de",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "~5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Sukohi\\Neatness\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sukohi",
+                    "email": "capilano.sukohi@gmail.com"
+                }
+            ],
+            "description": "A Laravel package to automatically add sorting system for DB query and provide URLs to switch between ASC and DESC.",
+            "time": "2016-09-21T16:50:30+00:00"
+        },
+        {
+            "name": "sukohi/smoothness",
+            "version": "4.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SUKOHI/Smoothness.git",
+                "reference": "cce20efb9c32e95aa04f8564ff6b3b979e635657"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SUKOHI/Smoothness/zipball/cce20efb9c32e95aa04f8564ff6b3b979e635657",
+                "reference": "cce20efb9c32e95aa04f8564ff6b3b979e635657",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "~5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Sukohi\\Smoothness\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Sukohi",
+                    "email": "test@example.com"
+                }
+            ],
+            "description": "Your package description here.",
+            "time": "2016-07-14T10:28:50+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",

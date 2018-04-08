@@ -77,7 +77,8 @@ Route::group(['middleware' => 'App\Http\Middleware\Admin'], function() {
     Route::get('/users/remove-admin/{id}', 'AdminController@removeAdmin')->middleware('auth');
 
     Route::match(['get', 'post'], 'admin/faqs', function () {
-        return \Maven::view();
+        //return \Maven::view();
+        return View::make('admin.maven');
     });
 
 
@@ -417,6 +418,15 @@ Route::controller('password', 'RemindersController');
 
 
 Route::get('sendemail', function () {
+    $values = array('Name' => "Veena Kalappagari");
+    if (Cache::has('students')){
+        $students = Cache::get('students');
+    } else {
+        Cache::put('students', $values, 10);
+        $students = $values;
+    }
+
+    dd($students);
 
     $data = array(
         'name' => "Learning Laravel",
@@ -436,3 +446,9 @@ Route::get('sendemail', function () {
 
 
 
+Route::match(['get', 'post'], 'faqsiframe', function () {
+    return View::make('admin.maven');
+    //return \Maven::view();
+});
+
+\Sukohi\Maven\Maven::route('en');

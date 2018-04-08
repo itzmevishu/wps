@@ -18,30 +18,34 @@
             </div>
         </div>
         <div class="col-md-9">
-            <p><?php echo html_entity_decode($courseInfo->Description); ?></p>
+            <p><?php echo html_entity_decode($courseInfo->description); ?></p>
         </div>
 
 
         <?php
         $moduleArray = [];
         $sessionID = '';
-        //dd($moduleInfo);
-        foreach ($moduleInfo as $key=>$module_info){
 
-        $sessionListResponse = App\Functions\litmosAPI::apiGetSessionInfo($input,$courseInfo->Id,$module_info->Id);
-        array_push($moduleArray,$module_info->Id);
+        foreach ($moduleInfo as $key => $module_info){
+
+        #$sessionListResponse = App\Functions\litmosAPI::apiGetSessionInfo($input,$courseInfo->course_id,$module_info->lms_module_id);
+
+        $sessionListResponse = $module_info->sessions;
+        array_push($moduleArray,$module_info->lms_module_id);
+
+
         ?>
         <div class="col-md-12" style="padding-top: 10px">
             <div class="col-md-12" style="border-bottom: 1px solid #ccc;padding-left: 0px;">
-                <strong style="font-size: large">{{$module_info->Name}}</strong>
+                <strong style="font-size: large">{{$module_info->name}}</strong>
             </div>
         </div>
         <div class="col-md-12" style="margin-bottom: 25px;">
             @foreach ($sessionListResponse as $comp)
                 <?php
 
-                if($sessionID <> $comp->Id){
-                    $sessionID = $comp->Id;
+                if($sessionID <> $comp->session_id){
+                    $sessionID = $comp->session_id;
                 }else{
                     continue;
                 }
@@ -51,43 +55,42 @@
                 $z_eur_price =($coursePrice * $currencyRate);
                 $z_eur_price =number_format($z_eur_price, 2, '.', '');
 
-                $details = '<p style="line-height: 25px;padding-top:5px;"><strong>'.$comp->Name.'</strong><br>';
-                if(is_array($startDate) && count($startDate)){
-                    $details .= '<strong>Dates:</strong> '.date( 'M d, Y', $startDate[1]/1000 ).' - '.date( 'M d, Y', $endDate[1]/1000).'<br>';
-                }
-                $details .= '<strong>Time:</strong> '.$comp->Days[0]->StartTime.' to '.' '. $comp->Days[0]->EndTime.' '.$comp->TimeZone.'<br>';
-                $details .= '<strong>Location:</strong> '.$comp->Location.'<br>';
-                $details .= '<strong>Instructor:</strong> '.$comp->InstructorName.'</p>';
-                if(empty($comp->Slots)){
+                $details = '<p style="line-height: 25px;padding-top:5px;"><strong>'.$comp->name.'</strong><br>';
+
+                $details .= '<strong>Dates:</strong> '.date( 'M d, Y', strtotime($comp->start_date) ).' - '.date( 'M d, Y', strtotime($comp->end_date)).'<br>';
+
+                //$details .= '<strong>Time:</strong> '.date( 'G A', strtotime($comp->start_date) ).' to '.' '. date( 'G A', strtotime($comp->end_date)).' UTC<br>';
+                $details .= '<strong>Location:</strong> '.$comp->location.'<br>';
+                $details .= '<strong>Instructor:</strong> '.$comp->instructor_name.'</p>';
+                if(empty($comp->slots)){
                     $displayRegister = '';
                     $seatText = 'No Limit';
-                }elseif($comp->Accepted >= $comp->Slots){
+                }elseif($comp->accepted >= $comp->slots){
                     $displayRegister = 'disabled';
                     $seatText = 'FULL';
                 } else{
                     $displayRegister = '';
-                    $seatText = $comp->Slots-$comp->Accepted;
+                    $seatText = $comp->slots - $comp->accepted;
                 }
-
-                $irmaTest= Cart::search(array('id'=>$courseInfo->Id));
+                $irmaTest= Cart::search(array('id'=>$courseInfo->course_id));
                 ?>
 
-                @if(is_array($startDate) && count($startDate) && date( 'Y-m-d', $startDate[1]/1000 ) >=date( 'Y-m-d'))
+                @if( date( 'Y-m-d', strtotime($comp->start_date) ) >=date( 'Y-m-d'))
 
-                    <div class="row sessionRow_{{$module_info->Id}} altBG" id="{{$comp->Id}}" style="padding:10px;margin:2px;">
+                    <div class="row sessionRow_{{$module_info->lms_module_id}} altBG" id="{{$comp->session_id}}" style="padding:10px;margin:2px;">
                         <label class="sessionLabels">
                             <div class="col-md-1" style="text-align: center;">
                                 <div class="dateResponsiveL">
                                     <div class ="session-date">
-                                        @if(date( 'd', $endDate[1]/1000 ) != date( 'd', $startDate[1]/1000 ))
-                                            {{date( 'd', $startDate[1]/1000 )}}-{{date( 'd', $endDate[1]/1000 )}}
+                                        @if(date( 'd', strtotime($comp->end_date) ) != date( 'd', strtotime($comp->start_date) ))
+                                            {{date( 'd', strtotime($comp->start_date) )}}-{{date( 'd', strtotime($comp->end_date) )}}
                                         @else
-                                            {{date( 'd', $startDate[1]/1000 )}}
+                                            {{date( 'd', strtotime($comp->start_date) )}}
                                         @endif
 
                                     </div>
                                     <div class ="session-month">
-                                        {{date( 'M', $startDate[1]/1000 )}}
+                                        {{date( 'M', strtotime($comp->start_date) )}}
                                     </div>
                                 </div>
                                 <div class="dateResponsiveR">
@@ -110,14 +113,14 @@
                             <div class="col-md-2 text-center">
                                 @if($seatText != "FULL")
                                     {{ Form::open(['url' =>env('APP_URL').'/add-to-cart', 'class' => "addToCart"]) }}
-                                    {{Form::hidden('course_id',$courseInfo->Id)}}
-                                    {{Form::hidden('course_sku',$courseInfo->Code)}}
+                                    {{Form::hidden('course_id',$courseInfo->course_id)}}
+                                    {{Form::hidden('course_sku',$courseInfo->code)}}
                                     {{Form::hidden('module_array',implode(",",$moduleArray))}}
-                                    {{Form::hidden('course_name',$courseInfo->Name)}}
+                                    {{Form::hidden('course_name',$courseInfo->name)}}
                                     {{Form::hidden('course_price',$coursePrice)}}
                                     {{Form::hidden('course_type','single session')}}
                                     {{Form::hidden('course_details',$details)}}
-                                    {{Form::hidden('session_id_'.$module_info->Id,$sessionID)}}
+                                    {{Form::hidden('session_id_'.$module_info->lms_module_id,$sessionID)}}
                                     {{Form::hidden('free_course',0)}}
                                     {{Form::hidden('session_cnt',count($moduleInfo),['id'=>'session_cnt'])}}
 

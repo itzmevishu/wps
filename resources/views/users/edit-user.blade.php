@@ -28,7 +28,7 @@
         <div class="col-md-6" >
             <div class="row spacer">
                 <div class="col-md-12">
-                    {{Form::label('first_name','First Name')}}<br>
+                    {{Form::label('first_name','First Name')}}<span class="text-muted small"> *</span><br>
                     {{Form::text('first_name',NULL,['class'=>'form-control','maxlength'=>'100','autocomplete'=>'off','tabindex'=>1])}}
                     <div class="errors">{{$errors->first('first_name')}}</div>
                 </div>
@@ -46,8 +46,9 @@
             </div>
             <div class="row spacer">
                 <div class="col-md-12">
-                    {{Form::label('email','Email Address')}}<br>
-                    {{Form::text('email',NULL,['class'=>'form-control','maxlength'=>'255','autocomplete'=>'off','tabindex'=>5])}}
+                    {{Form::label('email','Email Address')}}<span class="text-muted small"> *</span><br>
+                    {{Form::hidden('email', $user->email)}}
+                    {{Form::label('email', $user->email)}}
                     <div class="errors">{{$errors->first('email')}}</div>
                 </div>
             </div>
@@ -71,7 +72,7 @@
             -->
             <div class="row spacer">
                 <div class="col-md-12">
-                    {{Form::label('address','Address')}}<br>
+                    {{Form::label('address','Address')}}<span class="text-muted small"> *</span><br>
                     {{Form::text('address',isset($address->address)?$address->address:'',['class'=>'form-control','maxlength'=>'100','autocomplete'=>'off','tabindex'=>7])}}
                     <div class="errors">{{$errors->first('address')}}</div>
                 </div>
@@ -79,7 +80,7 @@
             </div>
             <div class="row spacer">
                 <div class="col-md-12">
-                    {{Form::label('state','State')}}<br>
+                    {{Form::label('state','State')}}<span class="text-muted small"> *</span><br>
                     {{Form::text('state',isset($address->state)?$address->state:'',['class'=>'form-control','maxlength'=>'100','style'=>'display:none','id'=>'statetext','tabindex'=>9])}}
                     {{Form::select('state',$states,isset($address->state)?$address->state:'',['placeholder' => 'Please Select State','class'=>'form-control','id'=>'statedd','tabindex'=>9])}}
 
@@ -89,7 +90,7 @@
 
             <div class="row spacer">
                 <div class="col-md-12">
-                    {{Form::label('city','City')}}<br>
+                    {{Form::label('city','City')}}<span class="text-muted small"> *</span><br>
                     {{Form::text('city',isset($address->city)?$address->city:'',['class'=>'form-control','maxlength'=>'255','autocomplete'=>'off','tabindex'=>11])}}
                     <div class="errors">{{$errors->first('city')}}</div>
                 </div>
@@ -99,7 +100,7 @@
         <div class="col-md-6" >
             <div class="row spacer">
                 <div class="col-md-12">
-                    {{Form::label('last_name','Last Name')}}<br>
+                    {{Form::label('last_name','Last Name')}}<span class="text-muted small"> *</span><br>
                     {{Form::text('last_name',NULL,['class'=>'form-control','maxlength'=>'100','autocomplete'=>'off','tabindex'=>2])}}
                     <div class="errors">{{$errors->first('last_name')}}</div>
                 </div>
@@ -120,7 +121,7 @@
             </div>
             <div class="row spacer">
                 <div class="col-md-12">
-                    {{Form::label('work_phone','Work Phone')}}<br>
+                    {{Form::label('work_phone','Work Phone')}}<span class="text-muted small"> *</span><br>
                     {{Form::text('work_phone',isset($profile->phone_number)?$profile->phone_number:'',['class'=>'form-control','maxlength'=>'50','autocomplete'=>'off','tabindex'=>8])}}
                     <div class="errors">{{$errors->first('work_phone')}}</div>
                 </div>
@@ -128,7 +129,7 @@
             </div>
             <div class="row spacer">
                 <div class="col-md-12">
-                    {{Form::label('timezone','Timezone')}}<br>
+                    {{Form::label('timezone','Timezone')}}<span class="text-muted small"> *</span><br>
                     {{Form::select('timezone',$timeZones,isset($profile->timezone)?$profile->timezone:'',['placeholder' => 'Please Select a Timezone','class'=>'form-control','id'=>'id','tabindex'=>10])}}
 
                     <div class="errors">{{$errors->first('timezone')}}</div>
@@ -137,7 +138,7 @@
 
             <div class="row spacer">
                 <div class="col-md-12">
-                    {{Form::label('zip_code','Zip Code')}}<br>
+                    {{Form::label('zip_code','Zip Code')}}<span class="text-muted small"> *</span><br>
                     {{Form::text('zip_code',isset($address->zip_code)? $address->zip_code :'',['class'=>'form-control','maxlength'=>'100','autocomplete'=>'off','tabindex'=>12])}}
                     <div class="errors">{{$errors->first('zip_code')}}</div>
                 </div>
@@ -218,7 +219,7 @@
     </div>
     <div class="col-md-12">
         <div class="row spacer">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 {{Form::label('custom_9','Please list any other Facility, Provider Type, or Specialty')}}<br>
                 {{Form::text('custom_9',isset($profile->specialty)?$profile->specialty:'' ,['class'=>'form-control','maxlength'=>'500','autocomplete'=>'off','tabindex'=>22])}}
 

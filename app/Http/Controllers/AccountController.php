@@ -666,7 +666,7 @@ class AccountController extends Controller {
 
         if($currentEmail <> $input['email'] ){
             //check if username exists...
-            $checkUserExistsRequest = litmosAPI::apiUserExists($input['email']);
+                $checkUserExistsRequest = litmosAPI::apiUserExists($input['email']);
 
             //get status code for username exists
             $requestCode = $checkUserExistsRequest->getStatusCode();

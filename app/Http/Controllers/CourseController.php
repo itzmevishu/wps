@@ -26,7 +26,7 @@ use Auth;
 use App;
 use Cart;
 use DB;
-
+use Cache;
 class CourseController extends Controller {
 
 
@@ -89,11 +89,6 @@ class CourseController extends Controller {
                                     ->where('for_sale', 1)
                                     ->where('litmos_deleted', 0)
                                     ->orderBy('name')->paginate(8);
-
-         if(Auth::check()){
-            $userAuth= Auth::user();
-
-         }
 
         return View::make('welcome',['courses'=>$availableCourses, 'searchTerm' =>'']);
     }
@@ -165,65 +160,59 @@ class CourseController extends Controller {
         if (isset($input['courseid']) && $input['courseid'] == '' ){
             return Redirect::to('/welcome');
         }
+        $course_id = $input['courseid'];
+        $courseInfo = Catalog::where('course_id','=',$course_id)->where('active','=',1)->first();
 
-        $checkCatalog = Catalog::where('course_id','=',$input['courseid'])->where('active','=',1)->first();
-
-
-        $image_file =  $checkCatalog['image'];
-
-        $getCourseIDResponse = litmosAPI::apiLitmosCourseID($checkCatalog['course_id']);
-        if(empty($checkCatalog)){
+        if(empty($courseInfo)){
             return Redirect::to('/course-not-found');
         }
+
+        $image_file =  $courseInfo['image'];
+
+/*        if (Cache::has("getCourseIDResponse_$course_id")){
+            $courseInfo = Cache::get("getCourseIDResponse_$course_id");
+        } else {
+            $courseInfo = litmosAPI::apiLitmosCourseID($checkCatalog['course_id']);
+            Cache::put("getCourseIDResponse_$course_id", $courseInfo, 10);
+        }*/
 
 
 
         $free_course = false;
-        /*$bogo = App\Models\Bogo::where('course_id', $checkCatalog['id'])->first();
 
-        if(!empty($bogo)){
-          $free_course = Catalog::where('id',$bogo->course_id_offered)->first();
-        } else {
-            $free_course = false;
-        }*/
-
-        if (empty($getCourseIDResponse)){
-            return Redirect::to('/course-not-found');
-        }
+        if ($courseInfo->active && $courseInfo->for_sale){
 
 
-
-        if ($getCourseIDResponse->Active && $getCourseIDResponse->ForSale){
-
-
-            $courseID = $getCourseIDResponse->Id;
-
-            $z_info = Catalog::where('course_id',$input['courseid'])->first();
-
-            //getCurrency = Currency::where('currency_type',$userAuth['curr_type'])->first();
-            //$currency_rate = $getCurrency['rate'];
+            $courseID = $courseInfo->course_id;
             $currency_rate = 1;
-            //return $currency_rate;
-           // if($currency_rate != '')
-                //$z_eur_price =($coursePrice * $currencyRate);
-            //else{
-                $z_price =$z_info->price;
-            //}
-
-            //return $getCurrency;
+            $z_price =$courseInfo->price;
 
             $z_price = number_format($z_price, 2, '.', '');
-            $sessionResponse = litmosAPI::apiCheckIfSession($input,$courseID);
-            $courseResponse = litmosAPI::apiGetSingleCourse($input,$courseID);
+
+            /*if (Cache::has("iltsessions_$course_id")){
+                $sessionResponse = Cache::get("iltsessions_$course_id");
+            } else {
+                $sessionResponse = litmosAPI::apiCheckIfSession($input, $courseID);
+                Cache::put("iltsessions_$course_id", $sessionResponse, 10);
+            }*/
+            $module_info = array();
+            if(!empty($courseInfo->modules)) {
+                $module_info = $courseInfo->modules;
+            }
+
+            /*if (Cache::has("course_$course_id")){
+                $courseResponse = Cache::get("course_$course_id");
+            } else {
+                $courseResponse = litmosAPI::apiGetSingleCourse($input,$courseID);
+                Cache::put("course_$course_id", $courseResponse, 10);
+            }*/
 
             $cart = Cart::content();
 
-            //return $input;
-
-            if (empty($sessionResponse)){
-                return View::make('courses.confirm-course',['courseInfo'=>$courseResponse,'currencyRate'=>$currency_rate,'coursePrice'=>$z_price,'z_info'=>$z_info,'courseImage'=>$image_file, 'free_course' => $free_course, 'session_id' => $session_id]);
+            if (empty($module_info)){
+                return View::make('courses.confirm-course',['courseInfo'=>$courseInfo,'currencyRate'=>$currency_rate,'coursePrice'=>$z_price,'z_info'=>$courseInfo,'courseImage'=>$image_file, 'free_course' => $free_course, 'session_id' => $session_id]);
             }else{
-                return View::make('courses.view-sessions',['cart'=>$cart,'moduleInfo'=>$sessionResponse,'currencyRate'=>$currency_rate,'courseInfo'=>$courseResponse,'input'=>$input,'coursePrice'=>$z_price,'z_info'=>$z_info,'courseImage'=>$image_file, 'free_course' => $free_course, 'session_id' => $session_id]);
+                return View::make('courses.view-sessions',['cart'=>$cart,'moduleInfo'=>$module_info,'currencyRate'=>$currency_rate,'courseInfo'=>$courseInfo,'input'=>$input,'coursePrice'=>$z_price,'courseImage'=>$image_file, 'free_course' => $free_course, 'session_id' => $session_id]);
             }
         }else{
             return Redirect::to('/course-not-found');

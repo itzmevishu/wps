@@ -62,7 +62,8 @@ class CourseSession extends Model
                                 'module_name' => $sessionInfo->ModuleName,
                                 'start_date' =>  self :: formatDate($sessionInfo->StartDate),
                                 'end_date' =>  self :: formatDate($sessionInfo->EndDate),
-                                'slots' => ($sessionInfo->Slots)? $sessionInfo->Slots : 0
+                                'slots' => ($sessionInfo->Slots)? $sessionInfo->Slots : 0,
+                                'accepted' => ($sessionInfo->Accepted)? $sessionInfo->Accepted : 0
                             ]);
                         } else {
                             CourseSession::where('id', $wps_session_id)
@@ -77,7 +78,8 @@ class CourseSession extends Model
                                     'module_name' => $sessionInfo->ModuleName,
                                     'start_date' =>  self :: formatDate($sessionInfo->StartDate),
                                     'end_date' =>  self :: formatDate($sessionInfo->EndDate),
-                                    'slots' => ($sessionInfo->Slots)? $sessionInfo->Slots : 0
+                                    'slots' => ($sessionInfo->Slots)? $sessionInfo->Slots : 0,
+                                    'accepted' => ($sessionInfo->Accepted)? $sessionInfo->Accepted : 0
                                 ]);
                         }
                     }

@@ -191,7 +191,7 @@ glyphicon "></i>
                                 <div class="white_progress_inner" style="width:100%;"></div>
 
                             </div>
-                            <div class="dashboard-box-footer">Order History</div>
+                            <div class="dashboard-box-footer">Buy One Get One</div>
                         </div>
                     </a>
 

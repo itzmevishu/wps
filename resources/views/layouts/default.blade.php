@@ -9,57 +9,13 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <link rel='stylesheet prefetch' href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
 
-    <link rel="stylesheet" href="{{$custom_css_file}}?v={{time()}}">
+    <link rel="stylesheet" href="{{$custom_css_file}}">
 
-    <link rel="stylesheet"href="//codeorigin.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+    <link rel="stylesheet" href="//codeorigin.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <style type="text/css">
-        .dropdown-submenu {
-            position: relative;
-        }
-
-        .dropdown-submenu>.dropdown-menu {
-            top: 0;
-            left: 100%;
-            margin-top: -6px;
-            margin-left: -1px;
-            -webkit-border-radius: 0 6px 6px 6px;
-            -moz-border-radius: 0 6px 6px;
-            border-radius: 0 6px 6px 6px;
-        }
-
-        .dropdown:hover>.dropdown-menu {
-            display: block;
-        }
-
-        .dropdown-submenu:hover>.dropdown-menu {
-            display: block;
-        }
-
-        .dropdown-submenu>a:after {
-            display: block;
-            content: " ";
-            float: right;
-            width: 0;
-            height: 0;
-            border-color: transparent;
-            border-style: solid;
-            border-width: 5px 0 5px 5px;
-            border-left-color: #ccc;
-            margin-top: 5px;
-            margin-right: -10px;
-        }
-
-        .dropdown-submenu:hover>a:after {
-            border-left-color: #fff;
-        }
-
-
-    </style>
-
 </head>
 <body>
 
@@ -115,7 +71,7 @@
                             <li role="separator" class="divider"></li>
                             @if($userAuth->site_admin == 1)
                                 <li><a href="/admin">Admin</a></li>
-                                <li><a href="/settings/create">Application Settings</a></li>
+                                <li><a href="/settings/create">Settings</a></li>
                                 <li role="separator" class="divider"></li>
 
                             @endif
@@ -264,133 +220,8 @@
 
 <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
 <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
-
-<script>
-    $(function () {
-        var __searchTerm = "all";
-
-        $( "#search_sessions" ).submit(function( event ) {
-            __searchTerm = $("#search_terms").val();
-            window.location.replace("{{ env('APP_URL') }}/iltsessions/"+ __searchTerm +"/name_asc");
-            event.preventDefault();
-        });
-
-    });
-</script>
-
+<script type="text/javascript" href="{{env('APP_URL')}}/custom.js" ></script>
+{!! config('google_analytics') !!}}
 @yield('scripts')
-<style>
-    #footer-sub{
-        background-color: #fff;
-        border-top: 1px solid #dbdbdb;
-    }
-
-    #footer-main{
-        background-color: #012b72;
-    }
-
-    #footer-sub h5{
-        color:#565656;
-        margin-top: 25px;
-    }
-
-    #footer-sub ul{
-        list-style: none;
-        margin-top: 20px;
-    }
-
-    #footer-sub hr{
-        margin: 5px;
-
-    }
-
-    #footer-sub ul li{
-        margin-left: -38px;
-    }
-
-    #footer-sub a:link {
-        text-decoration: none;
-        color:#565656;
-        font-size: 12px;
-    }
-
-    #footer-sub a:visited {
-        text-decoration: none;
-        color:#565656;
-    }
-
-
-    #footer-sub a:hover {
-        text-decoration: none;
-        color: blue;
-    }
-
-
-    #footer-sub a:active {
-        text-decoration: none;
-        color:#565656;
-    }
-
-    .vertical-line{
-        border-right: 1px solid #dbdbdb;
-        margin: 8px;
-        padding: 0px;
-    }
-
-    #sub-two{
-        margin: 0px;
-        padding: 0px;
-    }
-
-    #sub-two .vertical-line h4{
-        color:#6d6c6c;
-    }
-
-
-    #footer-main ul{
-        list-style: none;
-    }
-
-    #footer-main ul li{
-        float:left;
-        text-decoration: none;
-        padding-left: 15px;
-        margin-top: 17px;
-    }
-
-    #footer-main a:link {
-        color:white;
-        font-size: 12px;
-    }
-
-    #footer-main a:visited {
-        color:white;
-    }
-
-
-    #footer-main a:hover {
-        text-decoration: none;
-        color: #00b9f5;
-    }
-
-
-    #footer-main a:active {
-        color:white;
-    }
-
-    .glyphicon-search{
-        font-size: 20px;
-    }
-
-    #social-menu{
-        float: right;
-        margin-right: 60px;
-    }
-
-    #side-padding{
-        padding: 0px;
-        margin: 0px;
-    }
-</style>
 </body>
 </html>
