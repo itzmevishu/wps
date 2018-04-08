@@ -24,7 +24,9 @@
                             <a href="/orders/order-details/{{$order->id}}" class="btn btn-primary">View Details</a>
                     </div>
                     <div class="col-md-1 userGridColItem">
-                            <a href="/downloadPDF/{{$order->id}}" class="btn btn-primary">Download Invoice</a>
+                            @if($order->payment_id == 'check')
+                                <a href="/downloadPDF/{{$order->id}}" class="btn btn-primary">Download Invoice</a>
+                            @endif
                     </div>
                 </div>
             @endforeach
