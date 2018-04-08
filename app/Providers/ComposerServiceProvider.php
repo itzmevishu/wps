@@ -35,7 +35,7 @@ class ComposerServiceProvider extends ServiceProvider
 
             $getURL = Request::url();
 
-            if (Cache::has('categories')){
+            if (Cache::has('categories') && false){
                 $result = Cache::get('categories');
             } else {
                 $sql = 'select root.name  as root_name, down1.name as down1_name, down2.name as down2_name, down2.id as down2_id
