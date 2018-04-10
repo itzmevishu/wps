@@ -418,15 +418,8 @@ Route::controller('password', 'RemindersController');
 
 
 Route::get('sendemail', function () {
-    $values = array('Name' => "Veena Kalappagari");
-    if (Cache::has('students')){
-        $students = Cache::get('students');
-    } else {
-        Cache::put('students', $values, 10);
-        $students = $values;
-    }
-
-    dd($students);
+    echo env('QUEUE_DRIVER');
+    exit;
 
     $data = array(
         'name' => "Learning Laravel",
@@ -453,4 +446,3 @@ Route::match(['get', 'post'], 'faqsiframe', function () {
 
 \Sukohi\Maven\Maven::route('en');
 
-Route::get('updatecourses','CourseController@refresh_catalog');

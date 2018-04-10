@@ -57,7 +57,7 @@ use PayPal\Api\PaymentExecution;
 
 use PayPal\Api\Transaction;
 
-
+use App\Jobs\UpdateCatalog;
 class CheckoutController extends Controller {
 
     private $user;
@@ -238,6 +238,10 @@ class CheckoutController extends Controller {
     {
 
         $getRecentOrder = Orders::where('user_id',$this->user->id)->where('success',1)->orderby('created_at','desc')->first();
+        #Update Catalog through JOBS
+        $job = (new UpdateCatalog())->delay(60 * 5);
+
+        $this->dispatch($job);
 
         if($getRecentOrder['payment_id'] == 'free'){
             $getRecentOrderDetails = OrderDetails::select('order_id', 'course_sku','course_name','qty','course_price')->where('order_id',$getRecentOrder->id)->get();
