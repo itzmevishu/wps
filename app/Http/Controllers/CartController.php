@@ -42,43 +42,43 @@ class CartController extends Controller {
 
             $moduleArray = explode(",",$input['module_array']);
             foreach($moduleArray as $module){
+                if(isset($input['session_id_'.$module])) {
+                    $sessionInfo = litmosAPI::apiGetASession($input['course_id'], $module, $input['session_id_' . $module]);
 
-                $sessionInfo = litmosAPI::apiGetASession($input['course_id'],$module,$input['session_id_'.$module]);
+                    preg_match('/\/Date\((\d+)/', $sessionInfo->StartDate, $startDate);
+                    preg_match('/\/Date\((\d+)/', $sessionInfo->EndDate, $endDate);
 
-                preg_match( '/\/Date\((\d+)/', $sessionInfo->StartDate, $startDate );
-                preg_match( '/\/Date\((\d+)/',  $sessionInfo->EndDate, $endDate );
-
-                array_push($modSessionArray,array(
-                    'moduleid'=>$module,
-                    'sessionid'=>$input['session_id_'.$module],
-                    'session_name'=>$sessionInfo->Name,
-                    'start_date'=>date( 'Y-m-d', $startDate[1]/1000 ),
-                    'end_date'=>date( 'Y-m-d', $endDate[1]/1000 ),
-                    'module_name'=>$sessionInfo->ModuleName,
-                    'location' => $sessionInfo->Location
+                    array_push($modSessionArray, array(
+                        'moduleid' => $module,
+                        'sessionid' => $input['session_id_' . $module],
+                        'session_name' => $sessionInfo->Name,
+                        'start_date' => date('Y-m-d', $startDate[1] / 1000),
+                        'end_date' => date('Y-m-d', $endDate[1] / 1000),
+                        'module_name' => $sessionInfo->ModuleName,
+                        'location' => $sessionInfo->Location
                     ));
 
 
-                $sessionDetails .= '<strong>Dates:</strong> '.date( 'M d, Y', $startDate[1]/1000 ).' to '.date( 'M d, Y', $endDate[1]/1000 ).'<br>';
-                $sessionDetails .= '<strong>Location:</strong> '.$sessionInfo->Location.'</p>';
+                    $sessionDetails .= '<strong>Dates:</strong> ' . date('M d, Y', $startDate[1] / 1000) . ' to ' . date('M d, Y', $endDate[1] / 1000) . '<br>';
+                    $sessionDetails .= '<strong>Location:</strong> ' . $sessionInfo->Location . '</p>';
 
-                $sessionPaypal = $sessionInfo->Name.' ';
+                    $sessionPaypal = $sessionInfo->Name . ' ';
 
-                $sessionLocation = $sessionInfo->Location;
+                    $sessionLocation = $sessionInfo->Location;
 
 
-                //echo $sessionDetails;
+                    //echo $sessionDetails;
 
-                $seats= $sessionInfo->Slots - $sessionInfo->Accepted;
+                    $seats = $sessionInfo->Slots - $sessionInfo->Accepted;
 
-                if($seatQty == ''){
-                    $seatQty = $seats;
-                }else{
-                    if($seatQty > $seats){
+                    if ($seatQty == '') {
                         $seatQty = $seats;
+                    } else {
+                        if ($seatQty > $seats) {
+                            $seatQty = $seats;
+                        }
                     }
                 }
-
             }
         }
 
@@ -122,13 +122,6 @@ class CartController extends Controller {
 
         $checkPromos = Promo::getAvailablePromos();
         $cartTotal = number_format($cartTotal, 2, '.', '');
-
-        if (Auth::check())
-        {
-            // The user is logged in...
-            $userAuth = Auth::user();
-
-        }
 
         /*
          *  WHY DO WE REQUIRE BELOW LOGIC NOW ?

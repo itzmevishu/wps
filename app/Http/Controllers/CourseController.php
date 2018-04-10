@@ -11,6 +11,7 @@ use App\Models\FreeFAM;
 use App\Models\SubCategoryLU;
 use App\Models\Category;
 use App\Models\CategoryCourse;
+use App\Models\CourseSession;
 
 use App\Http\Controllers\Controller;
 use App\Functions\litmosAPI;
@@ -217,6 +218,72 @@ class CourseController extends Controller {
         }else{
             return Redirect::to('/course-not-found');
         }
+    }
+
+
+    function refresh_catalog(){
+        $limit = 500;
+        $start = 0;
+        $active_courses = array();
+        while($limit > 0){
+
+            $getCourses = litmosAPI::getUserCourses($limit,$start);
+
+            if(!is_array($getCourses) && empty($getCourses)){
+                Session::flash('error', 'Catalog refreshed failed');
+                return Redirect::to('/admin/catalog');
+            }
+
+            foreach($getCourses as $course) {
+
+                $checkProduct = Catalog::where('course_id',$course->Id)->first();
+
+                # Storing Litmos API data as per new columns created.
+                # Columns are associated with Litmos result fields
+                if($checkProduct){
+                    $item = Catalog::find($checkProduct['id']);
+                }else{
+                    $item = new Catalog;
+                    $item->image = 'http://via.placeholder.com/200x200';
+                }
+
+                $item->course_id = $course->Id;
+                $item->code = $course->Code;
+                $item->name = $course->Name;
+                $item->for_sale = $course->ForSale;
+                $item->original_id = $course->OriginalId;
+                $item->description = $course->Description;
+                $item->ecommerce_short_description = $course->EcommerceShortDescription;
+                $item->ecommerce_long_description = $course->EcommerceLongDescription;
+                $item->price = $course->Price;
+                $item->access_till_date = $course->AccessTillDate;
+                $item->course_code_for_bulk_import = $course->CourseCodeForBulkImport;
+
+                if($course->ForSale && $course->Active){
+                    $item->active = $course->Active;
+                }else{
+                    $item->active = 0;
+                }
+
+                $item->save();
+
+                $active_courses[] = $course->Id;
+            }
+
+            if(count($getCourses) > 0){
+                $start = $start + count($getCourses);
+            }else{
+                $limit = 0;
+            }
+
+        }
+
+
+        $allCourses = $titles = DB::table('catalog')->pluck('course_id');
+        $inactive_course = array_diff($allCourses, $active_courses);
+        DB::table('catalog')->whereIn('course_id', $inactive_course)->update(array('litmos_deleted' => true));
+
+        CourseSession::saveSessions();
     }
 
     

@@ -16,7 +16,7 @@ use Form;
 use Input;
 use Session;
 use App\Models\CategoryCourse;
-
+use Cache;
 
 class CategoryController extends Controller {
 
@@ -46,6 +46,7 @@ class CategoryController extends Controller {
                 CategoryCourse::firstOrCreate(array('category_id' => $saveCategory->id, 'catalog_id' => $course));
             }
         }
+        Cache::forget('categories');
         return Redirect::to('/admin/category/view-all');
         
     }
@@ -85,6 +86,7 @@ class CategoryController extends Controller {
 
         $category->delete();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        Cache::forget('categories');
         return Redirect::to('/admin/category/view-all');
     }
 
@@ -118,7 +120,7 @@ class CategoryController extends Controller {
                 $getCategory->save();
             }
         }
-
+        Cache::forget('categories');
         return Redirect::to('admin/category/view-all');
     }
 

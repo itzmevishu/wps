@@ -452,3 +452,5 @@ Route::match(['get', 'post'], 'faqsiframe', function () {
 });
 
 \Sukohi\Maven\Maven::route('en');
+
+Route::get('updatecourses','CourseController@refresh_catalog');

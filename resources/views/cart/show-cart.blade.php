@@ -26,34 +26,32 @@
                         </div>
                     @endif
                 <div class="row cart-hide" style="padding-top:15px;">
-                        <div class="col-md-5" style="">
+                        <div class="col-md-5" style="text-align: left;">
                             <strong>Course Name</strong>
                         </div>
+
                         <div class="col-md-2 " style="text-align: right">
                             <strong>Price</strong>
                         </div>
                         </div>
-                        <div class="col-md-2 " style="text-align: right">
-                            <strong>Seats</strong>
-                        </div>
-                        <div class="col-md-2 " style="text-align: right">
-                            <strong>Total</strong>
-                        </div>
                         <div class="col-md-1 " style="text-align: right">
+                            <strong>Seats</strong>
                         </div>
 
                     </div>
                 @foreach ($cart as $cartDetail)
                     <div class="row" style="padding-top:15px;">
                         <div class="col-md-5" style="">
-                            {{$cartDetail['name']}}<br>{{$cartDetail['options']['location']}}
+                            {{$cartDetail['name']}}({{$cartDetail->options->paypal_details}})
+
+                            <br>{{$cartDetail['options']['location']}}
 
                         </div>
 
                         <div class="col-md-2 price-align">
                            <div class="usdPrice">&#36;{{$cartDetail['price']}}</div>
                         </div>
-                        <div class="col-md-2 price-align">
+                        <div class="col-md-1 price-align">
                             {{ Form::open(['url' =>env('APP_URL').'/update-cart','name'=>'qtyUpdate_'.$cartDetail['rowid']]) }}
                                 {{Form::selectRange('qty', 1, $cartDetail['options']['seats_available'],$cartDetail['qty'],['id'=>'qty','class'=>'form-control','style'=>'width:65px;display: inline','onchange'=>'this.form.submit();'])}}
                             <input type="hidden" name="rowid" style="width:50px;display: inline;" class="form-control " value="{{$cartDetail['rowid']}}">
